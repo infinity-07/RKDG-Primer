@@ -1,0 +1,47 @@
+\contentsline {section}{\numberline {1}引言}{3}{section.1}%
+\contentsline {section}{\numberline {2}符号说明}{3}{section.2}%
+\contentsline {section}{\numberline {3}一维标量}{3}{section.3}%
+\contentsline {subsection}{\numberline {3.1}控制方程}{3}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}空间离散格式}{4}{subsection.3.2}%
+\contentsline {section}{\numberline {4}一维向量}{5}{section.4}%
+\contentsline {section}{\numberline {5}二维向量}{5}{section.5}%
+\contentsline {subsection}{\numberline {5.1}控制方程}{5}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}空间离散格式}{5}{subsection.5.2}%
+\contentsline {section}{\numberline {6}指示子}{5}{section.6}%
+\contentsline {subsection}{\numberline {6.1}TVB指示子}{5}{subsection.6.1}%
+\contentsline {subsection}{\numberline {6.2}KXRCF指示子}{6}{subsection.6.2}%
+\contentsline {section}{\numberline {7}限制器}{6}{section.7}%
+\contentsline {subsection}{\numberline {7.1}TVB限制器}{6}{subsection.7.1}%
+\contentsline {subsection}{\numberline {7.2}WENO-JS限制器}{6}{subsection.7.2}%
+\contentsline {subsection}{\numberline {7.3}WENO-M}{7}{subsection.7.3}%
+\contentsline {subsection}{\numberline {7.4}WENO-Z}{8}{subsection.7.4}%
+\contentsline {subsection}{\numberline {7.5}MR-WENO限制器}{8}{subsection.7.5}%
+\contentsline {section}{\numberline {8}保极值限制器}{10}{section.8}%
+\contentsline {section}{\numberline {A}边界条件}{11}{appendix.A}%
+\contentsline {subsection}{\numberline {A.1}周期性边界条件}{11}{subsection.A.1}%
+\contentsline {subsection}{\numberline {A.2}冯诺依曼边界条件}{11}{subsection.A.2}%
+\contentsline {section}{\numberline {B}数学符号}{11}{appendix.B}%
+\contentsline {subsection}{\numberline {B.1}散度}{11}{subsection.B.1}%
+\contentsline {subsection}{\numberline {B.2}梯度}{11}{subsection.B.2}%
+\contentsline {subsection}{\numberline {B.3}范数}{11}{subsection.B.3}%
+\contentsline {section}{\numberline {C}控制方程}{12}{appendix.C}%
+\contentsline {subsection}{\numberline {C.1}一维方程}{12}{subsection.C.1}%
+\contentsline {subsubsection}{\numberline {C.1.1}欧拉方程}{12}{subsubsection.C.1.1}%
+\contentsline {paragraph}{方程形式}{12}{section*.2}%
+\contentsline {paragraph}{特征分析}{12}{section*.3}%
+\contentsline {paragraph}{算例}{13}{section*.4}%
+\contentsline {subsection}{\numberline {C.2}二维方程}{13}{subsection.C.2}%
+\contentsline {subsubsection}{\numberline {C.2.1}欧拉方程}{13}{subsubsection.C.2.1}%
+\contentsline {paragraph}{方程形式}{13}{section*.5}%
+\contentsline {paragraph}{特征分析}{14}{section*.6}%
+\contentsline {paragraph}{算例}{15}{section*.7}%
+\contentsline {section}{\numberline {D}基函数函数}{16}{appendix.D}%
+\contentsline {subsection}{\numberline {D.1}一维}{16}{subsection.D.1}%
+\contentsline {subsection}{\numberline {D.2}二维}{16}{subsection.D.2}%
+\contentsline {section}{\numberline {E}龙格库塔法}{16}{appendix.E}%
+\contentsline {subsection}{\numberline {E.1}ssp 二阶龙格库塔法}{17}{subsection.E.1}%
+\contentsline {subsection}{\numberline {E.2}ssp 三阶龙格库塔法}{17}{subsection.E.2}%
+\contentsline {subsection}{\numberline {E.3}三阶龙格库塔法}{17}{subsection.E.3}%
+\contentsline {subsection}{\numberline {E.4}四阶龙格库塔法}{17}{subsection.E.4}%
+\contentsline {section}{\numberline {F}数值积分}{17}{appendix.F}%
+\contentsline {section}{\numberline {G}计算精度}{18}{appendix.G}%

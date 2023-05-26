@@ -1,0 +1,169 @@
+\begin{thebibliography}{10}
+
+\bibitem{RN106}
+高斯积分的节点值.
+
+\bibitem{基于力矩的指示器}
+Rupak Biswas, Karen~D. Devine, and Joseph~E. Flaherty.
+\newblock Parallel, adaptive finite element methods for conservation laws.
+\newblock {\em Applied Numerical Mathematics}, 14(1-3):255--283, 1994.
+
+\bibitem{基于矩的限制器}
+Rupak Biswas, Karen~D. Devine, and Joseph~E. Flaherty.
+\newblock Parallel, adaptive finite element methods for conservation laws.
+\newblock {\em Applied Numerical Mathematics}, 14(1-3):255--283, 1994.
+
+\bibitem{WENO-Z}
+Rafael Borges, Monique Carmona, Bruno Costa, and Wai~Sun Don.
+\newblock An improved weighted essentially non-oscillatory scheme for
+  hyperbolic conservation laws.
+\newblock {\em Journal of Computational Physics}, 227(6):3191--3211, 2008.
+
+\bibitem{改进的基于矩的限制器}
+A.~Burbeau, P.~Sagaut, and Ch~H. Bruneau.
+\newblock A problem-independent limiter for high-order runge–kutta
+  discontinuous galerkin methods.
+\newblock {\em Journal of Computational Physics}, 169(1):111--150, 2001.
+
+\bibitem{RKDG4}
+Bernardo Cockburn, Suchung Hou, and Chi-Wang Shu.
+\newblock The runge-kutta local projection discontinuous galerkin finite
+  element method for conservation laws. iv: The multidimensional case.
+\newblock {\em Mathematics of Computation}, 54(190), 1990.
+
+\bibitem{WENO5}
+Bernardo Cockburn, Claes Johnson, C-W Shu, and Eitan Tadmor.
+\newblock {\em Advanced numerical approximation of nonlinear hyperbolic
+  equations: lectures given at the 2nd session of the Centro Internazionale
+  Matematico Estivo (CIME) held in Cetraro, Italy, June 23-28, 1997}.
+\newblock Springer, 2006.
+
+\bibitem{RKDG3}
+Bernardo Cockburn, San-Yih Lin, and Chi-Wang Shu.
+\newblock Tvb runge-kutta local projection discontinuous galerkin finite
+  element method for conservation laws iii: One-dimensional systems.
+\newblock {\em Journal of Computational Physics}, 84(1):90--113, 1989.
+
+\bibitem{RKDG2}
+Bernardo Cockburn and Chi-Wang Shu.
+\newblock Tvb runge-kutta local projection discontinuous galerkin finite
+  element method for conservation laws ii: General framework.
+\newblock {\em Mathematics of Computation}, 52(186), 1989.
+
+\bibitem{RN16}
+Bernardo Cockburn and Chi-Wang Shu.
+\newblock Tvb runge-kutta local projection discontinuous galerkin finite
+  element method for conservation laws ii: General framework.
+\newblock {\em Mathematics of Computation}, 52(186), 1989.
+\newblock RKDG 系列论文 2.
+
+\bibitem{RKDG5}
+Bernardo Cockburn and Chi-Wang Shu.
+\newblock The runge–kutta discontinuous galerkin method for conservation laws
+  v.
+\newblock {\em Journal of Computational Physics}, 141(2):199--224, 1998.
+
+\bibitem{WENO1}
+Oliver Friedrich.
+\newblock Weighted essentially non-oscillatory schemes for the interpolation of
+  mean values on unstructured grids.
+\newblock {\em Journal of Computational Physics}, 144(1):194--212, 1998.
+
+\bibitem{RN96}
+Sigal Gottlieb, Chi-Wang Shu, and Eitan Tadmor.
+\newblock Strong stability-preserving high-order time discretization methods.
+\newblock {\em SIAM Review}, 43(1):89--112, 2001.
+\newblock ssp 龙格库塔法.
+
+\bibitem{WENO-M}
+Andrew~K. Henrick, Tariq~D. Aslam, and Joseph~M. Powers.
+\newblock Mapped weighted essentially non-oscillatory schemes: Achieving
+  optimal order near critical points.
+\newblock {\em Journal of Computational Physics}, 207(2):542--567, 2005.
+
+\bibitem{WENO2}
+Changqing Hu and Chi-Wang Shu.
+\newblock Weighted essentially non-oscillatory schemes on triangular meshes.
+\newblock {\em Journal of Computational Physics}, 150(1):97--127, 1999.
+
+\bibitem{WENO3}
+Guang-Shan Jiang and Chi-Wang Shu.
+\newblock Efficient implementation of weighted eno schemes.
+\newblock {\em Journal of Computational Physics}, 126(1):202--228, 1996.
+
+\bibitem{基于DG超收敛性质的KXRCF指示器}
+L.~Krivodonova, J.~Xin, J.~F. Remacle, N.~Chevaugeon, and J.~E. Flaherty.
+\newblock Shock detection and limiting with discontinuous galerkin methods for
+  hyperbolic conservation laws.
+\newblock {\em Applied Numerical Mathematics}, 48(3-4):323--338, 2004.
+
+\bibitem{RN92}
+L.~Krivodonova, J.~Xin, J.~F. Remacle, N.~Chevaugeon, and J.~E. Flaherty.
+\newblock Shock detection and limiting with discontinuous galerkin methods for
+  hyperbolic conservation laws.
+\newblock {\em Applied Numerical Mathematics}, 48(3-4):323--338, 2004.
+\newblock 基于DG超收敛性质的KXRCF指示器.
+
+\bibitem{CWENO}
+Doron Levy, Gabriella Puppo, and Giovanni Russo.
+\newblock Central weno schemes for hyperbolic systems of conservation laws.
+\newblock {\em ESAIM: Mathematical Modelling and Numerical Analysis},
+  33(3):547--571, 1999.
+
+\bibitem{WENO4}
+Xu-Dong Liu, Stanley Osher, and Tony Chan.
+\newblock Weighted essentially non-oscillatory schemes.
+\newblock {\em Journal of Computational Physics}, 115(1):200--212, 1994.
+
+\bibitem{HWENO1}
+Jianxian Qiu and Chi-Wang Shu.
+\newblock Hermite weno schemes and their application as limiters for
+  runge–kutta discontinuous galerkin method: one-dimensional case.
+\newblock {\em Journal of Computational Physics}, 193(1):115--135, 2004.
+
+\bibitem{HWENO2}
+Jianxian Qiu and Chi-Wang Shu.
+\newblock Hermite weno schemes and their application as limiters for
+  runge–kutta discontinuous galerkin method ii: Two dimensional case.
+\newblock {\em Computers \& Fluids}, 34(6):642--663, 2005.
+
+\bibitem{WENO-js1}
+Jianxian Qiu and Chi-Wang Shu.
+\newblock Runge--kutta discontinuous galerkin method using weno limiters.
+\newblock {\em SIAM Journal on Scientific Computing}, 26(3):907--929, 2005.
+
+\bibitem{Reed_Hill}
+William~H Reed and Thomas~R Hill.
+\newblock Triangular mesh methods for the neutron transport equation.
+\newblock Report, Los Alamos Scientific Lab., N. Mex.(USA), 1973.
+
+\bibitem{TVB}
+Chi-Wang Shu.
+\newblock Tvb uniformly high-order schemes for conservation laws.
+\newblock {\em Mathematics of Computation}, 49(179), 1987.
+
+\bibitem{WENO-js2}
+Jun Zhu, Jianxian Qiu, Chi-Wang Shu, and Michael Dumbser.
+\newblock Runge–kutta discontinuous galerkin method using weno limiters ii:
+  Unstructured meshes.
+\newblock {\em Journal of Computational Physics}, 227(9):4330--4353, 2008.
+
+\bibitem{RN95}
+Jun Zhu, Xinghui Zhong, Chi-Wang Shu, and Jianxian Qiu.
+\newblock Runge-kutta discontinuous galerkin method with a simple and compact
+  hermite weno limiter.
+\newblock {\em Communications in Computational Physics}, 19(4):944--969, 2016.
+\newblock 欧拉方程的左右特征向量.
+
+\bibitem{RN48}
+梁俊凯.
+\newblock 欧拉方程间断伽辽金有限元解法的研究.
+\newblock 2018.
+
+\bibitem{RN109}
+程悦.
+\newblock {\em Runge-Kutta 间断 Galerkin
+  有限元方法的多种限制器比较}.
+\newblock Thesis, 2011.
+
+\end{thebibliography}
