@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999994 (TeX Live 2022) (preloaded format=xelatex 2022.10.9)  17 MAY 2023 00:02
+This is XeTeX, Version 3.141592653-2.6-0.999994 (TeX Live 2022) (preloaded format=xelatex 2022.11.7)  26 MAY 2023 17:54
 entering extended mode
  \write18 enabled.
  file:line:error style messages enabled.
@@ -779,8 +779,17 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 \openout4 = `main.toc'.
 
  [2]
+File: fig/example1-t=0.0.eps Graphic file (type eps)
+<fig/example1-t=0.0.eps>
+File: fig/example1-t=0.2.eps Graphic file (type eps)
+<fig/example1-t=0.2.eps>
+File: fig/example1-t=0.4.eps Graphic file (type eps)
+<fig/example1-t=0.4.eps>
+File: fig/example1-t=0.6.eps Graphic file (type eps)
+<fig/example1-t=0.6.eps>
 
-LaTeX Warning: Reference `equ:双曲守恒' on page 3 undefined on input line 33.
+
+LaTeX Warning: Reference `equ:双曲守恒' on page 3 undefined on input line 53.
 
 [3] [4] [5] [6] [7] [8] [9] [10] [11] [12] [13] [14] [15] [16] [17] [18] (./main.bbl [19] [20]) [21] (./main.aux)
 
@@ -790,11 +799,11 @@ Package rerunfilecheck Info: File `main.out' has not changed.
 (rerunfilecheck)             Checksum: CDA91C697515ED0882B465233D630B3E;3742.
  ) 
 Here is how much of TeX's memory you used:
- 19293 strings out of 476179
- 401312 string characters out of 5813072
+ 19327 strings out of 476179
+ 402061 string characters out of 5813072
  1007366 words of memory out of 5000000
- 39729 multiletter control sequences out of 15000+600000
- 482111 words of font info for 108 fonts, out of 8000000 for 9000
+ 39757 multiletter control sequences out of 15000+600000
+ 483669 words of font info for 114 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  89i,18n,97p,837b,623s stack positions out of 10000i,1000n,20000p,200000b,200000s
 

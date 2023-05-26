@@ -142,6 +142,13 @@ Chi-Wang Shu.
 \newblock Tvb uniformly high-order schemes for conservation laws.
 \newblock {\em Mathematics of Computation}, 49(179), 1987.
 
+\bibitem{RN13}
+Jun Zhu and Jianxian Qiu.
+\newblock A new type of finite volume weno schemes for hyperbolic conservation
+  laws.
+\newblock {\em Journal of Scientific Computing}, 73(2-3):1338--1359, 2017.
+\newblock 黎曼问题算例.
+
 \bibitem{WENO-js2}
 Jun Zhu, Jianxian Qiu, Chi-Wang Shu, and Michael Dumbser.
 \newblock Runge–kutta discontinuous galerkin method using weno limiters ii:

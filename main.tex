@@ -30,6 +30,26 @@
 \tableofcontents
 \newpage
 \section{引言}
+
+\begin{figure}[ht]%
+    \centering
+    \subfloat[$t=0s$]{
+        \includegraphics[width=0.3\linewidth]{fig/example1-t=0.0.eps}
+    }\quad
+    \subfloat[$t=0.2s$]{
+        \includegraphics[width=0.3\linewidth]{fig/example1-t=0.2.eps}
+    }\\
+    \subfloat[$t=0.4s$]{
+        \includegraphics[width=0.3\linewidth]{fig/example1-t=0.4.eps}
+    }\quad
+    \subfloat[$t=0.6s$]{
+        \includegraphics[width=0.3\linewidth]{fig/example1-t=0.6.eps}
+    }\\
+    \caption{上图为burgers方程在初值条件为$u=\sin(x)$时的演变}
+    \label{间断示例}
+\end{figure}
+
+
 本文使用的数值方法为间断有限元(DG)法。让我们先简要回顾一下DG方法的历史。1973年，Reed和Hill\cite{Reed_Hill}在中子传输框架下提出了第一个不连续Galerkin（DG）方法。然后，Cockburn等人在一系列论文中 \cite{RKDG2,RKDG3,RKDG4,RKDG5} 对DG方法进行了重大发展，其中他们建立了一个框架，使用显式、非线性稳定的高阶Runge-Kutta时间离散化和DG空间离散化，使用精确或近似的Riemann解算器作为界面通量和总变差有界（TVB）限制器\cite{TVB}，以实现对强不连续性的本质非振荡性。从那时起，这些方案被称为RKDG方法。但是，即使初始条件足够平滑，解决\eqref{equ:双曲守恒}也不容易，因为解可能包含强不连续性。不连续Galerkin（DG）方法可以捕捉弱不连续性而无需进一步修改。然而，对于存在强不连续性的问题，数值解可能在强震荡或接触不连续性附近具有显著的虚假震荡，特别是对于高阶数值方法而言。控制这些虚假震荡的常见策略是应用非线性限制器。
 
 通常，使用限制器的过程可以分为两个步骤。首先，需要确定“坏单元”（也称为“有问题的单元”），即包含间断的单元，这些单元需要进行限制。其次，需要在这些“坏单元”中修正DG多项式解。由于守恒的要求，需要保证单元平均值不变，并且减小振荡。
@@ -668,7 +688,20 @@ WENO 全称为 Weighted Essentially Non-Oscillatory。WENO 限制器的思想是
             \rho(x,y,t) = 1+0.2\sin(\pi(x+y-(u+v)t)),u=0.7,v=0.3,p=1
         \end{equation}
     \end{example}
+    \begin{example}
+        二维黎曼问题\cite{RN13}，初值为
+        \begin{equation}
+            \begin{cases}
+                \left(\rho_{1}, p_{1}, \mu_{1}, v_{1}\right)^{T}=(0.5313,0.4,0,0)^{T}, & x>1, y>1, \\
+                \left(\rho_{2}, p_{2}, \mu_{2}, v_{2}\right)^{T}=(1,1,0,0.7276)^{T},   & x>1, y<1, \\
+                \left(\rho_{3}, p_{3}, \mu_{3}, v_{3}\right)^{T}=(1,1,0.7276,0)^{T},   & x<1, y>1, \\
+                \left(\rho_{4}, p_{4}, \mu_{4}, v_{4}\right)^{T}=(0.8,1,0,0)^{T},      & x<1, y<1  \\
+            \end{cases}
+        \end{equation}
+        $p_1<p_2=p_3=p_4$。滑移边界条件。建议计算至$t=0.52$,网格为260*260.
 
+
+    \end{example}
     \newpage
     \section{基函数函数}
     \cite{RN48}
