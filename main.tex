@@ -16,7 +16,7 @@
 
 \newtheorem{example}{Example}
 \newtheorem{remark}{Remark}
-
+\newtheorem{theorem}{Theorem}
 
 \numberwithin{equation}{subsection}    % 公式标号与section的编号挂钩
 
@@ -385,6 +385,79 @@ WENO 全称为 Weighted Essentially Non-Oscillatory。WENO 限制器的思想是
 
 首先，可以证明，当 $\Delta t$ 充分小时，$\overline{u_h}\in[m,M]$,
 
+\begin{theorem}
+    对于格式
+    \begin{equation}
+        u_j^{n+1} = u_j^n - \lambda\left[\hat{f}(u_j^n,u_{j+1}^n)-\hat{f}(u_{j-1}^n,u_j^n)\right]
+    \end{equation}
+    其中  $\lambda=\frac{\Delta t}{\Delta x}$ ， $h$  是全局L-F通量(Lax-Friedrichs, Godunov 好像也可以)：
+    \begin{equation}
+        h(u, v)=\frac{1}{2}[f(u)+f(v)-a(u-v)], \quad a=\max _{u}\left|f^{\prime}(u)\right|
+    \end{equation}
+    如果满足CFL条件  $\lambda a \leq 1$  ， 且  $u_{j}^{n} \in[m, M], \forall j$ ，则  $u_{j+1}^{n} \in[m, M], \forall j$  。
+\end{theorem}
+
+\begin{proof}
+    记  $H\left(u_{j-1}^{n}, u_{j}^{n}, u_{j+1}^{n}\right)=u_{j}^{n}-\lambda\left[h\left(u_{j}^{n}, u_{j+1}^{n}\right)-h\left(u_{j-1}^{n}, u_{j}^{n}\right)\right]$ ，则  $H(u, u, u)=u$  。把  $H$  完全展开得:
+    \begin{equation}
+        \begin{aligned}
+            H\left(u_{j-1}^{n}, u_{j}^{n}, u_{j+1}^{n}\right) & =u_{J}^{n}-\lambda\left[h\left(u_{j}^{n}, u_{j+1}^{n}\right)-h\left(u_{j-1}^{n}, u_{j}^{n}\right)\right]                                                                                             \\
+                                                              & =u_{j}^{n}-\frac{\lambda}{2}\left[f\left(u_{j}^{n}\right)+f\left(u_{j+1}^{n}\right)-a\left(u_{j+1}^{n}-u_{j}^{n}\right)-f\left(u_{j-1}\right)-f\left(u_{j}\right)+a\left(u_{j}-u_{j-1}\right)\right] \\
+                                                              & =(1-\lambda a) u_{j}^{n}+\frac{\lambda}{2}\left[a u_{j+1}^{n}-f\left(u_{j+1}^{n}\right)\right]+\frac{\lambda}{2}\left[a u_{j-1}^{n}-f\left(u_{j-1}^{n}\right)\right]
+        \end{aligned}
+    \end{equation}
+
+    注意到
+    \begin{equation}
+        \begin{cases}
+            H_{b}(b, c, d)=\frac{\lambda}{2}\left(a-f^{\prime}(b)\right) \geqslant 0 \\
+            H_{d}(b, c, d)=\frac{\lambda}{2}\left(a-f^{\prime}(d)\right) \geqslant 0 \\
+            H_{c}(b, c, d)=1 -\lambda a \geqslant 0
+        \end{cases}
+    \end{equation}
+    因此  $H$ 对三个变量都是单调增加的，即  $H(\uparrow, \uparrow, \uparrow)$  ，从而
+    \begin{equation}
+        m=H(m, m, m) \leq H\left(u_{j-1}^{n}, u_{j}^{n}, u_{j+1}^{n}\right) \leq H(M, M, M)=M
+    \end{equation}
+
+\end{proof}
+\begin{theorem}
+    设  $x_{j-1 / 2}=\hat{x}_{j}^{1}<\hat{x}_{j}^{2}<\cdots<\hat{x}_{j}^{N}=x_{j+1 / 2}$  ，其中  $\hat{x}_{j}$  是Gauss-Lobatto积分点，满足  $2 N-3 \geq k$ ， $k$  是近似多项式的次数。记  $\hat{v}_{\alpha}:=p_{j}\left(\hat{x}_{j}^{\alpha}\right)$ ，特别的，记  $\hat{v}_{0}=u_{j-1 / 2}^{-}, \hat{v}_{N+1}=u_{j+1 / 2}^{+} ， \hat{\omega}_{\alpha}$  是对应的权重，满足  $\hat{\omega}_{1}+\cdots+\hat{\omega}_{N}=1$  。如果 格式满足CFL条件
+
+    \begin{equation}
+        \lambda a \leq \min _{\alpha} \hat{\omega}_{\alpha}
+    \end{equation}
+
+    那么，只要所有的  $\hat{v}_{\alpha} \in[m, M]$  且  $\bar{u}_{j}^{n} \in[m, M]$  ，就有 $ \bar{u}_{j+1}^{n} \in[m, M]$。
+\end{theorem}
+\begin{proof}
+    \begin{equation}
+        \bar{u}_{j}^{\text {new }}=\bar{u}_{j}-\lambda\left[h\left(u_{j+1 / 2}^{-}, u_{j+1 / 2}^{+}\right)-h\left(u_{j-1 / 2}^{-}, u_{j-1 / 2}^{+}\right)\right]
+    \end{equation}
+
+    我们有
+    \begin{equation}
+        \begin{array}{l}
+            h\left(u_{j+1 / 2}^{-}, u_{j+1 / 2}^{+}\right)-h\left(u_{j-1 / 2}^{-}, u_{j-1 / 2}^{+}\right)=h\left(\hat{v}_{N}, \hat{v}_{N+1}\right)-h\left(\hat{v}_{0}, \hat{v}_{1}\right)= \\
+            \sum_{\alpha=1}^{N} h\left(\hat{v}_{\alpha}, \hat{v}_{\alpha+1}\right)-h\left(\hat{v}_{\alpha-1}, \hat{v}_{\alpha}\right)
+        \end{array}
+    \end{equation}
+
+
+
+    而单元平均值满足  $\bar{u}_{j}^{n}=\frac{1}{\Delta x} \int_{I_{j}} p_{j}(x) \mathrm{d} x=\sum_{\alpha=1}^{N} \hat{\omega}_{\alpha} \hat{v}_{\alpha}$  ，于是
+
+    \begin{equation}
+        \begin{aligned}
+            \bar{u}_{j+1}^{n} & =\bar{u}_{j}^{n}-\lambda\left[h\left(u_{j+1 / 2}^{-}, u_{j+1 / 2}^{+}\right)-h\left(u_{j-1 / 2}^{-}, u_{j-1 / 2}^{+}\right)\right]                                                                                                \\
+                              & =\sum_{\alpha=1}^{N} \hat{\omega}_{\alpha} \hat{v}_{\alpha}-\lambda \sum_{\alpha=1}^{N}\left[h\left(\hat{v}_{\alpha}, \hat{v}_{\alpha+1}\right)-h\left(\hat{v}_{\alpha-1}, \hat{v}_{\alpha}\right)\right]                         \\
+                              & =\sum_{\alpha=1}^{N}\left\{\hat{\omega}_{\alpha} \hat{v}_{\alpha}-\lambda\left[h\left(\hat{v}_{\alpha}, \hat{v}_{\alpha+1}\right)-h\left(\hat{v}_{\alpha-1}, \hat{v}_{\alpha}\right)\right]\right\}                               \\
+                              & =\sum_{\alpha=1}^{N} \hat{\omega}_{\alpha}\left\{\hat{v}_{\alpha}-\frac{\lambda}{\hat{\omega}_{\alpha}}\left[h\left(\hat{v}_{\alpha}, \hat{v}_{\alpha+1}\right)-h\left(\hat{v}_{\alpha-1}, \hat{v}_{\alpha}\right)\right]\right\}\\
+                              & =\sum_{\alpha=1}^{N} \hat{\omega}_{\alpha} H_{j}^{\alpha}
+        \end{aligned}
+    \end{equation}
+    其中  $H_{j}^{\alpha}=\hat{v}_{\alpha}-\frac{\lambda}{\hat{\omega}_{\alpha}}\left[h\left(\hat{v}_{\alpha}, \hat{v}_{\alpha+1}\right)-h\left(\hat{v}_{\alpha-1}, \hat{v}_{\alpha}\right)\right]$  。则根据已知条件，所有的 $\hat{v}_{\alpha} \in[m, M]  ，且  \lambda a \leq \hat{\omega}_{\alpha} $ ，即 $\frac{\lambda}{\hat{\omega}_{\alpha}} a \leq 1$  ，因此根据Lemma 1有 $H_{j}^{\alpha} \in[m, M]$ ，从而可 得  $\bar{u}_{j}^{n+1} \in[m, M]$  ，因为  $\bar{u}_{j}^{n+1}$  就是这些  $H_{j}^{\alpha}$ 的一个凸组合。
+\end{proof}
 此外，对于 $(u_h-\overline{u_h})$，可以乘一个权重 $\theta$，使得最终得到的数值解 $u_h^{\text{new}}$ 也满足极值原则。
 \begin{equation}
     u_{h}^{\text {new }}=\overline{u_h}+\theta(u_h-\overline{u_h})
@@ -725,6 +798,12 @@ WENO 全称为 Weighted Essentially Non-Oscillatory。WENO 限制器的思想是
             \end{cases}
         \end{equation}
         $p_1<p_2=p_3=p_4$。滑移边界条件。建议计算至$t=0.52$,网格为260*260.
+        \begin{figure}[htp]
+            \centering
+            \label{fig:}
+            \includegraphics[width=0.7\linewidth]{fig/二维黎曼问题}
+            \caption{网格密度260x260，间断有限元方法，TVB指示子，M=50，WENO-M}
+        \end{figure}
 
 
     \end{example}
