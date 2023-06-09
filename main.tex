@@ -225,7 +225,7 @@ WENO 全称为 Weighted Essentially Non-Oscillatory。WENO 限制器的思想是
                     \end{equation}
               \item 我们基于平滑度指示器计算非线性权重，
                     \begin{equation}
-                        \omega_{j}=\frac{\bar{\omega}_{j}}{\sum_{l} \bar{\omega}_{l}}, \quad \bar{\omega}_{j}=\frac{\gamma_{j}}{\sum_{j}\left(\varepsilon+\beta_{j}\right)^{2}},
+                        \omega_{j}=\frac{\bar{\omega}_{j}}{\sum_{l} \bar{\omega}_{l}}, \quad \bar{\omega}_{j}=\frac{\gamma_{j}}{\left(\varepsilon+\beta_{j}\right)^{2}},
                     \end{equation}
                     其中，$\gamma_j$ 是在 {\bf Step 1.2.} 中确定的线性权重，$\varepsilon$ 是一个很小的数，用于避免分母为零。在本文中，我们在所有计算中使用 $\varepsilon=10^{-6}$。最终的 WENO 近似为：
                     \begin{equation}
@@ -370,6 +370,32 @@ WENO 全称为 Weighted Essentially Non-Oscillatory。WENO 限制器的思想是
 \end{equation}
 
 \section{保极值限制器}
+标量守恒性方程
+\begin{equation}
+    u_{t}+\nabla \cdot \mathbf{F}(u)=0 \quad \text { and } \quad u(\mathbf{x}, 0)=u_{0}(\mathbf{x})
+\end{equation}
+一个很重要的性质就是它满足最大值原则。具体来说，如果 $M=\max_x u_0(x)$,$m=\min_x u_0(x)$, 那么 $u(x,t)\in[m,M]$. 对任意的 $x,t$ 都满足。所以，我们也希望数值解也满足这个性质。因为在一些情况下，超出了这个范围，就会得到无物理意义的解。比如负密度，或者负百分比，或者某个多组分混合物中某个组分的百分比大于一。
+
+这样的限制器在多项流问题中尤为重要。
+
+对于 DG 中的数值解 $u_h$，它可以写成
+\begin{equation}
+    u_{h}=\overline{u_h}+(u_h-\overline{u_h})
+\end{equation}
+
+首先，可以证明，当 $\Delta t$ 充分小时，$\overline{u_h}\in[m,M]$,
+
+此外，对于 $(u_h-\overline{u_h})$，可以乘一个权重 $\theta$，使得最终得到的数值解 $u_h^{\text{new}}$ 也满足极值原则。
+\begin{equation}
+    u_{h}^{\text {new }}=\overline{u_h}+\theta(u_h-\overline{u_h})
+\end{equation}
+
+\begin{equation}
+    \theta=\min \left\{\left|\frac{M-\bar{u}_{j}^{n}}{M_{j}-\bar{u}_{j}^{n}}\right|,\left|\frac{m-\bar{u}_{j}^{n}}{m_{j}-\bar{u}_{j}^{n}}\right|, 1\right\}
+\end{equation}
+\begin{equation}
+    M_{j}=\max _{x \in I_{j}} p_{j}(x) \quad \text { and } \quad m_{j}=\min _{x \in I_{j}} p_{j}(x)
+\end{equation}
 
 \newpage
 \begin{appendix}
