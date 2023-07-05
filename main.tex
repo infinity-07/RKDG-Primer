@@ -93,7 +93,9 @@ $\begin{array}{l}
 \begin{remark}
     如果基函数不是正交函数，需要先求出质量矩阵的值，再求其逆矩阵。
 \end{remark}
-
+\begin{remark}
+    当基函数为正交函数时，第一个自由度的值，即为函数在小区间上的积分平均值。
+\end{remark}
 \begin{equation}
     \left\|v_{l}^{(j)}(x)\right\|^{2} \dfrac{\dd}{\dd t} u(t)+\left[\Delta_{-}\left(v_{l}^{(j)}\left(x_{j+1 / 2}\right) f_{j+1 / 2}\right)\right]-\int_{I_{j}} f\left(u^{h}(x, t)\right) \dfrac{\dd}{\dd x} v(x) \dd x=0
 \end{equation}
@@ -800,6 +802,11 @@ Theorem 2.6. Consider a two-dimensional finite volume scheme or the scheme satis
     \end{equation}
 \end{proof}
 \section{数值通量}
+\subsection{HLL}
+HLL(Harten-Lax-van Leer)
+\subsection{HLLC}
+
+\section{双曲型方程}
 \subsection{激波}
 
 \subsection{稀疏波}
@@ -1216,6 +1223,21 @@ $[-1,1]\times[-1,1]$上的勒让德函数为：
 
 对于$[x_a,x_b]\times[y_a,y_b]$上的勒让德函数，只需令 $\xi=\dfrac{x - \dfrac{x_a+x_b}{2}}{\dfrac{x_b-x_a}{2}},\eta = \dfrac{y - \dfrac{y_a+y_b}{2}}{\dfrac{y_b-y_a}{2}}$
 \section{数值积分}
+% https://zhuanlan.zhihu.com/p/597515168
+\cite{RKDG2} reamrk 2.6
+
+
+Remark 2.6. To compute the integrations in (2.10) for nonlinear  $f$ , quadratures of correct order must be used so that the error of approximating
+
+\begin{equation}
+    \frac{1}{\Delta x_{j}^{l+1}} \int_{I_{j}} f\left(u^{h}(x, t)\right) \frac{d}{d x} v_{l}^{(j)}(x) d x
+\end{equation}
+
+
+
+is $O\left(h^{k+1}\right)$ . Considering (2.4), we need a quadrature whose error is  $O\left(h^{k+l+2}\right)$ , or  $O\left(h^{2 k+2}\right)$ , to work for every  l . For example, Simpson's rule (the error is  $O\left(h^{5}\right)  )$ is enough for  k=1  (second-order scheme), and three-point Gaussian (the error is  $O\left(h^{6}\right)  )$ is needed for  $k=2$  (third-order scheme). Since we can use  $h_{j \pm 1 / 2}$  as  $f\left(u^{h}\left(x_{j \pm 1 / 2}, t\right)\right)$  in the quadratures to save function evaluations, Gauss-Lobatto quadratures, which use end points of the interval as nodes, are preferred.
+
+
 一般采用的求积公式是机械求解求积公式中的高斯积分。高斯积分是一种非常常用的数值积分方法，具有如下优点：
 \begin{itemize}
     \item 高斯积分的精度随着积分点的增加而增加，当积分点的数量足够大时，可以达到非常高的精度。
@@ -1247,6 +1269,19 @@ $[-1,1]\times[-1,1]$上的勒让德函数为：
         \bottomrule
     \end{tabular}
 \end{table}
+
+
+Also known as Lobatto quadrature,[7] named after Dutch mathematician Rehuel Lobatto. It is similar to Gaussian quadrature with the following differences:
+
+The integration points include the end points of the integration interval.
+It is accurate for polynomials up to degree 2n – 3, where n is the number of integration points.[8]
+
+Step 1. Here we reconstruct point values of  $u$  at the Gauss or Gauss-Lobatto quadrature points. For the  $\mathbb{P}^{k}$ -based DG (which is  (k+1)  th order accurate), we need a Gauss or Gauss-Lobatto quadrature rule accurate to at least  $\mathrm{O}\left(h^{2 k+2}\right)$ , and the order of accuracy for the WENO reconstruction must be at least  $2 k+1$ . For this purpose, we would need to use the cell averages of the neighboring  2$ k+1$  cells  $I_{i-k}, \ldots, I_{i+k}$  to reconstruct the point values of  u  at the Gauss or Gauss-Lobatto quadrature points. In particular, we have used the following quadrature points:
+\begin{itemize}
+    \item For the  $\mathbb{P}^{1}$  case, we use the two-point Gauss quadrature points  $x_{i-\sqrt{3} / 6}$  and  $x_{i+\sqrt{3} / 6}$ .
+    \item For the  $\mathbb{P}^{2}$  case, we use the four-point Gauss-Lobatto quadrature points  $x_{i-1 / 2}, x_{i-\sqrt{5} / 10}, x_{i+\sqrt{5} / 10}$ , and  $x_{i+1 / 2}$ .
+    \item For the  $\mathbb{P}^{3}$  case, we use the four-point Gauss quadrature points  $x_{i-\sqrt{525+70 \sqrt{30}} / 70}, x_{i-\sqrt{525-70 \sqrt{30}} / 70}, x_{i+\sqrt{525-70 \sqrt{30}} / 70}$  and  $x_{i+\sqrt{525+70 \sqrt{30}} / 70}$ .
+\end{itemize}
 
 \begin{table}[ht]
     \centering

@@ -34,10 +34,13 @@
 \contentsline {subsection}{\numberline {2.3.3}自由设置线性权}{18}{subsection.2.3.3}%
 \contentsline {subsection}{\numberline {2.3.4}HWENO}{18}{subsection.2.3.4}%
 \contentsline {section}{\numberline {2.4}保极值限制器}{18}{section.2.4}%
-\contentsline {section}{\numberline {2.5}数值通量}{22}{section.2.5}%
-\contentsline {subsection}{\numberline {2.5.1}激波}{22}{subsection.2.5.1}%
-\contentsline {subsection}{\numberline {2.5.2}稀疏波}{22}{subsection.2.5.2}%
-\contentsline {subsection}{\numberline {2.5.3}接触间断}{22}{subsection.2.5.3}%
+\contentsline {section}{\numberline {2.5}数值通量}{21}{section.2.5}%
+\contentsline {subsection}{\numberline {2.5.1}HLL}{21}{subsection.2.5.1}%
+\contentsline {subsection}{\numberline {2.5.2}HLLC}{22}{subsection.2.5.2}%
+\contentsline {section}{\numberline {2.6}双曲型方程}{22}{section.2.6}%
+\contentsline {subsection}{\numberline {2.6.1}激波}{22}{subsection.2.6.1}%
+\contentsline {subsection}{\numberline {2.6.2}稀疏波}{22}{subsection.2.6.2}%
+\contentsline {subsection}{\numberline {2.6.3}接触间断}{22}{subsection.2.6.3}%
 \contentsline {chapter}{\numberline {第三章\hspace {.3em}}附录}{23}{chapter.3}%
 \contentsline {section}{\numberline {3.1}边界条件}{23}{section.3.1}%
 \contentsline {subsection}{\numberline {3.1.1}周期性边界条件}{23}{subsection.3.1.1}%
@@ -65,4 +68,4 @@
 \contentsline {subsection}{\numberline {3.5.1}一维}{29}{subsection.3.5.1}%
 \contentsline {subsection}{\numberline {3.5.2}二维}{30}{subsection.3.5.2}%
 \contentsline {section}{\numberline {3.6}数值积分}{30}{section.3.6}%
-\contentsline {section}{\numberline {3.7}计算精度}{31}{section.3.7}%
+\contentsline {section}{\numberline {3.7}计算精度}{32}{section.3.7}%
