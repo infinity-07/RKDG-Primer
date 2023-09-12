@@ -3,6 +3,12 @@
 \bibitem{RN106}
 高斯积分的节点值.
 
+\bibitem{WENO-Z-2016}
+F.~Acker, R.~B.~de R.~Borges, and B.~Costa.
+\newblock An improved weno-z scheme.
+\newblock {\em Journal of Computational Physics}, 313:726--753, 2016.
+\newblock 提供了丰富的一维二维欧拉算例.
+
 \bibitem{基于力矩的指示器}
 Rupak Biswas, Karen~D. Devine, and Joseph~E. Flaherty.
 \newblock Parallel, adaptive finite element methods for conservation laws.
@@ -63,6 +69,18 @@ Bernardo Cockburn and Chi-Wang Shu.
   v.
 \newblock {\em Journal of Computational Physics}, 141(2):199--224, 1998.
 
+\bibitem{RN148}
+Bernardo Cockburn and Chi-Wang Shu.
+\newblock Runge–kutta discontinuous galerkin methods for convection-dominated
+  problems.
+\newblock {\em Journal of scientific computing}, 16:173--261, 2001.
+
+\bibitem{WENO-Z-2013}
+Wai-Sun Don and Rafael Borges.
+\newblock Accuracy of the weighted essentially non-oscillatory conservative
+  finite difference schemes.
+\newblock {\em Journal of Computational Physics}, 250:347--372, 2013.
+
 \bibitem{WENO1}
 Oliver Friedrich.
 \newblock Weighted essentially non-oscillatory schemes for the interpolation of
@@ -115,6 +133,18 @@ Xu-Dong Liu, Stanley Osher, and Tony Chan.
 \newblock Weighted essentially non-oscillatory schemes.
 \newblock {\em Journal of Computational Physics}, 115(1):200--212, 1994.
 
+\bibitem{numFlux1}
+Jianxian Qiu.
+\newblock A numerical comparison of the lax–wendroff discontinuous galerkin
+  method based on different numerical fluxes.
+\newblock {\em Journal of Scientific Computing}, 30(3):345--367, 2006.
+
+\bibitem{numFlux2}
+Jianxian Qiu, Boo~Cheong Khoo, and Chi-Wang Shu.
+\newblock A numerical study for the performance of the runge–kutta
+  discontinuous galerkin method based on different numerical fluxes.
+\newblock {\em Journal of Computational Physics}, 212(2):540--565, 2006.
+
 \bibitem{HWENO1}
 Jianxian Qiu and Chi-Wang Shu.
 \newblock Hermite weno schemes and their application as limiters for
@@ -132,15 +162,37 @@ Jianxian Qiu and Chi-Wang Shu.
 \newblock Runge--kutta discontinuous galerkin method using weno limiters.
 \newblock {\em SIAM Journal on Scientific Computing}, 26(3):907--929, 2005.
 
+\bibitem{RKDG+WENOJS-1}
+Jianxian Qiu and Chi-Wang Shu.
+\newblock Runge--kutta discontinuous galerkin method using weno limiters.
+\newblock {\em SIAM Journal on Scientific Computing}, 26(3):907--929, 2005.
+\newblock WENO 格式在 DG
+  方法上的首次应用；后续将其应用于非结构化网络
+  Runge–Kutta discontinuous Galerkin method using WENO limiters II:
+  Unstructured meshes.
+
 \bibitem{Reed_Hill}
 William~H Reed and Thomas~R Hill.
 \newblock Triangular mesh methods for the neutron transport equation.
 \newblock Report, Los Alamos Scientific Lab., N. Mex.(USA), 1973.
 
+\bibitem{RN114}
+Yiqing Shen, Shiyao Li, Shengping Liu, Kai Cui, and Guannan Zheng.
+\newblock A robust common-weights weno scheme based on the flux vector
+  splitting for euler equations.
+\newblock {\em Communications in Nonlinear Science and Numerical Simulation},
+  119, 2023.
+\newblock 欧拉方程算例 黎曼问题.
+
 \bibitem{TVB}
 Chi-Wang Shu.
 \newblock Tvb uniformly high-order schemes for conservation laws.
 \newblock {\em Mathematics of Computation}, 49(179), 1987.
+
+\bibitem{Toro}
+Toro.
+\newblock {\em Riemann solvers and numerical methods for fluid dynamics.pdf}.
+\newblock 2009.
 
 \bibitem{RN6}
 Xiangxiong Zhang and Chi-Wang Shu.
@@ -150,6 +202,12 @@ Xiangxiong Zhang and Chi-Wang Shu.
   Engineering Sciences}, 467(2134):2752--2776, 2011.
 \newblock 一篇比较重要的保极值 review.
 
+\bibitem{RN133}
+Hongqiang Zhu, Jianxian Qiu, and Jun Zhu.
+\newblock A simple, high-order and compact weno limiter for rkdg method.
+\newblock {\em Computers \& Mathematics with Applications}, 79(2):317--336,
+  2020.
+
 \bibitem{RN13}
 Jun Zhu and Jianxian Qiu.
 \newblock A new type of finite volume weno schemes for hyperbolic conservation
@@ -157,11 +215,36 @@ Jun Zhu and Jianxian Qiu.
 \newblock {\em Journal of Scientific Computing}, 73(2-3):1338--1359, 2017.
 \newblock 黎曼问题算例.
 
+\bibitem{MRWENO-2}
+Jun Zhu, Jianxian Qiu, and Chi-Wang Shu.
+\newblock High-order runge-kutta discontinuous galerkin methods with a new type
+  of multi-resolution weno limiters.
+\newblock {\em Journal of Computational Physics}, 404, 2020.
+\newblock 2023-2-2 导师让看的一篇论文.
+
 \bibitem{WENO-js2}
 Jun Zhu, Jianxian Qiu, Chi-Wang Shu, and Michael Dumbser.
 \newblock Runge–kutta discontinuous galerkin method using weno limiters ii:
   Unstructured meshes.
 \newblock {\em Journal of Computational Physics}, 227(9):4330--4353, 2008.
+
+\bibitem{RKDG+WENOJS-2}
+Jun Zhu, Jianxian Qiu, Chi-Wang Shu, and Michael Dumbser.
+\newblock Runge–kutta discontinuous galerkin method using weno limiters ii:
+  Unstructured meshes.
+\newblock {\em Journal of Computational Physics}, 227(9):4330--4353, 2008.
+
+\bibitem{MRWENO-1}
+Jun Zhu and Chi-Wang Shu.
+\newblock A new type of multi-resolution weno schemes with increasingly higher
+  order of accuracy.
+\newblock {\em Journal of Computational Physics}, 375:659--683, 2018.
+
+\bibitem{MRWENO-3}
+Jun Zhu, Chi-Wang Shu, and Jianxian Qiu.
+\newblock High-order runge-kutta discontinuous galerkin methods with a new type
+  of multi-resolution weno limiters on triangular meshes.
+\newblock {\em Applied Numerical Mathematics}, 153:519--539, 2020.
 
 \bibitem{RN95}
 Jun Zhu, Xinghui Zhong, Chi-Wang Shu, and Jianxian Qiu.

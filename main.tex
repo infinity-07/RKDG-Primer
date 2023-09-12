@@ -17,6 +17,8 @@
 \newtheorem{example}{Example}
 \newtheorem{remark}{Remark}
 \newtheorem{theorem}{Theorem}
+\newtheorem{definition}{Definition}
+\newtheorem{tip}{Tip}
 
 \numberwithin{equation}{section}    % 公式标号与section的编号挂钩
 
@@ -50,13 +52,13 @@
 \end{figure}
 
 
-本文使用的数值方法为间断有限元discontinuous Galerkin (DG)法。让我们先简要回顾一下DG方法的历史。1973年，Reed和Hill\cite{Reed_Hill}在中子传输框架下提出了第一个不连续Galerkin（DG）方法。然后，Cockburn等人在一系列论文中 \cite{RKDG2,RKDG3,RKDG4,RKDG5} 对DG方法进行了重大发展，其中他们建立了一个框架，使用显式、非线性稳定的高阶Runge-Kutta时间离散化和DG空间离散化，使用精确或近似的Riemann解算器作为界面通量和总变差有界（TVB）限制器\cite{TVB}，以实现对强不连续性的本质非振荡性。从那时起，这些方案被称为RKDG方法。但是，即使初始条件足够平滑，解决\eqref{equ:双曲守恒}也不容易，因为解可能包含强不连续性。不连续Galerkin（DG）方法可以捕捉弱不连续性而无需进一步修改。然而，对于存在强不连续性的问题，数值解可能在强震荡或接触不连续性附近具有显著的虚假震荡，特别是对于高阶数值方法而言。控制这些虚假震荡的常见策略是应用非线性限制器。
+本文使用的数值方法为间断有限元discontinuous Galerkin (DG)法.让我们先简要回顾一下DG方法的历史.1973年,Reed和Hill\cite{Reed_Hill}在中子传输框架下提出了第一个不连续Galerkin（DG）方法.然后,Cockburn等人在一系列论文中 \cite{RKDG2,RKDG3,RKDG4,RKDG5} 对DG方法进行了重大发展,其中他们建立了一个框架,使用显式、非线性稳定的高阶Runge-Kutta时间离散化和DG空间离散化,使用精确或近似的Riemann解算器作为界面通量和总变差有界（TVB）限制器\cite{TVB},以实现对强不连续性的本质非振荡性.从那时起,这些方案被称为RKDG方法.但是,即使初始条件足够平滑,解决\eqref{equ:双曲守恒}也不容易,因为解可能包含强不连续性.不连续Galerkin（DG）方法可以捕捉弱不连续性而无需进一步修改.然而,对于存在强不连续性的问题,数值解可能在强震荡或接触不连续性附近具有显著的虚假震荡,特别是对于高阶数值方法而言.控制这些虚假震荡的常见策略是应用非线性限制器.
 
-通常，使用限制器的过程可以分为两个步骤。首先，需要确定“坏单元”（也称为“有问题的单元”），即包含间断的单元，这些单元需要进行限制。其次，需要在这些“坏单元”中修正DG多项式解。由于守恒的要求，需要保证单元平均值不变，并且减小振荡。
+通常,使用限制器的过程可以分为两个步骤.首先,需要确定“坏单元”（也称为“有问题的单元”）,即包含间断的单元,这些单元需要进行限制.其次,需要在这些“坏单元”中修正DG多项式解.由于守恒的要求,需要保证单元平均值不变,并且减小振荡.
 
-在第一部分中，我们通常使用“坏单元”或称为间断指示器，这些指示器包括基于最小模型的指示器\cite{RKDG2}、基于力矩的指示器\cite{基于力矩的指示器}、改进的力矩指示器\cite{改进的基于矩的限制器}、以及基于DG超收敛性质的KXRCF指示器\cite{基于DG超收敛性质的KXRCF指示器}.
+在第一部分中,我们通常使用“坏单元”或称为间断指示器,这些指示器包括基于最小模型的指示器\cite{RKDG2}、基于力矩的指示器\cite{基于力矩的指示器}、改进的力矩指示器\cite{改进的基于矩的限制器}、以及基于DG超收敛性质的KXRCF指示器\cite{基于DG超收敛性质的KXRCF指示器}.
 
-在第二部分中，一种限制器属于斜率型限制器，例如minmod类型限制器\cite{RKDG2,RKDG3,RKDG4,RKDG5}，基于矩的限制器\cite{基于矩的限制器}和改进的基于矩的限制器\cite{改进的基于矩的限制器}等。它们的优点是可以在强间断附近有效抑制伪振荡的出现，但付出的代价是在解的光滑极值点处有可能降低格式的数值精度。另一种限制器基于加权本质非振荡（WENO）方法\cite{WENO1,WENO2,WENO3,WENO4,WENO5}，它可以在平滑区域中实现高阶精度，并在强不连续性附近保持本质非振荡性质。WENO 格式一经提出，便引起人们的广泛关注，近二十年来，WENO 的各种变形格式层出不穷。例如：经典的WENO限制器(WENO-js)\cite{WENO-js1,WENO-js2}，Hermite WENO限制器(HWENO)\cite{HWENO1,HWENO2}，中心型 WENO 限制器(CWENO)\cite{CWENO}，WENO-M限制器\cite{WENO-M}，WENO-Z限制器\cite{WENO-Z}。但另一方面，基于WENO的限制器需要更广泛的空间模板来获得高阶方案。因此，在多维问题中，特别是在非结构化网格上，如三角形网格或四面体网格中实现它们是困难的。
+在第二部分中,一种限制器属于斜率型限制器,例如minmod类型限制器\cite{RKDG2,RKDG3,RKDG4,RKDG5},基于矩的限制器\cite{基于矩的限制器}和改进的基于矩的限制器\cite{改进的基于矩的限制器}等.它们的优点是可以在强间断附近有效抑制伪振荡的出现,但付出的代价是在解的光滑极值点处有可能降低格式的数值精度.另一种限制器基于加权本质非振荡（WENO）方法\cite{WENO1,WENO2,WENO3,WENO4,WENO5},它可以在平滑区域中实现高阶精度,并在强不连续性附近保持本质非振荡性质.WENO 格式一经提出,便引起人们的广泛关注,近二十年来,WENO 的各种变形格式层出不穷.例如：经典的WENO限制器(WENO-js)\cite{WENO-js1,WENO-js2},Hermite WENO限制器(HWENO)\cite{HWENO1,HWENO2},中心型 WENO 限制器(CWENO)\cite{CWENO},WENO-M限制器\cite{WENO-M},WENO-Z限制器\cite{WENO-Z}.但另一方面,基于WENO的限制器需要更广泛的空间模板来获得高阶方案.因此,在多维问题中,特别是在非结构化网格上,如三角形网格或四面体网格中实现它们是困难的.
 
 \section{符号说明}
 $\hat{h}$ 数值通量
@@ -85,66 +87,56 @@ $\begin{array}{l}
 \begin{equation}
     u_{h}(x, t)=\sum_{l=0}^{k} u_{i}^{(l)}(t) v_{l}^{(i)}(x), \quad x \in I_{i}
 \end{equation}
-其中 $u_i^{(l)}(t)$ 为自由度(degrees of freedom:dof)或矩，$v_l^{(i)}(x)$ 为基函数。当基函数为正交函数时，$u_i{(l)}(t)$ 的定义为：
+其中 $u_i^{(l)}(t)$ 为自由度(degrees of freedom:dof)或矩,$v_l^{(i)}(x)$ 为基函数.当基函数为正交函数时,$u_i{(l)}(t)$ 的定义为：
 \begin{equation}
     u_{i}^{(l)}(t)=\frac{1}{a_{l}} \int_{I_{i}} u_{h}(x, t) v_{l}^{(i)}(x) d x \quad l=0,1, \ldots, k
 \end{equation}
 其中 $a_{l}=\int_{I_{i}}\left(v_{l}^{(i)}(x)\right)^{2} d x$
 \begin{remark}
-    如果基函数不是正交函数，需要先求出质量矩阵的值，再求其逆矩阵。
+    如果基函数不是正交函数,需要先求出质量矩阵的值,再求其逆矩阵.
 \end{remark}
 \begin{remark}
-    当基函数为正交函数时，第一个自由度的值，即为函数在小区间上的积分平均值。
+    当基函数为正交函数时,第一个自由度的值,即为函数在小区间上的积分平均值.
 \end{remark}
 \begin{equation}
     \left\|v_{l}^{(j)}(x)\right\|^{2} \dfrac{\dd}{\dd t} u(t)+\left[\Delta_{-}\left(v_{l}^{(j)}\left(x_{j+1 / 2}\right) f_{j+1 / 2}\right)\right]-\int_{I_{j}} f\left(u^{h}(x, t)\right) \dfrac{\dd}{\dd x} v(x) \dd x=0
 \end{equation}
-数值通量：
 
-满足三原则：
-\begin{itemize}
-    \item 一致性：$\widehat{f}(u, u)=f(u)$。
-    \item 连续性：$\widehat{f}\left(u^{-}, u^{+}\right)$ 至少关于两个参数 $u^{-}$ 和 $u^{+}$ 是 Lipschitz 连续的。
-    \item 单调性：$\widehat{f}\left(u^{-}, u^{+}\right)$ 是第一个参数 $u^{-}$ 的非降函数和第二个参数 $u^{+}$ 的非增函数。符号上，$\widehat{f}(\uparrow, \downarrow)$.
-\end{itemize}
-以下是几个常见的数值通量\cite{RN16}
-\begin{itemize}
-    \item Lax-Friedrichs flux
-          \begin{equation}
-              \widehat{f}^{L F}\left(u^{-}, u^{+}\right)=\frac{1}{2}\left(f\left(u^{-}\right)+f\left(u^{+}\right)-\alpha\left(u^{+}-u^{-}\right)\right), \quad \alpha=\max _{u}\left|f^{\prime}(u)\right|
-          \end{equation}
-    \item Local Lax-Friedrichs:
-          \begin{equation}
-              h^{\mathrm{LLF}}(a, b)=\frac{1}{2}[f(a)+f(b)-\beta(b-a)], \quad \beta=\max _{\min (a, b) \leq u \leq \max (a, b)}\left|f^{\prime}(u)\right|
-          \end{equation}
-          For convex  $f, f^{\prime \prime} \geq 0$ , one has  $\beta=\max \left(\left|f^{\prime}(a)\right|,\left|f^{\prime}(b)\right|\right) $
-    \item Godunov flux
-          \begin{equation}
-              \widehat{f}^{G o d}\left(u^{-}, u^{+}\right)=\left\{\begin{array}{ll}
-                  \min _{u^{-} \leq u \leq u^{+}} f(u), & \text { if } u^{-}<u^{+},     \\
-                  \max _{u^{+} \leq u \leq u^{-}} f(u), & \text { if } u^{-} \geq u^{+}
-              \end{array}\right.
-          \end{equation}
-    \item Engquist-Osher flux
-          \begin{equation}
-              \widehat{f}^{E O}=\int_{0}^{u^{-}} \max \left(f^{\prime}(u), 0\right) d u+\int_{0}^{u^{+}} \min \left(f^{\prime}(u), 0\right) d u+f(0)
-          \end{equation}
-    \item HLL Flux
-          % https://zhuanlan.zhihu.com/p/583555029
-          % https://zhuanlan.zhihu.com/p/584123678
-          \begin{equation}
-              \mathbf{F}_{i+1 / 2}^{H l l}=\left\{\begin{array}{l}
-                  \mathbf{F}_{L}, S_{L} \geq 0      \\
-                  \mathbf{F}^{H l l}, S_{L}<0<S_{R} \\
-                  \mathbf{F}_{R}, S_{R} \leq 0
-              \end{array}\right.
-          \end{equation}
-          其中  $S_{L}, S_{R}$  是间断附近的最小、最大波速，
-          \begin{equation}
-              \mathbf{F}^{H l l}=\frac{S_{R} \mathbf{F}_{L}-S_{L} \mathbf{F}_{R}+S_{L} S_{R}\left(\mathbf{U}_{R}-\mathbf{U}_{L}\right)}{S_{R}-S_{L}}
-          \end{equation}
-    \item HLLC Flux
-\end{itemize}
+\subsection{实例}
+\begin{example}
+    光滑问题：
+    \begin{equation}
+        u_t+u_x=0,u(x,0)=\sin x,0\leqslant x\leqslant 2\pi
+    \end{equation}
+    周期边界条件
+
+    解析解为：
+
+    \begin{equation}
+        u(x,t) = \sin(x-t)
+    \end{equation}
+\end{example}
+
+\begin{example}
+    % https://zhuanlan.zhihu.com/p/502638295
+    间断问题：
+
+    \begin{equation}
+        u_{t}+\left(\frac{u^{2}}{2}\right)_{x}=0
+    \end{equation}
+
+    初值为：
+
+    $u_0(x)=\sin(x)$
+
+    计算域为 $[0,2\pi]$.
+
+    $x=\pi$ 的地方会出现激波,激波出现的时间为 $t=1$.
+
+    解析解使用特征线法求解.
+\end{example}
+
+
 
 
 \section{一维向量}
@@ -154,6 +146,45 @@ $\begin{array}{l}
 \end{equation}
 
 数值通量为：
+
+\begin{example}
+    \begin{equation}
+        \begin{aligned}
+            \rho(x, 0) & =1+0.2 \sin \pi x \\
+            u(x, 0)    & =0.7              \\
+            p(x, 0)    & =1
+        \end{aligned}
+    \end{equation}
+    计算区域为 $[0,2]$, 周期边界条件,解析解为：
+    \begin{equation}
+        \begin{aligned}
+            \rho(x, t) & =1+0.2 \sin \pi(x-0.7 t) \\
+            u(x, t)    & =0.7                     \\
+            p(x, t)    & =1
+        \end{aligned}
+    \end{equation}
+
+
+\end{example}
+\begin{example}
+    Lax 激波管问题(shock–tube problem)\cite{RN109}：
+    \begin{equation}
+        \begin{aligned}
+            (\rho, v, p) & =(0.445,0.698,3.528) & \text { 当 } x \leqslant 0 \text {, } \\
+            (\rho, v, p) & =(0.5,0,0.571) \quad & \text { 当 } \quad x>0 \text {. }     \\
+        \end{aligned}
+    \end{equation}
+    计算区域为 $[-5,5]$ 两瑞均是常数边界条件, 我们求解该问题至 $T=1.3$.
+    \begin{figure}[htp]
+        \centering
+        \label{fig:}
+        \includegraphics[width=0.7\linewidth]{fig/lax_problem.png}
+        \caption{$M=50$,$N=200$,$P_2$,WENO-JS}
+    \end{figure}
+
+\end{example}
+\section{二维标量}
+% https://zhuanlan.zhihu.com/p/441631704
 
 \section{二维向量}
 \subsection{控制方程}
@@ -169,9 +200,9 @@ $\begin{array}{l}
     \dfrac{\dd}{\dd t} \int_{K} u(x, t) v(x) \dd x+\sum_{e \in \partial K} \int_{e} \mathbf{f}(u(x, t)) \cdot n_{e, K} v(x) \dd \Gamma-\int_{K} \mathbf{f}(u(x, t)) \cdot \operatorname{grad} v(x) \dd x=0
 \end{equation}
 \begin{remark}
-    特别的，对于矩形网格，有：
+    特别的,对于矩形网格,有：
 \end{remark}
-其中 $n_{e,K}$ 是边界 $e$ 的标准外法向量。由于函数在小区间边界上间断 $f(u)$ 在 $e$ 上没有定义，和一维的情况类似，需要使用数值通量$h_{e, K}\left(u_{h}\left(t, x^{\operatorname{int}(K)}\right), u_{h}\left(t, x^{\operatorname{ext}(K)}\right)\right)$代替$\mathbf{f}\left(u_{h}(t, x)\right) \cdot \mathbf{n}_{e, K}$, 其中：
+其中 $n_{e,K}$ 是边界 $e$ 的标准外法向量.由于函数在小区间边界上间断 $f(u)$ 在 $e$ 上没有定义,和一维的情况类似,需要使用数值通量$h_{e, K}\left(u_{h}\left(t, x^{\operatorname{int}(K)}\right), u_{h}\left(t, x^{\operatorname{ext}(K)}\right)\right)$代替$\mathbf{f}\left(u_{h}(t, x)\right) \cdot \mathbf{n}_{e, K}$, 其中：
 \begin{equation}
     \begin{array}{l}
         u_{h}\left(t, x^{i n t(K)}\right)= \lim _{\substack{y \rightarrow x \\
@@ -194,19 +225,63 @@ $\begin{array}{l}
 \begin{equation}
     h_{e, K}(a, b)=\frac{1}{2}\left[\mathbf{f}(a) \cdot n_{e, K}+\mathbf{f}(b) \cdot n_{e, K}-\alpha_{e, K}(b-a)\right] .
 \end{equation}
+
+\begin{example}
+    光滑问题：初值为：
+    \begin{equation}
+        \begin{aligned}
+            \rho(x,y,0) & = 1+0.2\sin(\pi(x+y)) \\
+            u(x,y,0)    & = 0.7                 \\
+            v(x,y,0)    & = 0.3                 \\
+            p(x,y,0)    & = 1                   \\
+        \end{aligned}
+    \end{equation}
+    周期边界条件
+
+    准确解为：
+    \begin{equation}
+        \rho(x,y,t) = 1+0.2\sin(\pi(x+y-(u+v)t)),u=0.7,v=0.3,p=1
+    \end{equation}
+\end{example}
+
+
+
+\begin{example}黎曼问题：
+    % https://www.researchgate.net/publication/370612578_A_dissipation-dispersion_coupled_inequality_for_a_class_of_upwind_multi-resolution_WENO_schemes
+    算例可参考：\cite{RN114}
+    \begin{equation}
+        (\rho, u, v, p)=\begin{cases}
+            (0.138,1.206,1.206,0.029), & (x, y) \in[0,0.8) \times[0,0.8) \\
+            (0.5323,1.206,0,0.3),      & (x, y) \in[0,0.8) \times[0.8,1] \\
+            (0.5323,0,1.206,0.3),      & (x, y) \in[0.8,1] \times[0,0.8) \\
+            (1.5,0,0,1.5),             & (x, y) \in[0.8,1] \times[0.8,1]
+        \end{cases}
+    \end{equation}
+    $t_{end}=0.8$,网格为$400\times400$.
+
+    \begin{figure}[ht]%
+        \centering
+        \subfloat{
+            \includegraphics[width=0.45\linewidth]{fig/黎曼问题图一.eps}
+        }\quad
+        \subfloat{
+            \includegraphics[width=0.45\linewidth]{fig/黎曼问题图二.eps}
+        }
+        \caption{WENO-JS,M=200,等高线：0.2:0.05:1.7}
+    \end{figure}
+\end{example}
+
+
 \section{时间离散格式}
-$\Delta t$ 的取值大小要求为：\cite{RN109}
+时间步长 $\Delta t$  应当满足 CFL 条件来保证稳定。对于一维标量的情况：
 \begin{equation}
-    \alpha \frac{\Delta t}{\Delta x} \leq \text{CFL}
+    \Delta t=\frac{C F L_{k} \Delta x}{\max \left|f^{\prime}(u)\right|}
 \end{equation}
-即：
+对于二维标量的情况：
 \begin{equation}
-    \Delta t \leqslant \frac{\Delta x}{\alpha}\text{CFL}
+    \Delta t=\frac{C F L_{k}}{\max \left|f^{\prime}(u)\right| / \Delta x+\max \left|g^{\prime}(u)\right| / \Delta y} .
 \end{equation}
-对于二维情况，
-\begin{equation}
-    \Delta t \leqslant \frac{\Delta x}{\alpha}\text{CFL}
-\end{equation}
+对于一维向量和二维向量的情况，上述公式中的 $\max \left|f^{\prime}(u)\right|$ 和 $\max \left|g^{\prime}(u)\right|$  被Jacobian矩阵特征值的绝对值的最大值取代. 我们使用如下的 CFL 数\cite{RN109}\cite{RN133}\cite{RN148}：  $CFL_1=0.3$, $C F L_{2}=0.18$  and  $C F L_{3}=0.1$
 
 \subsection{ssp 二阶龙格库塔法}
 ssp(strong stability-preserving)方法见：\cite{RN96}
@@ -234,13 +309,13 @@ ssp(strong stability-preserving)方法见：\cite{RN96}
 \begin{equation}
     \mathbf{U}_{t}+\mathbf{F}_u\mathbf{U}_{x}=\mathbf{0}
 \end{equation}
-记 $A=F_u$，因为方程为双曲型方程，所以 $A$ 可对角化，即存在可逆矩阵 $P$ 使得
+记 $A=F_u$,因为方程为双曲型方程,所以 $A$ 可对角化,即存在可逆矩阵 $P$ 使得
 \begin{equation}
     \Lambda = P^{-1}AP
 \end{equation}
 
 \section{指示子}
-指示子英文为indicator。限制器的一个重要组成部分是指示子，指示子可以找出存在强间断的小区间。
+指示子英文为indicator.限制器的一个重要组成部分是指示子,指示子可以找出存在强间断的小区间.
 \subsection{TVB指示子}
 1、基于 minmod 函数的 TVB 限制器  [6]  (简称 TVB)
 \begin{equation}
@@ -265,53 +340,46 @@ ssp(strong stability-preserving)方法见：\cite{RN96}
 
 
 
-\subsection{KXRCF指示子}
-KXRCF指示子利用了DG方法的超收敛性\cite{RN92}，把小单元 $I_{i,j}$ 的边界 $\partial I_{i,j}$ 分成 $\partial I_{i,j}^-,\partial I_{i,j}^+$ 两部分，分别对应流体流入和流出 $I_{i,j}$ 的边界。
-\begin{equation}
-    \frac{\left|\int_{\partial I_{i, j}^{-}}\left(\left.u_{h}(x, y, t)\right|_{I_{i, j}}-\left.u_{h}(x, y, t)\right|_{I_{l}}\right) d s\right|}{h_{i, j}^{R}\left|\partial I_{i, j}^{-}\right| \cdot||\mid \widehat{u_{h}}(x, y, t)|_{\partial I_{i, j}}\mid||} \geq C_{k},
-\end{equation}
-其中，$R=1$ 当 $k=1$, $R=1.5$ 当 $k>1$. $h_{i,j}$ 为 $I_{i,j}$ 外接圆的半径。$C_k$ 为常数，一般可取 $C_k = 1$. $I_l$ 为 $I_{i,j}$ 在 $\partial I_{i,j}^-$ 一侧的相邻单元。$u_h$ 可取守恒量，或者由守恒量引申出的物理量，$||\mid \widehat{u_{h}}(x, y, t)|_{\partial I_{i, j}}\mid||$ 为 $\mid \widehat{u_{h}}(x, y, t)|_{\partial I_{i, j}}\mid$ 在 $\partial I_{i,j}$ 上的最大值。$|\partial I_{i,j}^-|$ 为 $\partial I_{i,j}^-$ 的长度。
 \section{限制器}
-\subsection{非WENO类限制器}
+\subsection{TVB限制器}
 
-\subsection{WENO类限制器}
-\subsubsection{WENO-JS限制器}
-WENO 全称为 Weighted Essentially Non-Oscillatory。WENO 限制器的思想是：使用周围的小区间上守恒量的平均值来重构当前小区间的函数，再使用得到的新函数来修正原高阶自由度，从而达到修正限制的目的。下面我们简单介绍 WENO 限制器在一维标量方程上的使用方法，一维系统的情况请参阅\cite{WENO-js1}.
+\subsection{WENO-JS限制器}
+WENO 全称为 Weighted Essentially Non-Oscillatory.WENO 限制器的思想是：使用周围的小区间上守恒量的平均值来重构当前小区间的函数,再使用得到的新函数来修正原高阶自由度,从而达到修正限制的目的.下面我们简单介绍 WENO 限制器在一维标量方程上的使用方法,一维系统的情况请参阅\cite{WENO-js1}.
 
 \begin{enumerate}[label={{\bf Step \arabic*}:}]
-    \item 首先我们在 Gauss 或 Gauss-Lobatto 积分点处重构 $u$ 的点值。对于基于 $\mathbb{P}^{k}$ 的 DG（精度为 $(k+1)$ 阶），我们需要一个至少精确到 $\mathrm{O}\left(h^{2 k+2}\right)$ 的 Gauss 或 Gauss-Lobatto 积分规则，而 WENO 重构的精度必须至少为 $2 k+1$。为此，我们需要使用相邻的 $2 k+1$ 个单元 $I_{i-k}\cdots I_{i+k}$ 的单元平均值来重构 u 的点值。
+    \item 首先我们在 Gauss 或 Gauss-Lobatto 积分点处重构 $u$ 的点值.对于基于 $\mathbb{P}^{k}$ 的 DG（精度为 $(k+1)$ 阶）,我们需要一个至少精确到 $\mathrm{O}\left(h^{2 k+2}\right)$ 的 Gauss 或 Gauss-Lobatto 积分规则,而 WENO 重构的精度必须至少为 $2 k+1$.为此,我们需要使用相邻的 $2 k+1$ 个单元 $I_{i-k}\cdots I_{i+k}$ 的单元平均值来重构 u 的点值.
           \begin{enumerate}[label={\bf Step 1.\arabic*.}]
-              \item 我们确定 $k+1$ 个小的模板 $S_{j}$，其中 $j=0,1,\cdots,k$，使得 $I_{i}$ 属于每个模板。记 $S_{j}=\cup_{l=0}^{k} I_{i+j-l}$。我们用 $\mathcal{T}=\cup_{j=0}^{k} S_{j}$ 表示包含所有 $k+1$ 个小模板的大模板.在每个模板 $S_j, j=0,\ldots,k$ 构造一个 $k$ 次多项式重构 $p_j(x)$，使得每个模板 $S_j$ 中每个单元格中 $p_j(x)$ 的平均值与给定的 $u$ 的单元格平均值相符，即\begin{equation}
+              \item 我们确定 $k+1$ 个小的模板 $S_{j}$,其中 $j=0,1,\cdots,k$,使得 $I_{i}$ 属于每个模板.记 $S_{j}=\cup_{l=0}^{k} I_{i+j-l}$.我们用 $\mathcal{T}=\cup_{j=0}^{k} S_{j}$ 表示包含所有 $k+1$ 个小模板的大模板.在每个模板 $S_j, j=0,\ldots,k$ 构造一个 $k$ 次多项式重构 $p_j(x)$,使得每个模板 $S_j$ 中每个单元格中 $p_j(x)$ 的平均值与给定的 $u$ 的单元格平均值相符,即\begin{equation}
                         \frac{1}{\Delta x_{i+j-l}} \int_{I_{i+j-l}} p_{j}(x) dx =u_{i+j-l}^{(0)},\quad l=0,\ldots,k.
                     \end{equation}
-                    在更大的模板 $\mathcal{T}$ 上，我们再重构一个 $2k$ 次多项式 $Q(x)$，使得
+                    在更大的模板 $\mathcal{T}$ 上,我们再重构一个 $2k$ 次多项式 $Q(x)$,使得
                     \begin{equation}
                         \frac{1}{\Delta x_{i+l}} \int_{I_{i+l}} Q(x) dx=u_{i+l}^{(0)},\quad l=-k,\ldots,k.
                     \end{equation}
-                    关于 $p_j(x)$ 和 $Q(x)$ 的构造细节可以在文献\cite{WENO5}中找到。
-              \item 我们找到组合系数，也称为线性权重，记为 $\gamma_{0},\ldots,\gamma_{k}$，满足
+                    关于 $p_j(x)$ 和 $Q(x)$ 的构造细节可以在文献\cite{WENO5}中找到.
+              \item 我们找到组合系数,也称为线性权重,记为 $\gamma_{0},\ldots,\gamma_{k}$,满足
                     \begin{equation}
                         Q(x_G)=\sum_{j=0}^k\gamma_j p_j(x_G)
                     \end{equation}
-                    其中 $x_G$ 是 Gauss 积分点。不同的积分点对应不同的线性权重。
-              \item 我们计算每个权重组 $S_j$ 的平滑度指示器，表示 $p_j(x)$ 在目标单元 $I_i$ 中的平滑程度。平滑度指示器 $\beta_j$ 越小，函数 $p_j(x)$ 在目标单元中的平滑度就越高，我们使用以下平滑度指示器：
+                    其中 $x_G$ 是 Gauss 积分点.不同的积分点对应不同的线性权重.
+              \item 我们计算每个权重组 $S_j$ 的平滑度指示器,表示 $p_j(x)$ 在目标单元 $I_i$ 中的平滑程度.平滑度指示器 $\beta_j$ 越小,函数 $p_j(x)$ 在目标单元中的平滑度就越高,我们使用以下平滑度指示器：
                     \begin{equation}
                         \beta_{j}=\sum_{l=1}^{k} \int_{I_{i}} \Delta x_{i}^{2 l-1}\left(\frac{\partial^{l}}{\partial x^{l}} p_{j}(x)\right)^{2} d x
                     \end{equation}
-              \item 我们基于平滑度指示器计算非线性权重，
+              \item 我们基于平滑度指示器计算非线性权重,
                     \begin{equation}
                         \omega_{j}=\frac{\bar{\omega}_{j}}{\sum_{l} \bar{\omega}_{l}}, \quad \bar{\omega}_{j}=\frac{\gamma_{j}}{\left(\varepsilon+\beta_{j}\right)^{2}},
                     \end{equation}
-                    其中，$\gamma_j$ 是在 {\bf Step 1.2.} 中确定的线性权重，$\varepsilon$ 是一个很小的数，用于避免分母为零。在本文中，我们在所有计算中使用 $\varepsilon=10^{-6}$。最终的 WENO 近似为：
+                    其中,$\gamma_j$ 是在 {\bf Step 1.2.} 中确定的线性权重,$\varepsilon$ 是一个很小的数,用于避免分母为零.在本文中,我们在所有计算中使用 $\varepsilon=10^{-6}$.最终的 WENO 近似为：
                     \begin{equation}
                         u_{(x_G)} \approx \sum_{j=0}^{k} \omega_{j} p_{j}\left(x_{G}\right)
                     \end{equation}
           \end{enumerate}
-    \item 基于在 Gauss 积分点 $x_G$ 上重构的点值 $u(x_G)$ 和数值积分，我们得到重构函数的高阶自由度：
+    \item 基于在 Gauss 积分点 $x_G$ 上重构的点值 $u(x_G)$ 和数值积分,我们得到重构函数的高阶自由度：
           \begin{equation}
               u_{i}^{(l)}=\frac{1}{||v_{l}^{(j)}||^2} \sum_{G} w_{G} u\left(x_{G}\right) v_{l}^{(i)}\left(x_{G}\right), \quad l=1, \ldots, k
           \end{equation}
-          其中，$w_{G}$ 是 Gauss 积分点 $x_{G}$ 对应的高斯积分权重。
+          其中,$w_{G}$ 是 Gauss 积分点 $x_{G}$ 对应的高斯积分权重.
 \end{enumerate}
 
 \begin{table}[htbp]
@@ -362,16 +430,222 @@ and
     \gamma_{0}=\frac{91+9 \sqrt{5}}{440}, \quad \gamma_{1}=\frac{129}{220}, \quad \gamma_{2}=\frac{91-9 \sqrt{5}}{440}
 \end{equation}
 
-\subsection{MR-WENO限制器}
+
+
+\chapter{更多知识}
+\section{指示子}
+\subsection{KXRCF指示子}
+KXRCF指示子利用了DG方法的超收敛性\cite{RN92},把小单元 $I_{i,j}$ 的边界 $\partial I_{i,j}$ 分成 $\partial I_{i,j}^-,\partial I_{i,j}^+$ 两部分,分别对应流体流入和流出 $I_{i,j}$ 的边界.
+\begin{equation}
+    \frac{\left|\int_{\partial I_{i, j}^{-}}\left(\left.u_{h}(x, y, t)\right|_{I_{i, j}}-\left.u_{h}(x, y, t)\right|_{I_{l}}\right) d s\right|}{h_{i, j}^{R}\left|\partial I_{i, j}^{-}\right| \cdot||\mid \widehat{u_{h}}(x, y, t)|_{\partial I_{i, j}}\mid||} \geq C_{k},
+\end{equation}
+其中,$R=1$ 当 $k=1$, $R=1.5$ 当 $k>1$. $h_{i,j}$ 为 $I_{i,j}$ 外接圆的半径.$C_k$ 为常数,一般可取 $C_k = 1$. $I_l$ 为 $I_{i,j}$ 在 $\partial I_{i,j}^-$ 一侧的相邻单元.$u_h$ 可取守恒量,或者由守恒量引申出的物理量,$||\mid \widehat{u_{h}}(x, y, t)|_{\partial I_{i, j}}\mid||$ 为 $\mid \widehat{u_{h}}(x, y, t)|_{\partial I_{i, j}}\mid$ 在 $\partial I_{i,j}$ 上的最大值.$|\partial I_{i,j}^-|$ 为 $\partial I_{i,j}^-$ 的长度.
+\section{WENO限制器}
+
+\subsection{再看WENOJS限制器}
+
+\subsubsection{WENOJS限制器的构造}
+WENO-JS限制器首次被应用在 RKDG 上是 \cite{RKDG+WENOJS-1,RKDG+WENOJS-2}.
+
+
+
+这里我们需要重构 $u$ 在 Gauss 或者 Gauss-Lobatto 积分点的值。对于 $\mathbb{P}^{k}$ 的 DG 方法 (具有 $k+1$ 的精度 order accurate)，Gauss 或者 Gauss-Lobatto 积分规则的误差至少要达到 $\mathrm{O}\left(h^{2 k+2}\right)$。另一方面，WENO 重构多项式的精度至少要 $2 k+1$。因此，我们总共需要 $2k+1$ 个小单元上的平均值来重构 $u$ 在 Gauss 或者 Gauss-Lobatto 积分点上的值，我们使用下面的积分点：
+
+\begin{itemize}
+    \item 对于  $\mathbb{P}^{1}$  的情况, 我们使用两点高斯积分点  $x_{i-\sqrt{3} / 6}$  和  $x_{i+\sqrt{3} / 6}$ .
+    \item 对于  $\mathbb{P}^{2}$  的情况, 我们使用四点 Gauss-Lobatto 积分点  $x_{i-1 / 2}, x_{i-\sqrt{5} / 10}, x_{i+\sqrt{5} / 10}$ , 和  $x_{i+1 / 2}$ .
+    \item 对于  $\mathbb{P}^{3}$  的情况, 我们使用四点 Gauss 积分点  $x_{i-\sqrt{525+70 \sqrt{30}} / 70}, x_{i-\sqrt{525-70 \sqrt{30}} / 70}, x_{i+\sqrt{525-70 \sqrt{30}} / 70}$  and  $x_{i+\sqrt{525+70 \sqrt{30}} / 70}$ .
+\end{itemize}
+
+WENO最早被设计出来是作为有限差分法,有限体积法的格式用的.WENO对计算流体力学领域产生了深远的影响,在过去的几十年中,各种WENO格式的变形层出不穷,直到今天仍然有很多人在做这方面的研究.
+
+目标是找到 $k-1$ 次多项式 $p$,满足：
+\begin{equation}
+    p_{i}(x)=v(x)+O\left(\Delta x^{k}\right), \quad x \in I_{i}, \quad i=1, \ldots, N
+\end{equation}
+
+考虑函数
+\begin{equation}
+    V(x) \equiv \int_{-\infty}^{x} v(\xi) d \xi
+\end{equation}
+从而
+\begin{equation}
+    V\left(x_{i+\frac{1}{2}}\right)=\sum_{j=-\infty}^{i} \int_{x_{j-\frac{1}{2}}}^{x_{j+\frac{1}{2}}} v(\xi) d \xi=\sum_{j=-\infty}^{i} \bar{v}_{j} \Delta x_{j}
+\end{equation}
+$r, s \geq 0, \text { with } r+s+1=k$
+使用 $k+1$ 个点 $x_{i-r-\frac{1}{2}}, \ldots, x_{i+s+\frac{1}{2}},$ 上的 $V(x)$ 的值插值得到函数 $P(x)$, 记 $p(x)=P'(x)$,则：
+\begin{equation}
+    \begin{aligned}
+        \frac{1}{\Delta x_{j}} \int_{x_{j-\frac{1}{2}}}^{x_{j+\frac{1}{2}}} p(\xi) d \xi & =\frac{1}{\Delta x_{j}} \int_{x_{j-\frac{1}{2}}}^{x_{j+\frac{1}{2}}} P^{\prime}(\xi) d \xi=\frac{1}{\Delta x_{j}}\left(P\left(x_{j+\frac{1}{2}}\right)-P\left(x_{j-\frac{1}{2}}\right)\right) \\
+                                                                                         & =\frac{1}{\Delta x_{j}}\left(V\left(x_{j+\frac{1}{2}}\right)-V\left(x_{j-\frac{1}{2}}\right)\right)                                                                                           \\
+                                                                                         & =\frac{1}{\Delta x_{j}}\left(\int_{-\infty}^{x_{j+\frac{1}{2}}} v(\xi) d \xi-\int_{-\infty}^{x_{j-\frac{1}{2}}} v(\xi) d \xi\right)                                                           \\
+                                                                                         & =\frac{1}{\Delta x_{j}} \int_{x_{j-\frac{1}{2}}}^{x_{j+\frac{1}{2}}} v(\xi) d \xi=\bar{v}_{j}, \quad j=i-r, \ldots, i+s,
+    \end{aligned}
+\end{equation}
+
+由数值分析可以得到：
+\begin{equation}
+    P^{\prime}(x)=V^{\prime}(x)+O\left(\Delta x^{k}\right), \quad x \in I_{i}
+\end{equation}
+
+在光滑的情况下,如果有：
+\begin{equation}
+    \omega_{r}=d_{r}+O\left(\Delta x^{k-1}\right), \quad r=0, \ldots, k-1
+\end{equation}
+那么：
+\begin{equation}
+    v_{i+\frac{1}{2}}=\sum_{r=0}^{k-1} \omega_{r} v_{i+\frac{1}{2}}^{(r)}=v\left(x_{i+\frac{1}{2}}\right)+O\left(\Delta x^{2 k-1}\right)
+\end{equation}
+这是因为：
+\begin{equation}
+    \begin{aligned}
+        \sum_{r=0}^{k-1} \omega_{r} v_{i+\frac{1}{2}}^{(r)}-\sum_{r=0}^{k-1} d_{r} v_{i+\frac{1}{2}}^{(r)} & =\sum_{r=0}^{k-1}\left(\omega_{r}-d_{r}\right)\left(v_{i+\frac{1}{2}}^{(r)}-v\left(x_{i+\frac{1}{2}}\right)\right) \\
+                                                                                                           & =\sum_{r=0}^{k-1} O\left(\Delta x^{k-1}\right) O\left(\Delta x^{k}\right)=O\left(\Delta x^{2 k-1}\right)
+    \end{aligned}
+\end{equation}
+$\beta_{r}$  被称为模板  $S_{r}(i)$ 的光滑指示器 "smooth indicators" .如果 $v(x)$ 在模板 $S_{r}(i) $ 是光滑的,那么：
+\begin{equation}
+    \beta_{r}=O\left(\Delta x^{2}\right)
+\end{equation}
+但是如果 $v(x)$ 在模板 $S_{r}(i) $ 有间断,那么：
+\begin{equation}
+    \beta_{r}=O(1)
+\end{equation}
+对应到非线性权,当 $v(x)$ 在模板 $S_{r}(i) $ 是光滑的,那么：
+\begin{equation}
+    \omega_{r}=O\left(\Delta x^{4}\right)
+\end{equation}
+但是如果 $v(x)$ 在模板 $S_{r}(i) $ 有间断,那么：
+\begin{equation}
+    \omega_{r}=O(1)
+\end{equation}
+
+One also has to worry about the accuracy requirement  (2.56) , which must be checked when the specific form of the smooth indicator  $\beta_{r}$  is given. For any smooth indicator  $\beta_{r}$ , it is easy to see that the weights defined by (2.58) satisfies (2.53). To satisfy (2.56), it suffices to have, through a Taylor expansion analysis:
+
+\begin{equation}
+    \beta_{r}=D\left(1+O\left(\Delta x^{k-1}\right)\right), \quad r=0, \ldots, k-1
+\end{equation}
+
+where  $D$  is a nonzero quantity independent of  $r$  (but may depend on  $\Delta x$  ).
+
+WENO-M限制器在文章\cite{WENO-M}中被提出,在该文章中.作者详细分析了 WENO 实现预期精度的的充要条件,并且指出 WENO-JS 格式会在 critical points 附近会损失精度,但是由于 $\epsilon$,这一特点没有在WENO-JS中被发现,并且给出了一个新的格式 MWENO 克服了这一问题.
+
+\begin{equation}
+    \omega_{k}^{(\mathrm{JS})}=\frac{\alpha_{k}}{\sum_{i=0}^{2} \alpha_{i}}, \quad \text { where } \alpha_{k}=\frac{\bar{\omega}_{k}}{\left(\epsilon+\beta_{k}\right)^{p}},
+\end{equation}
+
+为了满足五阶格式的要求,需要满足以下充要条件：
+\begin{subequations}
+    \begin{align}
+        \sum_{k=0}^{2}\left(\omega_{k}-\bar{\omega}_{k}\right)=\mathrm{O}\left(\Delta x^{6}\right),                                                                \\
+        \left(3 \omega_{1}^{(+)}-3 \omega_{1}^{(-)}-\omega_{2}^{(+)}+\omega_{2}^{(-)}+\omega_{3}^{(+)}-\omega_{3}^{(-)}\right)=\mathrm{O}\left(\Delta x^{3}\right) \\
+        \left(\omega_{k}-\bar{\omega}_{k}\right)=\mathrm{O}\left(\Delta x^{2}\right)
+    \end{align}
+\end{subequations}
+
+假如光滑指示器可以写成下面的形式：
+\begin{equation}
+    \beta_{k}=D\left(1+\mathrm{O}(\Delta x)^{2}\right)
+\end{equation}
+其中 $D$ 是一些与 $k$ 无关的非零常数
+
+\begin{equation}
+    \bar{\omega}_{k}=\frac{\gamma_k}{\left(D\left(1+\mathrm{O}(\Delta x)^{2}\right)\right)^{p}}=\frac{\gamma_k}{D^{p}}\left(1+\mathrm{O}\left(\Delta x^{2}\right)\right)
+\end{equation}
+\begin{equation}
+    \sum_{k=0}^{2} \alpha_{k}=\frac{1}{D^{p}}\left(1+\mathrm{O}\left(\Delta x^{2}\right)\right)
+\end{equation}
+
+
+taking into account that  $\sum_{k=0}^{2} \bar{\omega}_{k}=1$ . Thus $ \omega_{k}^{(\mathrm{JS})}$ , as defined in Eq. (30), is given by
+\begin{equation}
+    \omega_{k}^{(\mathrm{JS})}=\bar{\omega}_{k}+\mathrm{O}\left(\Delta x^{2}\right)
+\end{equation}
+which agrees with Eq. (29c). Note that Eq. (29b) is still not satisfied by enforcing Eq. (31).
+
+
+\begin{subequations}
+    \begin{align}
+        \beta_{0} & =\frac{13}{12}\left(f_{i-2}-2 f_{i-1}+f_{i}\right)^{2}+\frac{1}{4}\left(f_{i-2}-4 f_{i-1}+3 f_{i}\right)^{2},  \\
+        \beta_{1} & =\frac{13}{12}\left(f_{i-1}-2 f_{i}+f_{i+1}\right)^{2}+\frac{1}{4}\left(f_{i-1}-f_{i+1}\right)^{2},            \\
+        \beta_{2} & =\frac{13}{12}\left(f_{i}-2 f_{i+1}+f_{i+2}\right)^{2}+\frac{1}{4}\left(3 f_{i}-4 f_{i+1}+f_{i+2}\right)^{2} .
+    \end{align}
+\end{subequations}
+
+\begin{subequations}
+    \begin{align}
+        \beta_{0} & =f_{i}^{\prime 2} \Delta x^{2}+\left(\frac{13}{12} f_{i}^{\prime \prime 2}-\frac{2}{3} f_{i}^{\prime} f_{i}^{\prime \prime \prime}\right) \Delta x^{4}-\left(\frac{13}{6} f_{i}^{\prime \prime} f_{i}^{\prime \prime \prime}-\frac{1}{2} f_{i}^{\prime} f_{i}^{\prime \prime \prime \prime}\right) \Delta x^{5}+\mathrm{O}\left(\Delta x^{6}\right),  \\
+        \beta_{1} & =f_{i}^{\prime 2} \Delta x^{2}+\left(\frac{13}{12} f_{i}^{\prime \prime 2}+\frac{1}{3} f_{i}^{\prime} f_{i}^{\prime \prime \prime}\right) \Delta x^{4}+\mathrm{O}\left(\Delta x^{6}\right),                                                                                                                                                           \\
+        \beta_{2} & =f_{i}^{\prime 2} \Delta x^{2}+\left(\frac{13}{12} f_{i}^{\prime \prime 2}-\frac{2}{3} f_{i}^{\prime} f_{i}^{\prime \prime \prime}\right) \Delta x^{4}+\left(\frac{13}{6} f_{i}^{\prime \prime} f_{i}^{\prime \prime \prime}-\frac{1}{2} f_{i}^{\prime} f_{i}^{\prime \prime \prime \prime}\right) \Delta x^{5}+\mathrm{O}\left(\Delta x^{6}\right) .
+    \end{align}
+\end{subequations}
+
+
+\subsubsection{WENO-JS的局限性}
+\begin{itemize}
+    \item 对于非结构化网络,需要计算线性权重,计算较为繁琐
+    \item 耗散较大,捕捉细小尺度的流动结构不够精确
+    \item 需要用到的模板较大,紧致性差（破坏了DG方法的紧致性）.
+    \item 在部分光滑情况下存在丢精度的可能.
+\end{itemize}
+\subsection{修改光滑指示器(Smoothness indicators)}
+\subsubsection{WENO-Z}
+在WENO-Z方案中，非归一化和归一化非线性权重$\alpha_{k}^{Z}$和$\omega_{k}^{Z}$的一般定义分别为：
+\begin{equation}
+    \alpha_{k}^{\mathrm{Z}}=d_{k}\left[1+\left(\frac{\tau}{\beta_{k}+\varepsilon}\right)^{p}\right], \quad \omega_{k}^{\mathrm{z}}=\frac{\alpha_{k}^{\mathrm{z}}}{\sum_{j=0}^{r-1} \alpha_{j}^{\mathrm{z}}}, \quad k=0, \ldots, r-1 .
+\end{equation}
+与 WENO-JS 权重一样，$p$ 和 $\varepsilon$ 分别是power和sensitivity参数。 它们类似于 WENO-JS 方案中的参数。
+
+WENO-Z 方案相对于经典方案的新颖思想是在非线性权重的形成中包含从全局阶平滑度指标 $\tau$ 获得的高阶信息。 这个全局平滑度指标是 $\beta_{k}$ 的线性组合，即:
+\begin{equation}
+    \tau=\left|\sum_{k=0}^{r-1} c_{k} \beta_{k}\right|
+\end{equation}
+其中 $c_{k}$ 是给定的常量。例如，五阶WENO-Z方案的$\tau$的表达式为:
+\begin{equation}
+    \tau=\left|\beta_{0}-\beta_{2}\right| .
+\end{equation}
+$\tau$ 的顺序随 $R$ 的变化而变化； 对于五阶 WENO-Z，它的阶数恰好也是 5.更多的 $\tau$ 的定义可查看表格\cite{WENO-Z-2013}
+\begin{table}[htbp]
+    \centering
+    \label{table:tau_ref}
+    \caption{The global optimal order smoothness indicator  $\tau_{2 r-1}$  and its leading truncation order  $\theta\left(\tau_{2 r-1}\right)$  of the  $(2 r-1)$  order WENO-Z scheme.}
+    \begin{tabular}{cccc}
+        \toprule
+        $r$ & $2r-1$ & $\tau_{2r-1}$                                                 & $\theta(\tau_{2r-1})$ \\
+        \midrule
+        2   & 3      & $|\beta_0-\beta_1|$                                           & 3                     \\
+        3   & 5      & $|\beta_0-\beta_2|$                                           & 5                     \\
+        4   & 7      & $|\beta_0+3\beta_1-3\beta_2-\beta_3|$                         & 7                     \\
+        5   & 9      & $|\beta_0+2\beta_1-6\beta_2+2\beta_3+\beta_4|$                & 8                     \\
+        6   & 11     & $|\beta_0+\beta_1-8\beta_2+8\beta_3-\beta_4-\beta_5|$         & 9                     \\
+        7   & 13     & $|\beta_0+36\beta_1+135\beta_2-135\beta_4-36\beta_5-\beta_6|$ & 11                    \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+和WENO-JS相同,  $\varepsilon$  对 WENO-Z 的精度有影响; 但是不同于 WENO-JS, $\varepsilon$ 上的条件随 $R$ 和 $p$ 变化并且较弱. 例如, 在  $R=5$  且  $p=2$ 的情况下, 如果 $ \varepsilon=\Omega\left(\Delta x^{4}\right)$,WENO-Z 实现5阶精度, 但是对于  $\varepsilon<\mathrm{O}\left(\Delta x^{4}\right)$  精度通常会在接近 2 阶临界点时降低.
+\begin{equation}
+    \tau_{5}=\left|\beta_{0}-\beta_{2}\right|=\frac{13}{3}\left|f_{i}^{\prime \prime} f_{i}^{\prime \prime \prime}\right| \Delta x^{5}+\mathrm{O}\left(\Delta x^{6}\right)
+\end{equation}
+假设在模板 2 中存在间断,那么 $\beta_2>\beta_k$,从而：
+\begin{equation}
+    \frac{\beta_{k}^{z}}{\beta_{2}^{z}}=\frac{\beta_{k}}{\beta_{2}} \frac{\beta_{2}+\tau_{5}}{\beta_{k}+\tau_{5}} \geqslant \frac{\beta_{k}}{\beta_{2}}, \quad k=0,1,
+\end{equation}
+所以,相比于 WENO-JS, WENO-Z 会增加间断模板的权重.作者认为，WENO-Z 耗散更小的原因就在于此。
+
+\subsection{自由设置线性权}
+
+\subsubsection{MRWENO}
+朱军等人在一列论文\cite{MRWENO-1,MRWENO-2,MRWENO-3}中发展了 MRWENO（multi-resolution WENO）限制器。
 \begin{enumerate}[label={{\bf Step \arabic*}:}]
     \item 1
           \begin{enumerate}[label={\bf Step 1.\arabic*.}]
-              \item 在有问题的单元 $I_j$ 上定义一系列不同次数的多项式。我们构造多项式 $q_{\ell}(x), \ell=0, \ldots, k$，满足以下条件：
+              \item 在有问题的单元 $I_j$ 上定义一系列不同次数的多项式.我们构造多项式 $q_{\ell}(x), \ell=0, \ldots, k$,满足以下条件：
                     \begin{equation}
                         \int_{I_j} q_{\ell}(x) v_{l}^{j}(x) \dd x=\int_{I_j} u_{h}(x) v_{l}^{j}(x, y) \dd x,\, l=0,1, \ldots, \ell.
                     \end{equation}
                     \begin{remark}
-                        如果我们采用规范正交基 $v_{l}^{(0)}(x)$,那么不同的多项式 $q_{\ell}(x), \ell=0,1,, \ldots, k$ 的构造非常简单。在这种情况下，我们可以直接得到多项式
+                        如果我们采用规范正交基 $v_{l}^{(0)}(x)$,那么不同的多项式 $q_{\ell}(x), \ell=0,1,, \ldots, k$ 的构造非常简单.在这种情况下,我们可以直接得到多项式
                         \begin{equation}
                             q_{\ell}(x)=\sum_{l=0}^{\ell} u_{j}^{(l)}(t) v_{l}^{(j)}(x),\,\ell=0,1,\ldots, k.
                         \end{equation}
@@ -383,23 +657,23 @@ and
                     \begin{equation}
                         p_{\ell, \ell+1}(x)=\omega_{\ell, \ell} p_{\ell, \ell}(x)+\omega_{\ell-1, \ell} p_{\ell-1, \ell}(x), \ell=1, \ldots, k-1
                     \end{equation}
-                    这些表达式中，$\gamma_{\ell-1, \ell}$ 和 $\gamma_{\ell, \ell}$ 是线性权重，要求 $\gamma_{\ell-1, \ell}+\gamma_{\ell, \ell}=1$,且 $\gamma_{\ell-1, \ell},\gamma_{\ell, \ell}>0$.由于对于平滑解来说，高阶解通常是最好的，因此我们给予高阶多项式更高的线性权重，基于低阶多项式更小的线性权重。即：
+                    这些表达式中,$\gamma_{\ell-1, \ell}$ 和 $\gamma_{\ell, \ell}$ 是线性权重,要求 $\gamma_{\ell-1, \ell}+\gamma_{\ell, \ell}=1$,且 $\gamma_{\ell-1, \ell},\gamma_{\ell, \ell}>0$.由于对于平滑解来说,高阶解通常是最好的,因此我们给予高阶多项式更高的线性权重,基于低阶多项式更小的线性权重.即：
                     \begin{equation}
                         \gamma_{\ell_,\ell} \gg \gamma_{\ell-1,\ell}
                     \end{equation}
-                    当比值 $\frac{\gamma_{\ell_,\ell}}{\gamma_{\ell-1,\ell}}$ 的值较小时，可以在不连续性上获得更好的结果，而当值较大时，通常对于平滑解更好。在我们的数值测试中，我们取
+                    当比值 $\frac{\gamma_{\ell_,\ell}}{\gamma_{\ell-1,\ell}}$ 的值较小时,可以在不连续性上获得更好的结果,而当值较大时,通常对于平滑解更好.在我们的数值测试中,我们取
                     \begin{equation}
                         \gamma_{\ell-1, \ell}=0.01,\quad  \gamma_{\ell, \ell}=0.99,\quad \ell=1, \ldots, k
                     \end{equation}
-                    这可以在平滑区域中保持原始的高阶，在所有数值例子中都可以保持基本上非振荡的冲击过渡。
+                    这可以在平滑区域中保持原始的高阶,在所有数值例子中都可以保持基本上非振荡的冲击过渡.
 
-                    $\omega_{\ell-1, \ell}$ 和 $\omega_{\ell, \ell}$ 是非线性权重（稍后将准确地介绍）。
-              \item 计算光滑指示器  $\beta_{\ell, \ell_{2}}$ , 其衡量了  $p_{\ell, \ell_{2}}(x, y)$  for  $\ell=\ell_{2}-1 ,  \ell_{2} ; \ell_{2}=1,2,3,4$  在小区间  $I_{j}$ 上的光滑程度. 具体来说：$\beta_{\ell, \ell_{2}}$ 越小，说明 $p_{\ell, \ell_{2}}(x, y)$ 在 $I_{j}$ 上越光滑。
+                    $\omega_{\ell-1, \ell}$ 和 $\omega_{\ell, \ell}$ 是非线性权重（稍后将准确地介绍）.
+              \item 计算光滑指示器  $\beta_{\ell, \ell_{2}}$ , 其衡量了  $p_{\ell, \ell_{2}}(x, y)$  for  $\ell=\ell_{2}-1 ,  \ell_{2} ; \ell_{2}=1,2,3,4$  在小区间  $I_{j}$ 上的光滑程度. 具体来说：$\beta_{\ell, \ell_{2}}$ 越小,说明 $p_{\ell, \ell_{2}}(x, y)$ 在 $I_{j}$ 上越光滑.
                     \begin{equation}
                         \label{eqa:光滑指示器}
                         \beta_{l_1,l_2}=\sum_{l=1}^{k} \int_{I_{i}} \Delta x_{i}^{2 l-1}\left(\frac{\partial^{l}}{\partial x^{l}} p_{l_1,l_2}(x)\right)^{2} d x
                     \end{equation}
-                    由于 $p_{0,1}(x)$ 是一个常值函数，$p'_{0,1}(x)=0$，因此无法使用统一的\eqref{eqa:光滑指示器}式来衡量其光滑程度，因此我们为 $p_{0,1}(x)$ 设计了其独有的限制器：
+                    由于 $p_{0,1}(x)$ 是一个常值函数,$p'_{0,1}(x)=0$,因此无法使用统一的\eqref{eqa:光滑指示器}式来衡量其光滑程度,因此我们为 $p_{0,1}(x)$ 设计了其独有的限制器：
 
                     定义线性函数 $q_{0,1}(x),q_{0,2}(x)$ 满足：
 
@@ -409,7 +683,7 @@ and
                             \int_{I_{j+1}}q_{0,1}(x)v_{l}^{(j+1)}(x)\dd x & = \int_{I_{j+1}}u_h(x)v_{l}^{(j+1)}\dd x,\quad l=0,1,\cdots,k \\
                         \end{aligned}
                     \end{equation}
-                    再构造 $\varsigma_1,\varsigma_2$，其定义如下：
+                    再构造 $\varsigma_1,\varsigma_2$,其定义如下：
                     \begin{equation}
                         \varsigma_1=\int_{I_{j}}\left(\frac{\dd}{\dd x}q_{0,1}\right)^2\dd x,\quad \varsigma_2=\int_{I_{j}}\left(\frac{\dd}{\dd x}q_{0,1}\right)^2\dd x\\
                     \end{equation}
@@ -417,7 +691,7 @@ and
                     \begin{equation}
                         \beta_{0,1} = \min\{\varsigma_1,\varsigma_2 \}.
                     \end{equation}
-              \item    基于线性权重和光滑性指标计算非线性权重。我们采用文献\cite{WENO-Z} 中所示的WENO-Z的做法，$\tau_{\ell_{2}}$ 定义如下：
+              \item    基于线性权重和光滑性指标计算非线性权重.我们采用文献\cite{WENO-Z} 中所示的WENO-Z的做法,$\tau_{\ell_{2}}$ 定义如下：
                     \begin{equation}
                         \tau_{\ell_2} = (\beta_{\ell_2,\ell_2}-\beta_{\ell_2-1,\ell_2})^2
                     \end{equation}
@@ -437,7 +711,7 @@ and
 
 
 \begin{remark}
-    如果不修正线性权重，那么最终会得到 $p^{\text {new }}(x)=p^{\text {old }}(x)$.
+    如果不修正线性权重,那么最终会得到 $p^{\text {new }}(x)=p^{\text {old }}(x)$.
     \begin{equation}
         \begin{aligned}
             p^{\text {new }}(x) & =\gamma_{l_1,l_2}p_{l_1,l_2}(x)+\gamma_{l_2,l_2}p_{l_2,l_2}(x)                                                                                            \\
@@ -469,183 +743,34 @@ and
     \end{aligned}
 \end{equation}
 
-
-
-
-\newpage
-\chapter{更多知识}
-
-\section{双曲型方程(hyperbolic equation)}
-
-\section{指示子}
-
-\section{WENO限制器}
-\subsection{再看WENOJS限制器}
-\subsubsection{WENOJS限制器的构造}
-WENO最早被设计出来是作为有限差分法，有限体积法的格式用的。WENO对计算流体力学领域产生了深远的影响，在过去的几十年中，各种WENO格式的变形层出不穷，直到今天仍然有很多人在做这方面的研究。
-
-目标是找到 $k-1$ 次多项式 $p$，满足：
-\begin{equation}
-    p_{i}(x)=v(x)+O\left(\Delta x^{k}\right), \quad x \in I_{i}, \quad i=1, \ldots, N
-\end{equation}
-
-考虑函数
-\begin{equation}
-    V(x) \equiv \int_{-\infty}^{x} v(\xi) d \xi
-\end{equation}
-从而
-\begin{equation}
-    V\left(x_{i+\frac{1}{2}}\right)=\sum_{j=-\infty}^{i} \int_{x_{j-\frac{1}{2}}}^{x_{j+\frac{1}{2}}} v(\xi) d \xi=\sum_{j=-\infty}^{i} \bar{v}_{j} \Delta x_{j}
-\end{equation}
-$r, s \geq 0, \text { with } r+s+1=k$
-使用 $k+1$ 个点 $x_{i-r-\frac{1}{2}}, \ldots, x_{i+s+\frac{1}{2}},$ 上的 $V(x)$ 的值插值得到函数 $P(x)$, 记 $p(x)=P'(x)$，则：
+一维时：
 \begin{equation}
     \begin{aligned}
-        \frac{1}{\Delta x_{j}} \int_{x_{j-\frac{1}{2}}}^{x_{j+\frac{1}{2}}} p(\xi) d \xi & =\frac{1}{\Delta x_{j}} \int_{x_{j-\frac{1}{2}}}^{x_{j+\frac{1}{2}}} P^{\prime}(\xi) d \xi=\frac{1}{\Delta x_{j}}\left(P\left(x_{j+\frac{1}{2}}\right)-P\left(x_{j-\frac{1}{2}}\right)\right) \\
-                                                                                         & =\frac{1}{\Delta x_{j}}\left(V\left(x_{j+\frac{1}{2}}\right)-V\left(x_{j-\frac{1}{2}}\right)\right)                                                                                           \\
-                                                                                         & =\frac{1}{\Delta x_{j}}\left(\int_{-\infty}^{x_{j+\frac{1}{2}}} v(\xi) d \xi-\int_{-\infty}^{x_{j-\frac{1}{2}}} v(\xi) d \xi\right)                                                           \\
-                                                                                         & =\frac{1}{\Delta x_{j}} \int_{x_{j-\frac{1}{2}}}^{x_{j+\frac{1}{2}}} v(\xi) d \xi=\bar{v}_{j}, \quad j=i-r, \ldots, i+s,
+        \beta_{01} & = 4\,{a_1 }^2                                                                                                                                                                                                                                                                 \\
+        \beta_{11} & = \frac{4\,{a_1 }^2 }{{\gamma_{11} }^2 }                                                                                                                                                                                                                                      \\
+        \beta_{12} & = \frac{4\,{a_1 }^2 \,{\omega_{11} }^2 }{{\gamma_{11} }^2 }                                                                                                                                                                                                                   \\
+        \beta_{22} & = \frac{144\,{a_2 }^2 }{{\gamma_{22} }^2 }+\frac{4\,{\left({a_1 }^2 \,{\gamma_{11} }^2 -2\,{a_1 }^2 \,\gamma_{11} \,\gamma_{12} \,\omega_{11} +{a_1 }^2 \,{\gamma_{12} }^2 \,{\omega_{11} }^2 +3\,{a_2 }^2 \,{\gamma_{11} }^2 \right)}}{{\gamma_{11} }^2 \,{\gamma_{22} }^2 } \\
+    \end{aligned}
+\end{equation}
+二维时：
+\begin{equation}
+    \begin{aligned}
+        \beta_{01} & = {\left(\mathrm{xa}-\mathrm{xb}\right)}\,{\left(\mathrm{ya}-\mathrm{yb}\right)}\,{\left(\frac{4\,{a_1 }^2 }{{{\left(\mathrm{xa}-\mathrm{xb}\right)}}^2 }+\frac{4\,{a_2 }^2 }{{{\left(\mathrm{ya}-\mathrm{yb}\right)}}^2 }\right)}                                                                                                                                                                                \\
+        \beta_{11} & = {\left(\frac{4\,{a_1 }^2 }{{\gamma_{11} }^2 \,{{\left(\mathrm{xa}-\mathrm{xb}\right)}}^2 }+\frac{4\,{a_2 }^2 }{{\gamma_{11} }^2 \,{{\left(\mathrm{ya}-\mathrm{yb}\right)}}^2 }\right)}\,{\left(\mathrm{xa}-\mathrm{xb}\right)}\,{\left(\mathrm{ya}-\mathrm{yb}\right)}                                                                                                                                          \\
+        \beta_{12} & = \frac{{a_1 }^2 \,{\omega_{11} }^2 \,{\left(\mathrm{xa}-\mathrm{xb}\right)}\,{\left(\mathrm{ya}-\mathrm{yb}\right)}}{{\gamma_{11} }^2 \,{{\left(\frac{\mathrm{xa}}{2}-\frac{\mathrm{xb}}{2}\right)}}^2 }+\frac{{a_2 }^2 \,{\omega_{11} }^2 \,{\left(\mathrm{xa}-\mathrm{xb}\right)}\,{\left(\mathrm{ya}-\mathrm{yb}\right)}}{{\gamma_{11} }^2 \,{{\left(\frac{\mathrm{ya}}{2}-\frac{\mathrm{yb}}{2}\right)}}^2 } \\
+    \end{aligned}
+\end{equation}
+$\beta_{22}$ 太复杂了，单独写一下
+\begin{equation}
+    \begin{aligned}
+        \beta_{22} = & \frac{4\,{\left(\mathrm{ya}-\mathrm{yb}\right)}\,{\left(3\,{a_1 }^2 \,{\gamma_{11} }^2 -6\,{a_1 }^2 \,\gamma_{11} \,\gamma_{12} \,\omega_{11} +3\,{a_1 }^2 \,{\gamma_{12} }^2 \,{\omega_{11} }^2 +4\,{a_3 }^2 \,{\gamma_{11} }^2 +{a_5 }^2 \,{\gamma_{11} }^2 \right)}}{3\,{\gamma_{11} }^2 \,{\gamma_{22} }^2 \,{\left(\mathrm{xa}-\mathrm{xb}\right)}}  \\
+                     & +\frac{4\,{\left(\mathrm{xa}-\mathrm{xb}\right)}\,{\left(3\,{a_2 }^2 \,{\gamma_{11} }^2 -6\,{a_2 }^2 \,\gamma_{11} \,\gamma_{12} \,\omega_{11} +3\,{a_2 }^2 \,{\gamma_{12} }^2 \,{\omega_{11} }^2 +4\,{a_4 }^2 \,{\gamma_{11} }^2 +{a_5 }^2 \,{\gamma_{11} }^2 \right)}}{3\,{\gamma_{11} }^2 \,{\gamma_{22} }^2 \,{\left(\mathrm{ya}-\mathrm{yb}\right)}} \\
+                     & +\frac{64\,{a_3 }^2 \,{{\left(\mathrm{ya}-\mathrm{yb}\right)}}^2 }{{\gamma_{22} }^2 \,{{\left(\mathrm{xa}-\mathrm{xb}\right)}}^2 } + \frac{64\,{a_4 }^2 \,{{\left(\mathrm{xa}-\mathrm{xb}\right)}}^2 }{{\gamma_{22} }^2 \,{{\left(\mathrm{ya}-\mathrm{yb}\right)}}^2 }+\frac{16\,{a_5 }^2 }{{\gamma_{22} }^2 }
     \end{aligned}
 \end{equation}
 
-由数值分析可以得到：
-\begin{equation}
-    P^{\prime}(x)=V^{\prime}(x)+O\left(\Delta x^{k}\right), \quad x \in I_{i}
-\end{equation}
+事实上，所谓的自由设置线性权也不是完全自由。如果给定一个比较差的线性权，是无法重构到原精度的。数值例子可见 \cite{RN133}
 
-在光滑的情况下，如果有：
-\begin{equation}
-    \omega_{r}=d_{r}+O\left(\Delta x^{k-1}\right), \quad r=0, \ldots, k-1
-\end{equation}
-那么：
-\begin{equation}
-    v_{i+\frac{1}{2}}=\sum_{r=0}^{k-1} \omega_{r} v_{i+\frac{1}{2}}^{(r)}=v\left(x_{i+\frac{1}{2}}\right)+O\left(\Delta x^{2 k-1}\right)
-\end{equation}
-这是因为：
-\begin{equation}
-    \begin{aligned}
-        \sum_{r=0}^{k-1} \omega_{r} v_{i+\frac{1}{2}}^{(r)}-\sum_{r=0}^{k-1} d_{r} v_{i+\frac{1}{2}}^{(r)} & =\sum_{r=0}^{k-1}\left(\omega_{r}-d_{r}\right)\left(v_{i+\frac{1}{2}}^{(r)}-v\left(x_{i+\frac{1}{2}}\right)\right) \\
-                                                                                                           & =\sum_{r=0}^{k-1} O\left(\Delta x^{k-1}\right) O\left(\Delta x^{k}\right)=O\left(\Delta x^{2 k-1}\right)
-    \end{aligned}
-\end{equation}
-$\beta_{r}$  被称为模板  $S_{r}(i)$ 的光滑指示器 "smooth indicators" 。如果 $v(x)$ 在模板 $S_{r}(i) $ 是光滑的，那么：
-\begin{equation}
-    \beta_{r}=O\left(\Delta x^{2}\right)
-\end{equation}
-但是如果 $v(x)$ 在模板 $S_{r}(i) $ 有间断，那么：
-\begin{equation}
-    \beta_{r}=O(1)
-\end{equation}
-对应到非线性权，当 $v(x)$ 在模板 $S_{r}(i) $ 是光滑的，那么：
-\begin{equation}
-    \omega_{r}=O\left(\Delta x^{4}\right)
-\end{equation}
-但是如果 $v(x)$ 在模板 $S_{r}(i) $ 有间断，那么：
-\begin{equation}
-    \omega_{r}=O(1)
-\end{equation}
-
-One also has to worry about the accuracy requirement  (2.56) , which must be checked when the specific form of the smooth indicator  $\beta_{r}$  is given. For any smooth indicator  $\beta_{r}$ , it is easy to see that the weights defined by (2.58) satisfies (2.53). To satisfy (2.56), it suffices to have, through a Taylor expansion analysis:
-
-\begin{equation}
-    \beta_{r}=D\left(1+O\left(\Delta x^{k-1}\right)\right), \quad r=0, \ldots, k-1
-\end{equation}
-
-where  $D$  is a nonzero quantity independent of  $r$  (but may depend on  $\Delta x$  ).
-\subsubsection{WENO-JS的局限性}
-\begin{itemize}
-    \item 对于非结构化网络，需要计算线性权重，计算较为繁琐
-    \item 耗散较大，捕捉细小尺度的流动结构不够精确
-    \item 需要用到的模板较大，紧致性差（破坏了DG方法的紧致性）。
-    \item 在部分光滑情况下存在丢精度的可能。
-\end{itemize}
-\subsection{修改光滑指示器}
-\subsubsection{WENO-M}
-WENO-M限制器在文章\cite{WENO-M}中被提出，在该文章中。作者详细分析了 WENO 实现预期精度的的充要条件，并且指出 WENO-JS 格式会在 critical points 附近会损失精度，但是由于 $\epsilon$，这一特点没有在WENO-JS中被发现，并且给出了一个新的格式 MWENO 克服了这一问题。
-
-\begin{equation}
-    \omega_{k}^{(\mathrm{JS})}=\frac{\alpha_{k}}{\sum_{i=0}^{2} \alpha_{i}}, \quad \text { where } \alpha_{k}=\frac{\bar{\omega}_{k}}{\left(\epsilon+\beta_{k}\right)^{p}},
-\end{equation}
-
-为了满足五阶格式的要求，需要满足以下充要条件：
-\begin{subequations}
-    \begin{align}
-        \sum_{k=0}^{2}\left(\omega_{k}-\bar{\omega}_{k}\right)=\mathrm{O}\left(\Delta x^{6}\right),                                                                \\
-        \left(3 \omega_{1}^{(+)}-3 \omega_{1}^{(-)}-\omega_{2}^{(+)}+\omega_{2}^{(-)}+\omega_{3}^{(+)}-\omega_{3}^{(-)}\right)=\mathrm{O}\left(\Delta x^{3}\right) \\
-        \left(\omega_{k}-\bar{\omega}_{k}\right)=\mathrm{O}\left(\Delta x^{2}\right)
-    \end{align}
-\end{subequations}
-
-假如光滑指示器可以写成下面的形式：
-\begin{equation}
-    \beta_{k}=D\left(1+\mathrm{O}(\Delta x)^{2}\right)
-\end{equation}
-其中 $D$ 是一些与 $k$ 无关的非零常数
-
-\begin{equation}
-    \bar{\omega}_{k}=\frac{\gamma_k}{\left(D\left(1+\mathrm{O}(\Delta x)^{2}\right)\right)^{p}}=\frac{\gamma_k}{D^{p}}\left(1+\mathrm{O}\left(\Delta x^{2}\right)\right)
-\end{equation}
-\begin{equation}
-    \sum_{k=0}^{2} \alpha_{k}=\frac{1}{D^{p}}\left(1+\mathrm{O}\left(\Delta x^{2}\right)\right)
-\end{equation}
-
-
-taking into account that  $\sum_{k=0}^{2} \bar{\omega}_{k}=1$ . Thus $ \omega_{k}^{(\mathrm{JS})}$ , as defined in Eq. (30), is given by
-\begin{equation}
-    \omega_{k}^{(\mathrm{JS})}=\bar{\omega}_{k}+\mathrm{O}\left(\Delta x^{2}\right)
-\end{equation}
-which agrees with Eq. (29c). Note that Eq. (29b) is still not satisfied by enforcing Eq. (31).
-
-
-
-\begin{equation}
-    g_{k}(\omega)=\frac{\omega\left(\bar{\omega}_{k}+\bar{\omega}_{k}^{2}-3 \bar{\omega}_{k} \omega+\omega^{2}\right)}{\bar{\omega}_{k}^{2}+\omega\left(1-2 \bar{\omega}_{k}\right)}
-\end{equation}
-\begin{equation}
-    \alpha_{k}^{*}=g_{k}\left(\omega_{k}^{(\mathrm{JS})}\right)
-\end{equation}
-\begin{equation}
-    \omega_{k}^{(\mathrm{M})}=\frac{\alpha_{k}^{*}}{\sum_{i=0}^{2} \alpha_{i}^{*}}
-\end{equation}
-
-\subsubsection{WENO-Z}
-\begin{subequations}
-    \begin{align}
-        \beta_{0} & =\frac{13}{12}\left(f_{i-2}-2 f_{i-1}+f_{i}\right)^{2}+\frac{1}{4}\left(f_{i-2}-4 f_{i-1}+3 f_{i}\right)^{2},  \\
-        \beta_{1} & =\frac{13}{12}\left(f_{i-1}-2 f_{i}+f_{i+1}\right)^{2}+\frac{1}{4}\left(f_{i-1}-f_{i+1}\right)^{2},            \\
-        \beta_{2} & =\frac{13}{12}\left(f_{i}-2 f_{i+1}+f_{i+2}\right)^{2}+\frac{1}{4}\left(3 f_{i}-4 f_{i+1}+f_{i+2}\right)^{2} .
-    \end{align}
-\end{subequations}
-
-\begin{subequations}
-    \begin{align}
-        \beta_{0} & =f_{i}^{\prime 2} \Delta x^{2}+\left(\frac{13}{12} f_{i}^{\prime \prime 2}-\frac{2}{3} f_{i}^{\prime} f_{i}^{\prime \prime \prime}\right) \Delta x^{4}-\left(\frac{13}{6} f_{i}^{\prime \prime} f_{i}^{\prime \prime \prime}-\frac{1}{2} f_{i}^{\prime} f_{i}^{\prime \prime \prime \prime}\right) \Delta x^{5}+\mathrm{O}\left(\Delta x^{6}\right),  \\
-        \beta_{1} & =f_{i}^{\prime 2} \Delta x^{2}+\left(\frac{13}{12} f_{i}^{\prime \prime 2}+\frac{1}{3} f_{i}^{\prime} f_{i}^{\prime \prime \prime}\right) \Delta x^{4}+\mathrm{O}\left(\Delta x^{6}\right),                                                                                                                                                           \\
-        \beta_{2} & =f_{i}^{\prime 2} \Delta x^{2}+\left(\frac{13}{12} f_{i}^{\prime \prime 2}-\frac{2}{3} f_{i}^{\prime} f_{i}^{\prime \prime \prime}\right) \Delta x^{4}+\left(\frac{13}{6} f_{i}^{\prime \prime} f_{i}^{\prime \prime \prime}-\frac{1}{2} f_{i}^{\prime} f_{i}^{\prime \prime \prime \prime}\right) \Delta x^{5}+\mathrm{O}\left(\Delta x^{6}\right) .
-    \end{align}
-\end{subequations}
-
-
-\begin{equation}
-    \tau_{5}=\left|\beta_{0}-\beta_{2}\right|=\frac{13}{3}\left|f_{i}^{\prime \prime} f_{i}^{\prime \prime \prime}\right| \Delta x^{5}+\mathrm{O}\left(\Delta x^{6}\right)
-\end{equation}
-
-
-\begin{equation}
-    \beta_{k}^{z}=\left(\frac{\beta_{k}+\epsilon}{\beta_{k}+\tau_{5}+\epsilon}\right), \quad k=0,1,2
-\end{equation}
-
-\begin{equation}
-    \omega_{k}^{z}=\frac{\alpha_{k}^{z}}{\sum_{l=0}^{2} \alpha_{l}^{z}}, \quad \alpha_{k}^{z}=\frac{d_{k}}{\beta_{k}^{z}}=d_{k}\left(1+\frac{\tau_{5}}{\beta_{k}+\epsilon}\right), \quad k=0,1,2
-\end{equation}
-
-假设在模板 2 中存在间断，那么 $\beta_2>\beta_k$，从而：
-\begin{equation}
-    \frac{\beta_{k}^{z}}{\beta_{2}^{z}}=\frac{\beta_{k}}{\beta_{2}} \frac{\beta_{2}+\tau_{5}}{\beta_{k}+\tau_{5}} \geqslant \frac{\beta_{k}}{\beta_{2}}, \quad k=0,1,
-\end{equation}
-所以，相比于 WENO-JS, WENO-Z 会增加间断模板的权重。
-\subsubsection{WENO-Z+}
-\subsection{自由设置线性权}
 \subsection{HWENO}
 
 
@@ -653,36 +778,38 @@ which agrees with Eq. (29c). Note that Eq. (29b) is still not satisfied by enfor
 
 \section{保极值限制器}
 % https://zhuanlan.zhihu.com/p/539865055
+% https://zhuanlan.zhihu.com/p/542538581
+\subsection{一维}
 \cite{RN6}
 标量守恒性方程
 \begin{equation}
     u_{t}+\nabla \cdot \mathbf{F}(u)=0 \quad \text { and } \quad u(\mathbf{x}, 0)=u_{0}(\mathbf{x})
 \end{equation}
-一个很重要的性质就是它满足最大值原则。具体来说，如果 $M=\max_x u_0(x)$,$m=\min_x u_0(x)$, 那么 $u(x,t)\in[m,M]$. 对任意的 $x,t$ 都满足。所以，我们也希望数值解也满足这个性质。因为在一些情况下，超出了这个范围，就会得到无物理意义的解。比如负密度，或者负百分比，或者某个多组分混合物中某个组分的百分比大于一。
+一个很重要的性质就是它满足最大值原则.具体来说,如果 $M=\max_x u_0(x)$,$m=\min_x u_0(x)$, 那么 $u(x,t)\in[m,M]$. 对任意的 $x,t$ 都满足.所以,我们也希望数值解也满足这个性质.因为在一些情况下,超出了这个范围,就会得到无物理意义的解.比如负密度,或者负百分比,或者某个多组分混合物中某个组分的百分比大于一.
 
-这样的限制器在多项流问题中尤为重要。
+这样的限制器在多项流问题中尤为重要.
 
-对于 DG 中的数值解 $u_h$，它可以写成
+对于 DG 中的数值解 $u_h$,它可以写成
 \begin{equation}
     u_{h}=\overline{u_h}+(u_h-\overline{u_h})
 \end{equation}
 
-首先，可以证明，当 $\Delta t$ 充分小时，$\overline{u_h}\in[m,M]$,
+首先,可以证明,当 $\Delta t$ 充分小时,$\overline{u_h}\in[m,M]$,
 
 \begin{theorem}
     对于格式
     \begin{equation}
         u_j^{n+1} = u_j^n - \lambda\left[\hat{f}(u_j^n,u_{j+1}^n)-\hat{f}(u_{j-1}^n,u_j^n)\right]
     \end{equation}
-    其中  $\lambda=\frac{\Delta t}{\Delta x}$ ， $h$  是全局L-F通量(Lax-Friedrichs, Godunov 好像也可以)：
+    其中  $\lambda=\frac{\Delta t}{\Delta x}$ , $h$  是全局L-F通量(Lax-Friedrichs, Godunov 好像也可以)：
     \begin{equation}
         h(u, v)=\frac{1}{2}[f(u)+f(v)-a(u-v)], \quad a=\max _{u}\left|f^{\prime}(u)\right|
     \end{equation}
-    如果满足CFL条件  $\lambda a \leq 1$  ， 且  $u_{j}^{n} \in[m, M], \forall j$ ，则  $u_{j+1}^{n} \in[m, M], \forall j$  。
+    如果满足CFL条件  $\lambda a \leq 1$  , 且  $u_{j}^{n} \in[m, M], \forall j$ ,则  $u_{j+1}^{n} \in[m, M], \forall j$  .
 \end{theorem}
 
 \begin{proof}
-    记  $H\left(u_{j-1}^{n}, u_{j}^{n}, u_{j+1}^{n}\right)=u_{j}^{n}-\lambda\left[h\left(u_{j}^{n}, u_{j+1}^{n}\right)-h\left(u_{j-1}^{n}, u_{j}^{n}\right)\right]$ ，则  $H(u, u, u)=u$  。把  $H$  完全展开得:
+    记  $H\left(u_{j-1}^{n}, u_{j}^{n}, u_{j+1}^{n}\right)=u_{j}^{n}-\lambda\left[h\left(u_{j}^{n}, u_{j+1}^{n}\right)-h\left(u_{j-1}^{n}, u_{j}^{n}\right)\right]$ ,则  $H(u, u, u)=u$  .把  $H$  完全展开得:
     \begin{equation}
         \begin{aligned}
             H\left(u_{j-1}^{n}, u_{j}^{n}, u_{j+1}^{n}\right) & =u_{J}^{n}-\lambda\left[h\left(u_{j}^{n}, u_{j+1}^{n}\right)-h\left(u_{j-1}^{n}, u_{j}^{n}\right)\right]                                                                                             \\
@@ -699,20 +826,20 @@ which agrees with Eq. (29c). Note that Eq. (29b) is still not satisfied by enfor
             H_{c}(b, c, d)=1 -\lambda a \geqslant 0
         \end{cases}
     \end{equation}
-    因此  $H$ 对三个变量都是单调增加的，即  $H(\uparrow, \uparrow, \uparrow)$  ，从而
+    因此  $H$ 对三个变量都是单调增加的,即  $H(\uparrow, \uparrow, \uparrow)$  ,从而
     \begin{equation}
         m=H(m, m, m) \leq H\left(u_{j-1}^{n}, u_{j}^{n}, u_{j+1}^{n}\right) \leq H(M, M, M)=M
     \end{equation}
 
 \end{proof}
 \begin{theorem}
-    设  $x_{j-1 / 2}=\hat{x}_{j}^{1}<\hat{x}_{j}^{2}<\cdots<\hat{x}_{j}^{N}=x_{j+1 / 2}$  ，其中  $\hat{x}_{j}$  是Gauss-Lobatto积分点，满足  $2 N-3 \geq k$ ， $k$  是近似多项式的次数。记  $\hat{v}_{\alpha}:=p_{j}\left(\hat{x}_{j}^{\alpha}\right)$ ，特别的，记  $\hat{v}_{0}=u_{j-1 / 2}^{-}, \hat{v}_{N+1}=u_{j+1 / 2}^{+} ， \hat{\omega}_{\alpha}$  是对应的权重，满足  $\hat{\omega}_{1}+\cdots+\hat{\omega}_{N}=1$  。如果 格式满足CFL条件
+    设  $x_{j-1 / 2}=\hat{x}_{j}^{1}<\hat{x}_{j}^{2}<\cdots<\hat{x}_{j}^{N}=x_{j+1 / 2}$  ,其中  $\hat{x}_{j}$  是Gauss-Lobatto积分点,满足  $2 N-3 \geq k$ , $k$  是近似多项式的次数.记  $\hat{v}_{\alpha}:=p_{j}\left(\hat{x}_{j}^{\alpha}\right)$ ,特别的,记  $\hat{v}_{0}=u_{j-1 / 2}^{-}, \hat{v}_{N+1}=u_{j+1 / 2}^{+} , \hat{\omega}_{\alpha}$  是对应的权重,满足  $\hat{\omega}_{1}+\cdots+\hat{\omega}_{N}=1$  .如果 格式满足CFL条件
 
     \begin{equation}
         \lambda a \leq \min _{\alpha} \hat{\omega}_{\alpha}
     \end{equation}
 
-    那么，只要所有的  $\hat{v}_{\alpha} \in[m, M]$  且  $\bar{u}_{j}^{n} \in[m, M]$  ，就有 $ \bar{u}_{j+1}^{n} \in[m, M]$。
+    那么,只要所有的  $\hat{v}_{\alpha} \in[m, M]$  且  $\bar{u}_{j}^{n} \in[m, M]$  ,就有 $ \bar{u}_{j+1}^{n} \in[m, M]$.
 \end{theorem}
 \begin{proof}
     \begin{equation}
@@ -729,7 +856,7 @@ which agrees with Eq. (29c). Note that Eq. (29b) is still not satisfied by enfor
 
 
 
-    而单元平均值满足  $\bar{u}_{j}^{n}=\frac{1}{\Delta x} \int_{I_{j}} p_{j}(x) \mathrm{d} x=\sum_{\alpha=1}^{N} \hat{\omega}_{\alpha} \hat{v}_{\alpha}$  ，于是
+    而单元平均值满足  $\bar{u}_{j}^{n}=\frac{1}{\Delta x} \int_{I_{j}} p_{j}(x) \mathrm{d} x=\sum_{\alpha=1}^{N} \hat{\omega}_{\alpha} \hat{v}_{\alpha}$  ,于是
 
     \begin{equation}
         \begin{aligned}
@@ -740,10 +867,10 @@ which agrees with Eq. (29c). Note that Eq. (29b) is still not satisfied by enfor
                               & =\sum_{\alpha=1}^{N} \hat{\omega}_{\alpha} H_{j}^{\alpha}
         \end{aligned}
     \end{equation}
-    其中  $H_{j}^{\alpha}=\hat{v}_{\alpha}-\frac{\lambda}{\hat{\omega}_{\alpha}}\left[h\left(\hat{v}_{\alpha}, \hat{v}_{\alpha+1}\right)-h\left(\hat{v}_{\alpha-1}, \hat{v}_{\alpha}\right)\right]$  。则根据已知条件，所有的 $\hat{v}_{\alpha} \in[m, M]  ，且  \lambda a \leq \hat{\omega}_{\alpha} $ ，即 $\frac{\lambda}{\hat{\omega}_{\alpha}} a \leq 1$  ，因此根据Lemma 1有 $H_{j}^{\alpha} \in[m, M]$ ，从而可 得  $\bar{u}_{j}^{n+1} \in[m, M]$  ，因为  $\bar{u}_{j}^{n+1}$  就是这些  $H_{j}^{\alpha}$ 的一个凸组合。
+    其中  $H_{j}^{\alpha}=\hat{v}_{\alpha}-\frac{\lambda}{\hat{\omega}_{\alpha}}\left[h\left(\hat{v}_{\alpha}, \hat{v}_{\alpha+1}\right)-h\left(\hat{v}_{\alpha-1}, \hat{v}_{\alpha}\right)\right]$  .则根据已知条件,所有的 $\hat{v}_{\alpha} \in[m, M]  ,且  \lambda a \leq \hat{\omega}_{\alpha} $ ,即 $\frac{\lambda}{\hat{\omega}_{\alpha}} a \leq 1$  ,因此根据Lemma 1有 $H_{j}^{\alpha} \in[m, M]$ ,从而可 得  $\bar{u}_{j}^{n+1} \in[m, M]$  ,因为  $\bar{u}_{j}^{n+1}$  就是这些  $H_{j}^{\alpha}$ 的一个凸组合.
 \end{proof}
 
-此外，对于 $(u_h-\overline{u_h})$，可以乘一个权重 $\theta$，使得最终得到的数值解 $u_h^{\text{new}}$ 也满足极值原则。
+此外,对于 $(u_h-\overline{u_h})$,可以乘一个权重 $\theta$,使得最终得到的数值解 $u_h^{\text{new}}$ 也满足极值原则.
 \begin{equation}
     u_{h}^{\text {new }}=\overline{u_h}+\theta(u_h-\overline{u_h})
 \end{equation}
@@ -754,7 +881,9 @@ which agrees with Eq. (29c). Note that Eq. (29b) is still not satisfied by enfor
     M_{j}=\max _{x \in I_{j}} p_{j}(x) \quad \text { and } \quad m_{j}=\min _{x \in I_{j}} p_{j}(x)
 \end{equation}
 
-并且这种方法得到的 $u_{h}^{\text {new }}$ 是保精度的。
+并且这种方法得到的 $u_{h}^{\text {new }}$ 是保精度的.
+\subsection{二维}
+
 
 对于二维的情况：
 \begin{equation}
@@ -802,17 +931,436 @@ Theorem 2.6. Consider a two-dimensional finite volume scheme or the scheme satis
     \end{equation}
 \end{proof}
 \section{数值通量}
-\subsection{HLL}
-HLL(Harten-Lax-van Leer)
-\subsection{HLLC}
+数值通量有多种可以选择，最简单的是 LLF 数值通量。欧拉方程中几种常见的数值通量的比较可以参考论文 \cite{numFlux1,numFlux2}
 
-\section{双曲型方程}
-\subsection{激波}
+满足三原则：
+\begin{itemize}
+    \item 一致性：$\widehat{f}(u, u)=f(u)$.
+    \item 连续性：$\widehat{f}\left(u^{-}, u^{+}\right)$ 至少关于两个参数 $u^{-}$ 和 $u^{+}$ 是 Lipschitz 连续的.
+    \item 单调性：$\widehat{f}\left(u^{-}, u^{+}\right)$ 是第一个参数 $u^{-}$ 的非降函数和第二个参数 $u^{+}$ 的非增函数.符号上,$\widehat{f}(\uparrow, \downarrow)$.
+\end{itemize}
+以下是几个常见的数值通量\cite{RN16}
+\begin{itemize}
+    \item Lax-Friedrichs flux
+          \begin{equation}
+              \widehat{f}^{L F}\left(u^{-}, u^{+}\right)=\frac{1}{2}\left(f\left(u^{-}\right)+f\left(u^{+}\right)-\alpha\left(u^{+}-u^{-}\right)\right), \quad \alpha=\max _{u}\left|f^{\prime}(u)\right|
+          \end{equation}
+    \item Local Lax-Friedrichs:
+          \begin{equation}
+              h^{\mathrm{LLF}}(a, b)=\frac{1}{2}[f(a)+f(b)-\beta(b-a)], \quad \beta=\max _{\min (a, b) \leq u \leq \max (a, b)}\left|f^{\prime}(u)\right|
+          \end{equation}
+          For convex  $f, f^{\prime \prime} \geq 0$ , one has  $\beta=\max \left(\left|f^{\prime}(a)\right|,\left|f^{\prime}(b)\right|\right) $
+    \item Godunov flux
+          \begin{equation}
+              \widehat{f}^{G o d}\left(u^{-}, u^{+}\right)=\left\{\begin{array}{ll}
+                  \min _{u^{-} \leq u \leq u^{+}} f(u), & \text { if } u^{-}<u^{+},     \\
+                  \max _{u^{+} \leq u \leq u^{-}} f(u), & \text { if } u^{-} \geq u^{+}
+              \end{array}\right.
+          \end{equation}
+    \item Engquist-Osher flux
+          \begin{equation}
+              \widehat{f}^{E O}=\int_{0}^{u^{-}} \max \left(f^{\prime}(u), 0\right) d u+\int_{0}^{u^{+}} \min \left(f^{\prime}(u), 0\right) d u+f(0)
+          \end{equation}
+    \item HLL Flux
+          % https://zhuanlan.zhihu.com/p/583555029
+          % https://zhuanlan.zhihu.com/p/584123678
+          \begin{equation}
+              \mathbf{F}_{i+1 / 2}^{H l l}=\begin{cases}
+                  \mathbf{F}_{L},     & S_{L}  \geq 0 \\
+                  \mathbf{F}^{H l l}, & S_{L}<0<S_{R} \\
+                  \mathbf{F}_{R},     & S_{R}  \leq 0
+              \end{cases}
+          \end{equation}
+          % 其中  $S_{L}, S_{R}$  是间断附近的最小、最大波速,
+          \begin{equation}
+              \mathbf{F}^{H l l}=\frac{S_{R} \mathbf{F}_{L}-S_{L} \mathbf{F}_{R}+S_{L} S_{R}\left(\mathbf{U}_{R}-\mathbf{U}_{L}\right)}{S_{R}-S_{L}}
+          \end{equation}
+    \item HLLC Flux
+          \begin{equation}
+              \mathbf{F}_{i+1/2}^{Hllc}=\begin{cases}
+                  \mathbf{F}_L,     & S_L>0     \\
+                  \mathbf{F}_{*,L}, & S_L<0<S_* \\
+                  \mathbf{F}_{*,R}, & S_*<0<S_R \\
+                  \mathbf{F}_R,     & S_R<0     \\
+              \end{cases}
+          \end{equation}
+          \begin{equation}
+              S_{*}=\frac{p_{R}-p_{L}+\rho_{L} u_{L}\left(S_{L}-u_{L}\right)-\rho_{R} u_{R}\left(S_{R}-u_{R}\right)}{\rho_{L}\left(S_{L}-u_{L}\right)-\rho_{R}\left(S_{R}-u_{R}\right)} .
+          \end{equation}
+          \begin{equation}
+              \mathbf{U}_{* K}=\rho_{K}\left(\frac{S_{K}-u_{K}}{S_{K}-S_{*}}\right)\begin{bmatrix}
+                  1     \\
+                  S_{*} \\
+                  v_{K} \\
+                  w_{K} \\
+                  \frac{E_{K}}{\rho_{K}}+\left(S_{*}-u_{K}\right)\left[S_{*}+\frac{p_{K}}{\rho_{K}\left(S_{K}-u_{K}\right)}\right]
+              \end{bmatrix}
+          \end{equation}
 
-\subsection{稀疏波}
-\subsection{接触间断}
-总而言之：接触波是一种不连续的波，在其上压力和粒子速度都是恒定的，但密度不连续地跳跃，依赖于密度的变量，如比内能、温度、声速、熵等，也是不连续的。
+\end{itemize}
+\subsection{HLL(Harten-Lax-van Leer)}
+更多 HLL, HLLC 内容可参考\cite{Toro} 第十章
+
+考虑Riemann问题
+\begin{equation}
+    \mathbf U_t+\mathbf F(\mathbf U)_x=0
+\end{equation}
+\begin{equation}
+    \mathbf{U}\left( x,0 \right) =\begin{cases} \mathbf{U}_L,x<0\\ \mathbf{U}_R,x>0\\ \end{cases}
+\end{equation}
+
+
+
+我们假设它有两个波，波速分别为 $S_L$,$S_R$ ，我们的目标是求解沿着 $x=0$ 这条线的 $\mathbf F(\mathbf U)$ 的一个近似，这个近似值记为 $\mathbf F^{Hll}_{i+1/2}$ 。显然，若 $S_R<0$ 或 $S_L>0$ ，则直接有 $\mathbf F^{Hll}_{i+1/2}=\mathbf F_R$ 和 $\mathbf F^{Hll}_{i+1/2}=\mathbf F_L$ ；因此我们只需要讨论 $S_L<0<S_R$ 的情况。
+
+现在取一个控制体 $[x_L,x_R]\times[0,T]$ ，其中 $x_L<TS_L,\ TS_R<x_R$ ，如图：
+\begin{figure}[htp]
+    \centering
+    \label{fig:}
+    \includegraphics[width=0.7\linewidth]{fig/HLL.png}
+    \caption{}
+\end{figure}
+考虑PDE在其上的积分形式：
+\begin{equation}
+    \displaystyle\int_{x_L}^{x_R}\mathbf U(x,t)\mathrm dx=\displaystyle\int_{x_L}^{x_R}\mathbf U(x,0)\mathrm dx+\int_{0}^T\mathbf F(\mathbf U(x_L,t))\mathrm dt-\int_0^T\mathbf F(\mathbf U(x_R,t))\mathrm dt
+\end{equation}
+后面三项都可以计算出来，从而得到
+\begin{equation}
+    \displaystyle\int_{x_L}^{x_R}\mathbf U(x,t)\mathrm dx=x_R\mathbf U_R-x_L\mathbf U_L+T(\mathbf F_L-\mathbf F_R)
+\end{equation}
+另一方面，我们有：
+\begin{equation}
+    \displaystyle\int_{x_L}^{x_R}\mathbf U(x,t)\mathrm dx=\int_{x_L}^{TS_L}+\int_{TS_L}^{TS_R}+\int_{TS_R}^{x_R}\mathbf U(x,t)\mathrm dx
+\end{equation}
+前一项和后一项都可以计算出来，从而得：
+\begin{equation}
+    \displaystyle\int_{x_L}^{x_R}\mathbf U(x,t)\mathrm dx=(TS_L-x_L)\mathbf U_L+\int_{TS_L}^{TS_R}\mathbf U(x,t)\mathrm dx+(x_R-TS_R)\mathbf U_R
+\end{equation}
+联立两式，得到：
+\begin{equation}
+    \displaystyle\int_{TS_L}^{TS_R}\mathbf U(x,t)\mathrm dx=T(S_R\mathbf U_R-S_L\mathbf U_L+\mathbf F_L-\mathbf F_R)
+\end{equation}
+从而单元平均值为：
+\begin{equation}
+    \displaystyle\frac{1}{T(S_R-S_L)}\int_{TS_L}^{TS_R}\mathbf U(x,t)\mathrm dx=\frac{S_R\mathbf U_R-S_L\mathbf U_L+\mathbf F_L-\mathbf F_R}{S_R-S_L}
+\end{equation}
+当 $T\to0^+$ ，我们得到 $\mathbf U^*$ 的近似状态：
+\begin{equation}
+    \mathbf U^{Hll}=\displaystyle\frac{S_R\mathbf U_R-S_L\mathbf U_L+\mathbf F_L-\mathbf F_R}{S_R-S_L}
+\end{equation}
+进一步，可以考虑如下的 $\bf U$ 的近似：
+\begin{equation}
+    \mathbf{\tilde{U}}\left( x,t \right) =\begin{cases}
+        \mathbf{U}_L,x<S_Lt          \\
+        \mathbf{U}^{Hll},S_Lt<x<S_Rt \\
+        \mathbf{U}_R,x>S_Rt          \\
+    \end{cases}
+\end{equation}
+
+设Star Region的Flux为 $\mathbf F^{Hll}$ ，则利用R-H跳跃条件，得到
+\begin{equation}
+    \mathbf{F}^{Hll}=\mathbf{F}_L+S_L\left( \mathbf{U}^{Hll}-\mathbf{U}_L \right)
+\end{equation}
+和
+\begin{equation}
+    \mathbf{F}^{Hll}=\mathbf{F}_R+S_R\left( \mathbf{U}^{Hll}-\mathbf{U}_R \right)
+\end{equation}
+这两个代进去算，结果是一样的，都可以解得
+\begin{equation}
+    \displaystyle \mathbf{F}^{Hll}=\frac{S_R\mathbf{F}_L-S_L\mathbf{F}_R+S_LS_R\left( \mathbf{U}_R-\mathbf{U}_L \right)}{S_R-S_L}
+\end{equation}
+从而，HLL Flux的定义为：
+\begin{equation}
+    \mathbf{F}_{i+1/2}^{Hll}=\begin{cases}
+        \mathbf{F}_L,S_L\ge 0      \\
+        \mathbf{F}^{Hll},S_L<0<S_R \\
+        \mathbf{F}_R,S_R\le 0      \\
+    \end{cases}
+\end{equation}
+
+
+
+
+
+\subsection{HLLC Flux}
+HLLC Flux的近似更为精细，但计算也更复杂。假设除了两个激波外，还有一个波速为 $S_*$ 的接触波，满足
+\begin{equation}
+    S_L<S_*<S_R
+\end{equation}
+如图：
+\begin{figure}[htp]
+    \centering
+    \label{fig:}
+    \includegraphics[width=0.7\linewidth]{fig/HLLC.png}
+    \caption{}
+\end{figure}
+
+
+则Star Region中有两个未知状态： $\mathbf U_{*,L}$ 和 $\mathbf U_{*,R}$ 。仍然利用之前的控制体 $[x_L,x_R]\times[0,T]$ ，我们可以写
+\begin{equation}
+    \begin{aligned}
+        \mathbf U_{*,L} & =\displaystyle\frac{1}{T(S_*-S_L)}\int_{TS_L}^{TS_*}\mathbf U(x,t)\mathrm dx \\
+        \mathbf U_{*,R} & =\displaystyle\frac{1}{T(S_R-S_*)}\int_{TS_*}^{TS_R}\mathbf U(x,t)\mathrm dx
+    \end{aligned}
+\end{equation}
+由于我们还有
+\begin{equation}
+    \mathbf U^{Hll}=\displaystyle\frac{1}{T(S_R-S_L)}\int_{TS_L}^{TS_R}\mathbf U(x,t)\mathrm dx
+\end{equation}
+从而得到
+\begin{equation}
+    \displaystyle \left( \frac{S_*-S_L}{S_R-S_L} \right) \mathbf{U}_{*,L}+\left( \frac{S_R-S_*}{S_R-S_L} \right) \mathbf{U}_{*,R}=\mathbf{U}^{Hll}
+\end{equation}
+注意这里新的接触波的加入并不影响 $\mathbf U^{Hll}$ 之前的推导，因此我们仍然有
+\begin{equation}
+    \mathbf U^{Hll}=\displaystyle\frac{S_R\mathbf U_R-S_L\mathbf U_L+\mathbf F_L-\mathbf F_R}{S_R-S_L}
+\end{equation}
+HLLC Flux的定义方式如下，与HLL Flux基本相同：
+\begin{equation}
+    \mathbf{\tilde{U}}=\left\{ \begin{array}{l} \mathbf{U}_L,x<S_Lt\\ \mathbf{U}_{*,L},S_Lt<x<S_*t\\ \mathbf{U}_{*,R},S_*t<x<S_Rt\\ \mathbf{U}_R,S_Rt<x\\ \end{array} \right.
+\end{equation}
+对应的Flux为
+\begin{equation}
+    \mathbf{F}_{i+1/2}^{Hllc}=\left\{ \begin{array}{l} \mathbf{F}_L,S_L>0\\ \mathbf{F}_{*,L},S_L<0<S_*\\ \mathbf{F}_{*,R},S_*<0<S_R\\ \mathbf{F}_R,S_R<0\\ \end{array} \right.
+\end{equation}
+现在我们需要决定四个未知状态 $\mathbf U_{*,L}$,\ $\mathbf U_{*,R}$,\ $\mathbf F_{*,L}$,\ $\mathbf F_{*,R}$ 。利用R-H跳跃条件，可以列出三个关系式：
+\begin{equation}
+    \begin{aligned}
+        \mathbf{F}_{*,L}-\mathbf{F}_L     & =S_L\left( \mathbf{U}_{*,L}-\mathbf{U}_L \right)     \\
+        \mathbf{F}_{*,R}-\mathbf{F}_{*,L} & =S_*\left( \mathbf{U}_{*,R}-\mathbf{U}_{*,L} \right) \\
+        \mathbf{F}_R-\mathbf{F}_{*,R}     & =S_R\left( \mathbf{U}_R-\mathbf{U}_{*,R} \right)
+    \end{aligned}
+\end{equation}
+现在我们考虑Euler方程在 x 分量上的Flux：
+\begin{equation}
+    \mathbf{F}\left( \mathbf{U} \right) =\left[ \begin{array}{l} \rho u\\ \rho u^2+p\\ \rho uv\\ \rho uw\\ u\left( E+p \right)\\ \end{array} \right]
+\end{equation}
+根据方程本身的性质，我们附加以下条件：
+
+1. 压强和法向速度是连续的：
+\begin{equation}
+    p_{*,L}=p_{*,R}=:p_*
+\end{equation}
+\begin{equation}
+    u_{*,L}=u_{*,R}=:u_*
+\end{equation}
+2. 其它两个速度在左、右分别等于左右的初值：
+\begin{equation}
+    v_{*,L}=v_L,\ v_{*,R}=v_R
+\end{equation}
+\begin{equation}
+    w_{*,L}=w_L,\ w_{*,R}=w_R
+\end{equation}
+3. 接触波的速度
+\begin{equation}
+    S^*=u
+\end{equation}
+注意到一个重要的关系式
+\begin{equation}
+    \mathbf{F}\left( \mathbf{U} \right) =\left[ \begin{array}{l} \rho u\\ \rho u^2+p\\ \rho uv\\ \rho uw\\ u\left( E+p \right)\\ \end{array} \right] =u\left[ \begin{array}{l} \rho\\ \rho u\\ \rho v\\ \rho w\\ E\\ \end{array} \right] +p\left[ \begin{array}{l} 0\\ 1\\ 0\\ 0\\ u\\ \end{array} \right] =:u\mathbf{U}+p\mathbf{D}
+\end{equation}
+因此，我们可将两个激波上的跳跃条件重写为
+\begin{equation}
+    S_L\mathbf{U}_{*,L}-\mathbf{F}_{*,L}=S_L\mathbf{U}_L-\mathbf{F}_L
+\end{equation}
+\begin{equation}
+    S_R\mathbf{U}_{*,R}-\mathbf{F}_{*,R}=S_R\mathbf{U}_R-\mathbf{F}_R
+\end{equation}
+考虑第一个式子的第一个分量：
+\begin{equation}
+    S_L\rho_{*,L}-\rho_{*,L}u_{*,L}                        = S_L\rho_L-\rho_Lu_L
+\end{equation}
+考虑第一个式子的第二个分量：
+\begin{equation}
+    \begin{aligned}
+        S_L\rho_{*,L}u_{*,L}-u_{*,L}\rho_{*,L}u_{*,L}-p_{*,L} -p_{*,L} & = S_L\rho_L u_L - u_L\rho_Lu_L-p_L \\
+        (S_L-u_{*,L})\rho_{*,L}u_{*,L}      -p_{*,L}                   & = (S_L-u_L)\rho_Lu_L-p_L
+    \end{aligned}
+\end{equation}
+将上上式带入上式，得到：
+\begin{equation}
+    (S_L-u_L)\rho_Lu_{*,L}      -p_{*,L}  = (S_L-u_L)\rho_Lu_L-p_L
+\end{equation}
+从而：
+\begin{equation}
+    p_{*,L} =  p_L+\rho_L(S_L-u_L)(S_*-u_L)
+\end{equation}
+同理：
+\begin{equation}
+    p_{*,R}=p_R+\rho _R\left( S_R-u_R \right) \left( S_*-u_R \right)
+\end{equation}
+由于 $p_{*,L}=p_{*,R}$ ，联立上述两式即可解出接触波的波速 $S_*$ (注意它也等于法向的速度 $u$ )为:
+\begin{equation}
+    \displaystyle S_*=\frac{p_R-p_L+\rho _Lu_L\left( S_L-u_L \right) -\rho _Ru_R\left( S_R-u_R \right)}{\rho _L\left( S_L-u_L \right) -\rho _R\left( S_R-u_R \right)}
+\end{equation}
+并且 $S_L$,$S_R$ 是已知的，我们现在只需要利用R-H跳跃条件即可解出HLLC Flux。
+
+利用 $\mathbf F(\mathbf U)=u\mathbf U+p\mathbf D$ ，我们可以将激波的跳跃条件重写为
+\begin{equation}
+    S_*\mathbf{U}_{*,K}+p_*\mathbf{D}_*=\mathbf{F}_K+S_K\mathbf{U}_{*,K}-S_K\mathbf{U}_K
+\end{equation}
+其中 $K=L,R$ ，因此
+\begin{equation}
+    \displaystyle \mathbf{U}_{*,K}=\frac{S_K\mathbf{U}_K-\mathbf{F}_K+p_*\mathbf{D}_*}{S_K-S_*}
+\end{equation}
+再用一次跳跃条件，即得到直接的表达式：
+\begin{equation}
+    \displaystyle \mathbf{F}_{*,K}=\frac{S_*\left( S_K\mathbf{U}_K-\mathbf{F}_K \right) +S_K\left( p_K+\rho _L\left( S_K-u_K \right) \left( S_*-u_K \right) \right) \mathbf{D}_*}{S_K-S_*}
+\end{equation}
+
+\subsection{波速估计}
+\subsubsection{估计方法1}
+% A positivity-preserving high-order weighted compact nonlinear scheme for compressible gas-liquid flows
+% https://www.sciencedirect.com/science/article/abs/pii/S0021999121004642
+\begin{equation}
+    s_{L}=\min \left(\bar{u}-\bar{c}, u_{L}-c_{L}\right), \quad s_{R}=\max \left(\bar{u}+\bar{c}, u_{R}+c_{R}\right),
+\end{equation}
+其中
+\begin{equation}
+    \begin{aligned}
+        \bar{u}     & =\frac{u_{L} \sqrt{\rho_{L}}+u_{R} \sqrt{\rho_{R}}}{\sqrt{\rho_{L}}+\sqrt{\rho_{R}}}                                                                                                                                            \\
+        \bar{c}^{2} & =\frac{c_{L}^{2} \sqrt{\rho_{L}}+c_{R}^{2} \sqrt{\rho_{R}}}{\sqrt{\rho_{L}}+\sqrt{\rho_{R}}}+\frac{1}{2} \frac{\sqrt{\rho_{L}} \sqrt{\rho_{R}}}{\left(\sqrt{\rho_{L}}+\sqrt{\rho_{R}}\right)^{2}}\left(u_{R}-u_{L}\right)^{2} .
+    \end{aligned}
+\end{equation}
+\subsubsection{估计方法2}
+这里给出一种估计 $S_L,S_R$ 的方法\cite{numFlux2}：
+\begin{equation}
+    s_L=v_L-c_L q_L, \quad s^{*}=v^{*}, \quad s_R=v_R+c_R q_R,
+\end{equation}
+其中, for  $K=L,R$ ,
+\begin{equation}
+    q^{K}=\begin{cases}
+        1                                                                            & \text { if } p^{*} \leqslant p^{K}, \\
+        \left(1+\frac{\gamma+1}{2 \gamma}\left(p^{*} / p^{K}-1\right)\right)^{1 / 2} & \text { if } p^{*}>p^{K},
+    \end{cases}
+\end{equation}
+其中
+\begin{equation}
+    p^{*}=\frac{1}{2}\left(p_L+p_R\right)-\frac{1}{2}\left(v_R-v_L\right) \bar{\rho} \bar{c}, \quad v^{*}=\frac{1}{2}\left(v_L+v_R\right)-\frac{p_R-p_L}{2 \bar{\rho} \bar{c}},
+\end{equation}
+其中
+\begin{equation}
+    \bar{\rho}=\frac{1}{2}\left(\rho_L+\rho_R\right), \quad \bar{c}=\frac{1}{2}\left(c_L+c_R\right) .
+\end{equation}
+\section{双曲型方程(hyperbolic equation)}
+\begin{figure}[htp]
+    \centering
+    \label{fig:间断波}
+    \includegraphics[width=0.7\linewidth]{fig/间断波.png}
+    \caption{Elementary wave solutions of the Riemann problem: (a) shock wave of speed  $S_{i}$ , (b) contact discontinuity of speed  $S_{i}$  and (c) rarefaction wave}
+\end{figure}
+
+\subsection{激波(Shock Wave)}
+For a shock wave the two constant states  $\mathbf{U}_{\mathrm{L}}$  and  $\mathbf{U}_{\mathrm{R}}$  are connected through a single jump discontinuity in a genuinely non-linear field  i  and the following conditions apply
+the Rankine-Hugoniot conditions
+\begin{equation}
+    \mathbf{F}\left(\mathbf{U}_{\mathrm{R}}\right)-\mathbf{F}\left(\mathbf{U}_{\mathrm{L}}\right)=S_{i}\left(\mathbf{U}_{\mathrm{R}}-\mathbf{U}_{\mathrm{L}}\right) .
+\end{equation}
+the entropy condition
+\begin{equation}
+    \lambda_{i}\left(\mathbf{U}_{\mathrm{L}}\right)>S_{i}>\lambda_{i}\left(\mathbf{U}_{\mathrm{R}}\right)
+\end{equation}
+Fig. 2.20a depicts a shock wave of speed  $S_{i}$ . The characteristic  $\mathrm{d} x / \mathrm{d} t=\lambda_{i}$  on both sides of the wave run into the shock wave, which illustrates the compressive character of a shock.
+\subsection{接触间断(Rarefaction Wave)}
+For a contact wave the two data states  $\mathbf{U}_{\mathrm{L}}$  and  $\mathbf{U}_{\mathrm{R}}$  are connected through a single jump discontinuity of speed  $S_{i}$  in a linearly degenerate field  i  and the following conditions apply
+the Rankine-Hugoniot conditions
+\begin{equation}
+    \mathbf{F}\left(\mathbf{U}_{\mathrm{R}}\right)-\mathbf{F}\left(\mathbf{U}_{\mathrm{L}}\right)=S_{i}\left(\mathbf{U}_{\mathrm{R}}-\mathbf{U}_{\mathrm{L}}\right)
+\end{equation}
+constancy of the Generalised Riemann Invariants across the wave
+\begin{equation}
+    \frac{\mathrm{d} w_{1}}{k_{1}^{(i)}}=\frac{\mathrm{d} w_{2}}{k_{2}^{(i)}}=\frac{\mathrm{d} w_{3}}{k_{3}^{(i)}}=\cdots=\frac{\mathrm{d} w_{m}}{k_{m}^{(i)}} .
+\end{equation}
+the parallel characteristic condition
+\begin{equation}
+    \lambda_{i}\left(\mathbf{U}_{\mathrm{L}}\right)=\lambda_{i}\left(\mathbf{U}_{\mathrm{R}}\right)=S_{i}
+\end{equation}
+Fig. 2.20b depicts a contact discontinuity. Characteristics on both sides of the wave run parallel to it.
+
+
+\subsection{稀疏波(Rarefaction Wave)}
+For a rarefaction wave the two data states  $\mathbf{U}_{\mathrm{L}}$  and  $\mathbf{U}_{\mathrm{R}}$  are connected through a smooth transition in a genuinely non-linear field  i  and the following conditions are met
+constancy of the Generalised Riemann Invariants across the wave
+\begin{equation}
+    \frac{\mathrm{d} w_{1}}{k_{1}^{(i)}}=\frac{\mathrm{d} w_{2}}{k_{2}^{(i)}}=\frac{\mathrm{d} w_{3}}{k_{3}^{(i)}}=\cdots=\frac{\mathrm{d} w_{m}}{k_{m}^{(i)}} .
+\end{equation}
+divergence of characteristics
+\begin{equation}
+    \lambda_{i}\left(\mathbf{U}_{\mathrm{L}}\right)<\lambda_{i}\left(\mathbf{U}_{\mathrm{R}}\right)
+\end{equation}
+Fig. 2.20c depicts a rarefaction wave. Characteristics on the left and right of the wave diverge as do characteristics inside the wave.
+
 \chapter{附录}
+\section{模板}
+\begin{table}[ht]
+    \small
+    \centering
+    \begin{tabular}{|c|c|cccc|cccc|}
+        \hline
+                            &                 & \multicolumn{4}{c|}{DG   with MRWENO limiter} & \multicolumn{4}{c|}{DG   with WENO-JS limiter}                                                                                                                                                                 \\ \hline
+                            & $N\times N$     & \multicolumn{1}{c|}{$L_1$ error}              & \multicolumn{1}{c|}{Order}                     & \multicolumn{1}{c|}{$L_\infty$ error} & Order & \multicolumn{1}{c|}{$L_1$ error} & \multicolumn{1}{c|}{Order} & \multicolumn{1}{c|}{$L_\infty$ error} & Order \\ \hline
+        \multirow{6}{*}{P1} & $50\times 50$   & \multicolumn{1}{c|}{8.74E-05}                 & \multicolumn{1}{c|}{}                          & \multicolumn{1}{c|}{1.38E-04}         &       & \multicolumn{1}{c|}{1.97E-04}    & \multicolumn{1}{c|}{}      & \multicolumn{1}{c|}{8.99E-04}         &       \\ \cline{2-10}
+                            & $60\times 60$   & \multicolumn{1}{c|}{5.77E-05}                 & \multicolumn{1}{c|}{2.28}                      & \multicolumn{1}{c|}{9.07E-05}         & 2.30  & \multicolumn{1}{c|}{1.01E-04}    & \multicolumn{1}{c|}{3.68}  & \multicolumn{1}{c|}{5.51E-04}         & 2.68  \\ \cline{2-10}
+                            & $70\times 70$   & \multicolumn{1}{c|}{4.09E-05}                 & \multicolumn{1}{c|}{2.22}                      & \multicolumn{1}{c|}{6.41E-05}         & 2.25  & \multicolumn{1}{c|}{6.18E-05}    & \multicolumn{1}{c|}{3.16}  & \multicolumn{1}{c|}{2.89E-04}         & 4.18  \\ \cline{2-10}
+                            & $80\times 80$   & \multicolumn{1}{c|}{3.08E-05}                 & \multicolumn{1}{c|}{2.14}                      & \multicolumn{1}{c|}{4.83E-05}         & 2.11  & \multicolumn{1}{c|}{4.44E-05}    & \multicolumn{1}{c|}{2.48}  & \multicolumn{1}{c|}{1.85E-04}         & 3.34  \\ \cline{2-10}
+                            & $90\times 90$   & \multicolumn{1}{c|}{2.40E-05}                 & \multicolumn{1}{c|}{2.11}                      & \multicolumn{1}{c|}{3.77E-05}         & 2.10  & \multicolumn{1}{c|}{3.16E-05}    & \multicolumn{1}{c|}{2.89}  & \multicolumn{1}{c|}{1.27E-04}         & 3.22  \\ \cline{2-10}
+                            & $100\times 100$ & \multicolumn{1}{c|}{1.93E-05}                 & \multicolumn{1}{c|}{2.09}                      & \multicolumn{1}{c|}{3.02E-05}         & 2.09  & \multicolumn{1}{c|}{2.47E-05}    & \multicolumn{1}{c|}{2.33}  & \multicolumn{1}{c|}{8.66E-05}         & 3.62  \\ \hline
+        \multirow{6}{*}{P2} & $50\times 50$   & \multicolumn{1}{c|}{3.60E-06}                 & \multicolumn{1}{c|}{}                          & \multicolumn{1}{c|}{5.14E-06}         &       & \multicolumn{1}{c|}{3.59E-06}    & \multicolumn{1}{c|}{}      & \multicolumn{1}{c|}{5.14E-06}         &       \\ \cline{2-10}
+                            & $60\times 60$   & \multicolumn{1}{c|}{2.08E-06}                 & \multicolumn{1}{c|}{3.02}                      & \multicolumn{1}{c|}{3.01E-06}         & 2.93  & \multicolumn{1}{c|}{2.07E-06}    & \multicolumn{1}{c|}{3.01}  & \multicolumn{1}{c|}{3.01E-06}         & 2.93  \\ \cline{2-10}
+                            & $70\times 70$   & \multicolumn{1}{c|}{1.30E-06}                 & \multicolumn{1}{c|}{3.03}                      & \multicolumn{1}{c|}{1.91E-06}         & 2.95  & \multicolumn{1}{c|}{1.30E-06}    & \multicolumn{1}{c|}{3.02}  & \multicolumn{1}{c|}{1.91E-06}         & 2.95  \\ \cline{2-10}
+                            & $80\times 80$   & \multicolumn{1}{c|}{8.69E-07}                 & \multicolumn{1}{c|}{3.03}                      & \multicolumn{1}{c|}{1.29E-06}         & 2.96  & \multicolumn{1}{c|}{8.68E-07}    & \multicolumn{1}{c|}{3.03}  & \multicolumn{1}{c|}{1.29E-06}         & 2.96  \\ \cline{2-10}
+                            & $90\times 90$   & \multicolumn{1}{c|}{6.08E-07}                 & \multicolumn{1}{c|}{3.03}                      & \multicolumn{1}{c|}{9.08E-07}         & 2.97  & \multicolumn{1}{c|}{6.08E-07}    & \multicolumn{1}{c|}{3.02}  & \multicolumn{1}{c|}{9.08E-07}         & 2.97  \\ \cline{2-10}
+                            & $100\times 100$ & \multicolumn{1}{c|}{4.42E-07}                 & \multicolumn{1}{c|}{3.03}                      & \multicolumn{1}{c|}{6.64E-07}         & 2.97  & \multicolumn{1}{c|}{4.42E-07}    & \multicolumn{1}{c|}{3.03}  & \multicolumn{1}{c|}{6.64E-07}         & 2.97  \\ \hline
+    \end{tabular}
+\end{table}
+
+\section{WENO3与WENO5参数求解过程}
+WENO5 重构多项式：
+\begin{equation}
+    \begin{aligned}
+        P_0(x) & = \frac{1}{2} \left(u_{i}^{(0)} - 2 u_{i-1}^{(0)} + u_{i-2}^{(0)}\right)x^2 + \frac{1}{2} \left(3  u_{i}^{(0)} - 4 u_{i-1}^{(0)} + u_{i-2}^{(0)}\right)  x + \frac{23}{24}u_{i}^{(0)} +\frac{1}{12} u_{i-1}^{(0)} -\frac{1}{24} u_{i-2}^{(0)}        \\
+        P_1(x) & = \frac{1}{2} \left(u_{i+1}^{(0)} - 2  u_{i}^{(0)} + u_{i-1}^{(0)}\right)x^2 + \frac{1}{2}  \left(u_{i+1}^{(0)} - u_{i-1}^{(0)}\right)  x -\frac{1}{24}  u_{i+1}^{(0)} + \frac{13}{12}  u_{i}^{(0)} -\frac{1}{24}  u_{i-1}^{(0)}                     \\
+        P_2(x) & = \frac{1}{2}  \left(u_{i}^{(0)} - 2  u_{i+1}^{(0)} + u_{i+2}^{(0)}\right)x^2 + \frac{1}{2}\left(4  u_{i+1}^{(0)} - u_{i+2}^{(0)} - 3  u_{i}^{(0)}\right)  x + \frac{1}{12}  u_{i+1}^{(0)} -\frac{1}{24}  u_{i+2}^{(0)} + \frac{23}{24}  u_{i}^{(0)}
+    \end{aligned}
+\end{equation}
+满足：
+\begin{equation}
+    \begin{aligned}
+        \int_{-5/2}^{-3/2} P_0(x)\dd x = u_{i-2}^{(0)},\quad \int_{-3/2}^{-1/2} P_0(x)\dd x = u_{i-1}^{(0)},\quad \int_{-1/2}^{1/2} P_0(x)\dd x = u_{i}^{(0)} \\
+        \int_{-3/2}^{-1/2} P_1(x)\dd x = u_{i-1}^{(0)},\quad \int_{-1/2}^{1/2} P_1(x)\dd x = u_{i}^{(0)},\quad \int_{1/2}^{3/2} P_1(x)\dd x = u_{i+1}^{(0)}   \\
+        \int_{-1/2}^{1/2} P_2(x)\dd x = u_{i}^{(0)},\quad \int_{1/2}^{3/2} P_2(x)\dd x = u_{i+1}^{(0)},\quad \int_{3/2}^{5/2} P_2(x)\dd x = u_{i+2}^{(0)}     \\
+    \end{aligned}
+\end{equation}
+
+
+
+
+
+
+\section{编程小技巧}
+\subsection{程序加速}
+\begin{itemize}
+    \item 使用linux系统似乎会加快计算速度。
+    \item 使用并行算法可以显著提升速度。
+    \item 使用 c++, Fortran 等编译型语言放弃 MATLAB等解释型语言
+    \item 使用自适应网络。
+    \item 使用合适的CFL数与合适的高斯积分点。
+    \item 在初始化的时候储存基函数 $\varphi(x)$ 在高斯点处的值，从而省去每次计算 $\varphi(x_0)$ 。
+\end{itemize}
+% https://www.zhihu.com/question/68169365/answer/524351247
+% https://zhuanlan.zhihu.com/p/533958396 储存高斯点
+\subsection{检查程序错误}
+\begin{itemize}
+    \item 只完成初始化，不做时间推进，然后测试精度是否满足预期。这样可以检查初始化与精度计算是否有误。
+    \item 左右特征向量矩阵相乘，检验是否得到单位矩阵。这样可以检查特征向量矩阵是否写错。
+    \item 在测试二维程序的时候，将一个一维问题延拓成二维问题，并把计算结果与一维问题的情况做对比。
+    \item 在测试二维程序的时候，先找一个对称的问题，检查计算结果是否对称。
+    \item 先使用 L-F , P1 这样简单的设置，再尝试复杂的设置。
+    \item 先计算结构化网络，再计算非结构化网络。
+          % https://en.wikipedia.org/wiki/Mesh_generation
+    \item 保极值限制器中 $\epsilon$ 不宜太小，参考值：1e-8~1e-13
+    \item 太少的网格数量也可能会导致程序出错
+\end{itemize}
 
 \section{边界条件}
 \subsection{周期性边界条件}
@@ -823,8 +1371,8 @@ HLL(Harten-Lax-van Leer)
 
 \section{数学符号}
 \subsection{散度}
-在三维直角坐标系  $x y z$  中，设向量场  $\boldsymbol{A}$  的表示为
-$\boldsymbol{A}(x, y, z)=A_{x}(x, y, z) \boldsymbol{i}+A_{y}(x, y, z) \boldsymbol{j}+A_{z}(x, y, z) \boldsymbol{k}$ 其中的  $\boldsymbol{i}, \boldsymbol{j}, \boldsymbol{k} $ 分别是  $x$  轴、  $y$  轴、  $z$  轴方向上的单位向量，场的分量  $A_{x}, A_{y}, A_{z}$  具有一阶连续偏导数，那么向量场  $\boldsymbol{A}$  的散度就是:
+在三维直角坐标系  $x y z$  中,设向量场  $\boldsymbol{A}$  的表示为
+$\boldsymbol{A}(x, y, z)=A_{x}(x, y, z) \boldsymbol{i}+A_{y}(x, y, z) \boldsymbol{j}+A_{z}(x, y, z) \boldsymbol{k}$ 其中的  $\boldsymbol{i}, \boldsymbol{j}, \boldsymbol{k} $ 分别是  $x$  轴、  $y$  轴、  $z$  轴方向上的单位向量,场的分量  $A_{x}, A_{y}, A_{z}$  具有一阶连续偏导数,那么向量场  $\boldsymbol{A}$  的散度就是:
 \begin{equation}
     \operatorname{div} \boldsymbol{A}=\div \boldsymbol{A}=\dfrac{\partial A_{x}}{\partial x}+\dfrac{\partial A_{y}}{\partial y}+\dfrac{\partial A_{z}}{\partial z}
 \end{equation}
@@ -833,51 +1381,66 @@ $\nabla f$在三维直角坐标系中表示为
 \begin{equation}
     {\displaystyle \nabla f={\begin{pmatrix}{\dfrac {\partial f}{\partial x}},{\dfrac {\partial f}{\partial y}},{\dfrac {\partial f}{\partial z}}\end{pmatrix}}={\dfrac {\partial f}{\partial x}}\mathbf {i} +{\dfrac {\partial f}{\partial y}}\mathbf {j} +{\dfrac {\partial f}{\partial z}}\mathbf {k} }
 \end{equation}
-$i, j, k $为标准的单位向量，分别指向 $x, y$ 跟 $z$ 坐标的方向。
+$i, j, k $为标准的单位向量,分别指向 $x, y$ 跟 $z$ 坐标的方向.
 \subsection{范数}
-范数（norm）是一个函数，它将一个向量映射到非负实数。在机器学习和优化中，范数是一种衡量向量大小或长度的方式。
+范数（norm）是一个函数,它将一个向量映射到非负实数.在机器学习和优化中,范数是一种衡量向量大小或长度的方式.
 
-L1, L2和L无穷范数是线性代数中的三种不同的向量范数（或向量长度度量），它们在数学和数据科学领域中经常使用。
+L1, L2和L无穷范数是线性代数中的三种不同的向量范数（或向量长度度量）,它们在数学和数据科学领域中经常使用.
 
-L1范数：L1范数也称为曼哈顿距离，它是一个向量中每个元素的绝对值之和。对于一个$n$维向量$x = (x1, x2, ..., xn)$，其$L1$范数定义如下：
+L1范数：L1范数也称为曼哈顿距离,它是一个向量中每个元素的绝对值之和.对于一个$n$维向量$x = (x1, x2, ..., xn)$,其$L1$范数定义如下：
 \begin{equation}
     ||x||_1 = |x_1| + |x_2| + \cdots + |x_n|
 \end{equation}
 
-L2范数：L2范数也称为欧几里得距离，它是向量中每个元素平方和的平方根。对于一个$n$维向量$x = (x_1, x_2,\cdots, x_n)$，其L2范数定义如下：
+L2范数：L2范数也称为欧几里得距离,它是向量中每个元素平方和的平方根.对于一个$n$维向量$x = (x_1, x_2,\cdots, x_n)$,其L2范数定义如下：
 \begin{equation}
     ||x||_2 = \sqrt{(x_1^2 + x_2^2 + ... + x_n^2)}
 \end{equation}
-$L_\infty$范数：$L_\infty$ 范数也称为最大值范数，它是向量中所有元素的绝对值中最大的值。对于一个n维向量$x = (x_1, x_2,\cdots, x_n)$，其$L_\infty$定义如下：
+$L_\infty$范数：$L_\infty$ 范数也称为最大值范数,它是向量中所有元素的绝对值中最大的值.对于一个n维向量$x = (x_1, x_2,\cdots, x_n)$,其$L_\infty$定义如下：
 \begin{equation}
     ||x||_\infty = \max(|x_1|, |x_2|,\cdots, |x_n|)
 \end{equation}
-这些向量范数在机器学习和优化算法中经常使用，例如L1和L2正则化（用于缩小模型参数），L1和L2距离度量（用于计算相似性或距离），以及L1和L2约束（用于限制变量的取值范围）。
+这些向量范数在机器学习和优化算法中经常使用,例如L1和L2正则化（用于缩小模型参数）,L1和L2距离度量（用于计算相似性或距离）,以及L1和L2约束（用于限制变量的取值范围）.
 \subsection{张量积}
 
 
 \section{定义}
-Definition 1. Through the text, we will use the standard Bachmann-Landau notation, where
+% https://en.wikipedia.org/wiki/Big_O_notation
+\begin{definition}
+    标准的巴赫曼-朗道符号(Bachmann-Landau notation) 如下：
 
-\begin{itemize}
-    \item $g(\Delta x)=\mathrm{O}\left(\Delta x^{n}\right)$  denotes an upper bound to  $g(\Delta x)$ , that is,  $|g(\Delta x)| \leq C \Delta x^{n}$  for some  $C>0$  as  $\Delta x \rightarrow 0$ .
-    \item $g(\Delta x)=\Omega\left(\Delta x^{n}\right)$  denotes a lower bound to  $g(\Delta x)$ , that is,  $|g(\Delta x)| \geq C \Delta x^{n}$  for some  $C>0$  as  $\Delta x \rightarrow 0$.
-    \item $g(\Delta x)=\Theta\left(\Delta x^{n}\right)$  denotes the exact order of  $g(\Delta x)$ , that is,  $g(\Delta x)=\mathrm{O}\left(\Delta x^{n}\right)$  and  $g(\Delta x)=\Omega\left(\Delta x^{n}\right)$  as  $\Delta x \rightarrow 0$ .
-\end{itemize}
+    \begin{itemize}
+        \item $g(\Delta x)=\mathrm{O}\left(\Delta x^{n}\right)$  意为： 存在常数 $C>0$,使得当 $\Delta x \rightarrow 0$时,$|g(\Delta x)| \leq C \Delta x^{n}$
+        \item $g(\Delta x)=\Omega\left(\Delta x^{n}\right)$ 意为：  存在常数 $C>0$,使得当 $\Delta x \rightarrow 0$时,$|g(\Delta x)| \geq C \Delta x^{n}$
+        \item $g(\Delta x)=\Theta\left(\Delta x^{n}\right)$  意为： 当 $\Delta x \rightarrow 0$ 时,$g(\Delta x)=\mathrm{O}\left(\Delta x^{n}\right)$  and  $g(\Delta x)=\Omega\left(\Delta x^{n}\right)$
+    \end{itemize}
 
+    请注意,根据这个定义,$g=\mathrm{O}(1)$ 并不意味着 $g$ 是一个常数； 相反,它意味着常数是 $g$ 的上限,即 $\Delta x \rightarrow 0$,或者换句话说,$g$ 不会随着 $\Delta x$ 渐近增长. 例如,此表示法中的 $\Delta x^{2 / 3}=\mathrm{O}(1)$.
+\end{definition}
+\begin{definition}
+    如果$f\left(x_{c}\right)=f^{\prime}\left(x_{c}\right)=\ldots=f^{\left(n_{\mathrm{cp}}\right) )}\left(x_{c}\right)=0$ 但 $f^{\left(n_{\mathrm{cp}}+1\right)}\left(x_{c}\right) \neq 0$,那么 $x_{c}$ 被认为是 $f(x)$ 的阶 $n_{\mathrm{cp}}$ 的临界点(critical point)。 如果 $f^{\prime}\left(x_{c}\right) \neq 0，则 x_{c}$ 被定义为 $f(x)$ 的 0 阶临界点。
+\end{definition}
+\begin{definition}
+    \cite{WENO-Z-2016}
+    If the smoothness indicator measures the smoothness of the whole  $R$  points stencil  $\mathcal{S}_{i+\frac{1}{2}}$ , it is called a global smoothness indicator; it is said to be a local smoothness indicator if it only acts in an  r  points substencil  $\mathcal{S}_{i+\frac{1}{2}}^{k} \subset \mathcal{S}_{i+\frac{1}{2}}$ .
+\end{definition}
+\begin{definition}
+    \cite{WENO-Z-2016}
+    simple critical points i.e.,  $x$  such that  $f^{\prime}(x)=0$  but  $f^{\prime \prime}(x) \neq 0$
+\end{definition}
+\begin{definition}
+    \cite{WENO-Z-2016}
+    flatter critical points (where$f^{\prime}(x)=f^{\prime \prime}(x)=0$)
+\end{definition}
+% \begin{definition}
+%     $\theta(\psi(\Delta x))$  will denote the order of  $\psi$  (as a function of  $\Delta x$  ), that is, the power of  $\Delta x$  in the leading term of the asymptotic expansion of  $\psi(\Delta x)$ ,
+%     \begin{equation}
+%         \theta(\psi)=n \Longleftrightarrow \psi(\Delta x)=\Theta\left(\Delta x^{n}\right)
+%     \end{equation}
 
-Notice that, by this definition,  $g=\mathrm{O}(1)$  does not mean that  g  is a constant; instead, it means that a constant is an upper bound to  g  as  $\Delta x \rightarrow 0$  or, in other words, that  g  does not asymptotically grow with  $\Delta x$ . For example,  $\Delta x^{2 / 3}=\mathrm{O}(1)$  in this notation.
+%     $\theta_{0}(\psi(\Delta x)) $ will denote the order of  $\psi$  in the special case where the stencil is free of critical points.
+% \end{definition}
 
-Definition 2. If  $f\left(x_{c}\right)=f^{\prime}\left(x_{c}\right)=\ldots=f^{\left(n_{\mathrm{cp}}\right)}\left(x_{c}\right)=0$  but  $f^{\left(n_{\mathrm{cp}}+1\right)}\left(x_{c}\right) \neq 0, x_{c}$  is said to be a critical point of order  $n_{\mathrm{cp}}$  of  $f(x)$ . If  $f^{\prime}\left(x_{c}\right) \neq 0, x_{c}$  is defined as a critical point of order 0 of  $f(x)$ .
-
-Definition 3.  $\theta(\psi(\Delta x))$  will denote the order of  $\psi$  (as a function of  $\Delta x$  ), that is, the power of  $\Delta x$  in the leading term of the asymptotic expansion of  $\psi(\Delta x)$ ,
-\begin{equation}
-    \theta(\psi)=n \Longleftrightarrow \psi(\Delta x)=\Theta\left(\Delta x^{n}\right)
-\end{equation}
-
-
-
-$\theta_{0}(\psi(\Delta x)) $ will denote the order of  $\psi$  in the special case where the stencil is free of critical points.
 \section{控制方程}
 \subsection{一维方程}
 \subsubsection{欧拉方程}
@@ -913,12 +1476,12 @@ $\theta_{0}(\psi(\Delta x)) $ will denote the order of  $\psi$  in the special c
             \gamma \dfrac{u_{2}}{u_{1}} u_{3}-\dfrac{1}{2}(\gamma-1) \dfrac{u_{2}^{3}}{u_{1}^{2}}
         \end{array}\right]
 \end{equation}
-这里 $\rho$ 为密度，$p$为压力，$u$为粒子速度，$E$ 为每单位体积的总能量。
+这里 $\rho$ 为密度,$p$为压力,$u$为粒子速度,$E$ 为每单位体积的总能量.
 \begin{equation}
     E=\dfrac{1}{2}\rho u^{2}+\frac{p}{\gamma-1}
 \end{equation}
 
-对于空气，一般可取 $\gamma=1.4$.声速 $a$ 的表达式为：
+对于空气,一般可取 $\gamma=1.4$.声速 $a$ 的表达式为：
 \begin{equation}
     a=\sqrt{\left(p / \rho^{2}-e_{\rho}\right) / e_{p}}=\sqrt{\dfrac{\gamma p}{\rho}}
 \end{equation}
@@ -984,50 +1547,29 @@ $\text { where } c=\sqrt{\gamma p / \rho}, B_{1}=(\gamma-1) / c^{2}, B_{2}=B_{1}
             H+u a
         \end{array}\right]
 \end{equation}
-其中 $H$ 为总比焓(total specific enthalpy)，$h$ 为比焓(specific enthalpy).
+其中 $H$ 为总比焓(total specific enthalpy),$h$ 为比焓(specific enthalpy).
 \begin{equation}
     H=(E+p) / \rho \equiv \dfrac{1}{2} u^{2}+h, \quad h=e+p / \rho
 \end{equation}
 \paragraph{算例}
-\begin{example}
-    \begin{equation}
-        \begin{aligned}
-            \rho(x, 0) & =1+0.2 \sin \pi x \\
-            u(x, 0)    & =0.7              \\
-            p(x, 0)    & =1
-        \end{aligned}
-    \end{equation}
-    计算区域为 $[0,2]$, 周期边界条件，解析解为：
-    \begin{equation}
-        \begin{aligned}
-            \rho(x, t) & =1+0.2 \sin \pi(x-0.7 t) \\
-            u(x, t)    & =0.7                     \\
-            p(x, t)    & =1
-        \end{aligned}
-    \end{equation}
 
 
-\end{example}
 \begin{example}
-    Lax 激波管问题\cite{RN109}：
-    \begin{equation}
-        \begin{aligned}
-            (\rho, v, p) & =(0.445,0.698,3.528) & \text { 当 } x \leqslant 0 \text {, } \\
-            (\rho, v, p) & =(0.5,0,0.571) \quad & \text { 当 } \quad x>0 \text {. }     \\
-        \end{aligned}
-    \end{equation}
-    计算区域为 $[-5,5]$ 两瑞均是常数边界条件, 我们求解该问题至 $T=1.3$.
-\end{example}
-
-\begin{example}
-    Shu Osher 问题\cite{RN109}，
+    Shu Osher 问题\cite{RN109},
     \begin{equation}
         \begin{aligned}
             (\rho, v, p) & =(3.857143,2.629369,10.333333)   & \text { 当 } x \leq-4, \\
             (\rho, v, p) & =(1+\varepsilon \sin (5 x), 0,1) & \text { 当 } x>-4 .
         \end{aligned}
     \end{equation}
-    选取 $\epsilon = 0.2$,计算区域为 $[-5,5]$,两端边界条件按初值条件给定后保持不变，求解至时间 $T=1.8$
+    选取 $\epsilon = 0.2$,计算区域为 $[-5,5]$,两端边界条件按初值条件给定后保持不变,求解至时间 $T=1.8$.
+    \begin{figure}[htp]
+        \centering
+        \label{fig:shu_Osher}
+        \includegraphics[width=0.7\linewidth]{fig/Shu_Osher.png}
+        \caption{$N=2000,P2,WENO-JS,M=50$}
+    \end{figure}
+
 \end{example}
 
 \subsection{二维方程}
@@ -1140,57 +1682,61 @@ $\text { where } c=\sqrt{\gamma p / \rho}, B_{1}=(\gamma-1) / c^{2}, B_{2}=B_{1}
 \end{equation}
 where  $c=\sqrt{\gamma p / \rho}, B_{1}=(\gamma-1) / c^{2}, B_{2}=B_{1}\left(\mu^{2}+v^{2}\right) / 2$  and  $H=(E+p) / \rho$
 \paragraph{算例}
-\begin{example}
-    光滑问题：初值为：
-    \begin{equation}
-        \begin{aligned}
-            \rho(x,y,0) & = 1+0.2\sin(\pi(x+y)) \\
-            u(x,y,0)    & = 0.7                 \\
-            v(x,y,0)    & = 0.3                 \\
-            p(x,y,0)    & = 1                   \\
-        \end{aligned}
-    \end{equation}
-    周期边界条件
+%------------------------------------
+% 一个比较有趣的光滑问题见
+% https://zhuanlan.zhihu.com/p/630069961
+% 其中也有很多有趣的间断算例
+%------------------------------------
 
-    准确解为：
-    \begin{equation}
-        \rho(x,y,t) = 1+0.2\sin(\pi(x+y-(u+v)t)),u=0.7,v=0.3,p=1
-    \end{equation}
-\end{example}
 \begin{example}
-    二维黎曼问题\cite{RN13}，初值为
+    光滑算例
+    取计算域为  $[0,10]^{2}$  ，先给定一个平稳的流： $\rho=p=u=v=1$  ，然后在  $\left(x_{0}, y_{0}\right)=(5,5)$  施加一个冲击:
     \begin{equation}
-        \begin{cases}
-            \left(\rho_{1}, p_{1}, \mu_{1}, v_{1}\right)^{T}=(0.5313,0.4,0,0)^{T}, & x>1, y>1, \\
-            \left(\rho_{2}, p_{2}, \mu_{2}, v_{2}\right)^{T}=(1,1,0,0.7276)^{T},   & x>1, y<1, \\
-            \left(\rho_{3}, p_{3}, \mu_{3}, v_{3}\right)^{T}=(1,1,0.7276,0)^{T},   & x<1, y>1, \\
-            \left(\rho_{4}, p_{4}, \mu_{4}, v_{4}\right)^{T}=(0.8,1,0,0)^{T},      & x<1, y<1  \\
-        \end{cases}
+        \begin{array}{l}
+            \Delta T=-\frac{(\gamma-1) \varepsilon^{2}}{8 \gamma \pi^{2}} e^{1-r^{2}} \\
+            \Delta S=0
+        \end{array}
     \end{equation}
-    $p_1<p_2=p_3=p_4$。滑移边界条件。建议计算至$t=0.52$,网格为260*260.
-    \begin{figure}[htp]
-        \centering
-        \label{fig:}
-        \includegraphics[width=0.7\linewidth]{fig/二维黎曼问题}
-        \caption{网格密度260x260，间断有限元方法，TVB指示子，M=50，WENO-M}
-    \end{figure}
+    \begin{equation}
+        (\Delta u, \Delta v)=\frac{\varepsilon}{2 \pi} e^{0.5\left(1-r^{2}\right)}(-\bar{y}, \bar{x})
+    \end{equation}
+    其中  $T=\frac{p}{\rho}$  是温度，  $S=\frac{p}{\rho^{\gamma}}$  是熵，  $(\bar{x}, \bar{y})=(x-5, y-5) , r^{2}=\bar{x}^{2}+\bar{y}^{2}, \varepsilon=5 $
+    (注意 $\Delta S=0$ 不是一个没用的条件，它表明了 $ p=\rho^{\gamma}  )$
 \end{example}
 
 \begin{example}
-    % https://www.researchgate.net/publication/370612578_A_dissipation-dispersion_coupled_inequality_for_a_class_of_upwind_multi-resolution_WENO_schemes
+    二维黎曼问题\cite{RN13},初值为
     \begin{equation}
         (\rho, u, v, p)=\begin{cases}
-            (0.138,1.206,1.206,0.029), & (x, y) \in[0,0.8) \times[0,0.8) \\
-            (0.5323,1.206,0,0.3),      & (x, y) \in[0,0.8) \times[0.8,1] \\
-            (0.5323,0,1.206,0.3),      & (x, y) \in[0.8,1] \times[0,0.8) \\
-            (1.5,0,0,1.5),             & (x, y) \in[0.8,1] \times[0.8,1]
+            (0.8,0,0,1),      & (x, y) \in[0,1) \times[0,1) \\
+            (1,0.7276,0,1),   & (x, y) \in[0,1) \times[1,2] \\
+            (1,0,0.7276,1),   & (x, y) \in[1,2] \times[0,1) \\
+            (0.5313,0,0,0.4), & (x, y) \in[1,2] \times[1,2]
         \end{cases}
     \end{equation}
-    $t_{end}=0.8$，网格为$800\times800$。
+    $p_1<p_2=p_3=p_4$.滑移边界条件.建议计算至$t=0.52$,网格为260*260.
+
+    \begin{figure}[ht]%
+        \centering
+        \subfloat{
+            \includegraphics[width=0.45\linewidth]{fig/黎曼算例2-1.png}
+        }\quad
+        \subfloat{
+            \includegraphics[width=0.45\linewidth]{fig/黎曼算例2-2.png}
+        }
+        \caption{WENO-JS,M=10,等高线：linspace(0.56,1.67,30)}
+    \end{figure}
+
+
 \end{example}
+
+
+
+
+
 \newpage
 \section{基函数函数}
-对于基函数，
+对于基函数,
 \cite{RN48}
 \subsection{一维}
 在 $[-1,1]$ 上的勒让德函数为：
@@ -1221,39 +1767,25 @@ $[-1,1]\times[-1,1]$上的勒让德函数为：
     \end{aligned}
 \end{equation}
 
-对于$[x_a,x_b]\times[y_a,y_b]$上的勒让德函数，只需令 $\xi=\dfrac{x - \dfrac{x_a+x_b}{2}}{\dfrac{x_b-x_a}{2}},\eta = \dfrac{y - \dfrac{y_a+y_b}{2}}{\dfrac{y_b-y_a}{2}}$
+对于$[x_a,x_b]\times[y_a,y_b]$上的勒让德函数,只需令 $\xi=\dfrac{x - \dfrac{x_a+x_b}{2}}{\dfrac{x_b-x_a}{2}},\eta = \dfrac{y - \dfrac{y_a+y_b}{2}}{\dfrac{y_b-y_a}{2}}$
 \section{数值积分}
-% https://zhuanlan.zhihu.com/p/597515168
-\cite{RKDG2} reamrk 2.6
 
-
-Remark 2.6. To compute the integrations in (2.10) for nonlinear  $f$ , quadratures of correct order must be used so that the error of approximating
-
-\begin{equation}
-    \frac{1}{\Delta x_{j}^{l+1}} \int_{I_{j}} f\left(u^{h}(x, t)\right) \frac{d}{d x} v_{l}^{(j)}(x) d x
-\end{equation}
-
-
-
-is $O\left(h^{k+1}\right)$ . Considering (2.4), we need a quadrature whose error is  $O\left(h^{k+l+2}\right)$ , or  $O\left(h^{2 k+2}\right)$ , to work for every  l . For example, Simpson's rule (the error is  $O\left(h^{5}\right)  )$ is enough for  k=1  (second-order scheme), and three-point Gaussian (the error is  $O\left(h^{6}\right)  )$ is needed for  $k=2$  (third-order scheme). Since we can use  $h_{j \pm 1 / 2}$  as  $f\left(u^{h}\left(x_{j \pm 1 / 2}, t\right)\right)$  in the quadratures to save function evaluations, Gauss-Lobatto quadratures, which use end points of the interval as nodes, are preferred.
-
-
-一般采用的求积公式是机械求解求积公式中的高斯积分。高斯积分是一种非常常用的数值积分方法，具有如下优点：
+一般采用的求积公式是机械求解求积公式中的高斯积分.高斯积分是一种非常常用的数值积分方法,具有如下优点：
 \begin{itemize}
-    \item 高斯积分的精度随着积分点的增加而增加，当积分点的数量足够大时，可以达到非常高的精度。
-    \item 当使用的点数固定为 $n+1$ 个时，高斯积分具有 $2n+1$ 阶的精度，是所有机械求积公式中最高的。因此在计算复杂函数积分时，高斯积分可以显著减少计算时间和计算成本。
-    \item 高斯积分公式可以非常方便地使用代码实现。
+    \item 高斯积分的精度随着积分点的增加而增加,当积分点的数量足够大时,可以达到非常高的精度.
+    \item 当使用的点数固定为 $n$ 个时,高斯积分具有 $2n-1$ 阶的精度,是所有机械求积公式中最高的.因此在计算复杂函数积分时,高斯积分可以显著减少计算时间和计算成本.
+    \item 高斯积分公式可以非常方便地使用代码实现.
 \end{itemize}
-具体而言，该公式可写成：
+具体而言,该公式可写成：
 \begin{equation}
     \int_{-1}^1 f(x)\dd x=\sum_{i=1}^{n+1}\omega_if(x_i)
 \end{equation}
-其中，$\omega_i$ 和 $x_i$ 分别表示高斯积分公式中第 $i$ 个点的权重和位置。对于积分区间非 $[-1,1]$ 的积分，可以使用下面的公式：
+其中,$\omega_i$ 和 $x_i$ 分别表示高斯积分公式中第 $i$ 个点的权重和位置.对于积分区间非 $[-1,1]$ 的积分,可以使用下面的公式：
 \begin{equation}
     \int_{a}^{b} f(x) \mathrm{d} x=\int_{-1}^{1} f\left(\frac{(b-a) t+b+a}{2}\right) \frac{b-a}{2} \mathrm{~d} t=\sum_i f(\frac{(b-a)x_i+b+a}{2})\frac{b-a}{2}\omega_i
 \end{equation}
 
-表 \ref{tab:Gauss-Legendre积分} 给出 $n=2,3,4,5$ 时，高斯积分的取值点和权重大小.
+表 \ref{tab:Gauss-Legendre积分} 给出 $n=2,3,4,5$ 时,高斯积分的取值点和权重大小.
 \begin{table}[ht]
     \centering
     \caption{Gauss-Legendre的取值点和权重大小}
@@ -1271,16 +1803,30 @@ is $O\left(h^{k+1}\right)$ . Considering (2.4), we need a quadrature whose error
 \end{table}
 
 
-Also known as Lobatto quadrature,[7] named after Dutch mathematician Rehuel Lobatto. It is similar to Gaussian quadrature with the following differences:
-
-The integration points include the end points of the integration interval.
-It is accurate for polynomials up to degree 2n – 3, where n is the number of integration points.[8]
-
-Step 1. Here we reconstruct point values of  $u$  at the Gauss or Gauss-Lobatto quadrature points. For the  $\mathbb{P}^{k}$ -based DG (which is  (k+1)  th order accurate), we need a Gauss or Gauss-Lobatto quadrature rule accurate to at least  $\mathrm{O}\left(h^{2 k+2}\right)$ , and the order of accuracy for the WENO reconstruction must be at least  $2 k+1$ . For this purpose, we would need to use the cell averages of the neighboring  2$ k+1$  cells  $I_{i-k}, \ldots, I_{i+k}$  to reconstruct the point values of  u  at the Gauss or Gauss-Lobatto quadrature points. In particular, we have used the following quadrature points:
+还有一种求积方式也称为 Gauss-Lobatto 求积,以荷兰数学家 Rehuel Lobatto 命名.它类似于高斯求积,但有以下区别：
 \begin{itemize}
-    \item For the  $\mathbb{P}^{1}$  case, we use the two-point Gauss quadrature points  $x_{i-\sqrt{3} / 6}$  and  $x_{i+\sqrt{3} / 6}$ .
-    \item For the  $\mathbb{P}^{2}$  case, we use the four-point Gauss-Lobatto quadrature points  $x_{i-1 / 2}, x_{i-\sqrt{5} / 10}, x_{i+\sqrt{5} / 10}$ , and  $x_{i+1 / 2}$ .
-    \item For the  $\mathbb{P}^{3}$  case, we use the four-point Gauss quadrature points  $x_{i-\sqrt{525+70 \sqrt{30}} / 70}, x_{i-\sqrt{525-70 \sqrt{30}} / 70}, x_{i+\sqrt{525-70 \sqrt{30}} / 70}$  and  $x_{i+\sqrt{525+70 \sqrt{30}} / 70}$ .
+    \item 积分点包括积分区间的端点.
+    \item 对于 $2n – 3$ 次以下的多项式,它是准确的,其中 n 是积分点的数量.
+\end{itemize}
+当需要使用区间断点作为积分点的时候,应当选用 Gauss-Lobatto 求积.
+
+
+% https://zhuanlan.zhihu.com/p/597515168
+\cite{RKDG2} reamrk 2.6
+
+
+为了计算 xx 中非线性 $f$ 的积分，必须使用正确阶次的求积，以便近似误差
+\begin{equation}
+    \frac{1}{\Delta x_{j}^{l+1}} \int_{I_{j}} f\left(u^{h}(x, t)\right) \frac{d}{d x} v_{l}^{(j)}(x) d x
+\end{equation}
+为 $O\left(h^{k+1}\right)$. 我们需要使求积的误差为 $O\left(h^{2 k+2}\right)$。对于高斯积分，误差为 $O\left(h^{2n-1}\right)$,对于Gauss-Lobatto，误差为 $O\left(h^{2n-3}\right)$.
+
+另一方面，由于我们可以在使用 Gauss-Lobatto 积分的时候，可以将 $h_{j \pm 1 / 2}$  储存起来，用于后面计算  $f\left(u^{h}\left(x_{j \pm 1 / 2}, t\right)\right)$ 从而节省计算量。所以在积分点的数量 $n$ 相同的情况下，优先使用  Gauss-Lobatto 积分。
+
+\begin{itemize}
+    \item 对于  $\mathbb{P}^{1}$  的情况, 我们使用两点高斯积分点  $x_{i-\sqrt{3} / 6}$  和  $x_{i+\sqrt{3} / 6}$ .
+    \item 对于  $\mathbb{P}^{2}$  的情况, 我们使用四点 Gauss-Lobatto 积分点  $x_{i-1 / 2}, x_{i-\sqrt{5} / 10}, x_{i+\sqrt{5} / 10}$ , 和  $x_{i+1 / 2}$ .
+    \item 对于  $\mathbb{P}^{3}$  的情况, 我们使用四点 Gauss 积分点  $x_{i-\sqrt{525+70 \sqrt{30}} / 70}, x_{i-\sqrt{525-70 \sqrt{30}} / 70}, x_{i+\sqrt{525-70 \sqrt{30}} / 70}$  and  $x_{i+\sqrt{525+70 \sqrt{30}} / 70}$ .
 \end{itemize}
 
 \begin{table}[ht]
@@ -1298,7 +1844,7 @@ Step 1. Here we reconstruct point values of  $u$  at the Gauss or Gauss-Lobatto 
         \bottomrule
     \end{tabular}
 \end{table}
-对于$n$不同的情况，可以从这个\cite{RN106}查到更多$x_i$,$\omega_i$的值。特别的，对于 $P^1,n\geqslant 2$,$P^2,n\geqslant 4$.
+对于$n$不同的情况,可以从这个\cite{RN106}查到更多$x_i$,$\omega_i$的值.
 \section{计算精度}
 假设我们得到的近似解为 $u_h$, 准确解为 $u$.
 \begin{equation}
@@ -1306,7 +1852,7 @@ Step 1. Here we reconstruct point values of  $u$  at the Gauss or Gauss-Lobatto 
 \end{equation}
 下面介绍如何通过数值实验求出 $p$.
 
-在两次实验中，我们使用了不同的 $h=h_1,h_2$，得到的近似解为 $u_{h_1},u_{h_2}$. 则：
+在两次实验中,我们使用了不同的 $h=h_1,h_2$,得到的近似解为 $u_{h_1},u_{h_2}$. 则：
 
 \begin{equation}
     \begin{aligned}
@@ -1331,18 +1877,18 @@ Step 1. Here we reconstruct point values of  $u$  at the Gauss or Gauss-Lobatto 
 %     \end{aligned}
 % \end{equation}
 
-下面给出一种使用函数积分值来计算范数的方法：假设小区间的数量为 $n$，数值解为 $u_h$，准确解为 $u$。
+下面给出一种使用函数积分值来计算范数的方法：假设小区间的数量为 $n$,数值解为 $u_h$,准确解为 $u$.
 \begin{itemize}
-    \item 对于 $L_1$ 范数，我们有：
+    \item 对于 $L_1$ 范数,我们有：
           \begin{equation}
               || u_{h}-u || = \frac{\sum_{i=1}^{n}\int_{I_i}|u_{h}-u|\dd x }{\sum_{i=1}^{n}\int_{I_i}\dd x}
           \end{equation}
 
-    \item 对于 $L_2$ 范数，我们有：
+    \item 对于 $L_2$ 范数,我们有：
           \begin{equation}
               || u_{h}-u || = \sqrt{\sum_{i=1}^{n}\int_{I_i}\left(u_{h}-u\right)^2\dd x}
           \end{equation}
-    \item 对于 $L_\infty$ 范数，我们有：
+    \item 对于 $L_\infty$ 范数,我们有：
           \begin{equation}
               || u_{h}-u || = \max_i \left\{\frac{\int_{I_i}\left(u_{h}-u\right)^2\dd x}{} \right\}
           \end{equation}
