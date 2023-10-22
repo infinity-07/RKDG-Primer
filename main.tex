@@ -1,29 +1,6 @@
-\documentclass{ctexbook}
-\usepackage{ctex} % 排版中文文章
-\usepackage{physics}
-\usepackage{booktabs,tabularx,multicol,multirow} % 制作表格
-\usepackage{appendix}
-\usepackage{amsmath,amsthm,amssymb,amsfonts}    % 数学符号与字体
+\documentclass{book}
 
-\usepackage{hyperref}   % 添加超链接
-\hypersetup{hidelinks}  % 把超链接周围的红框隐藏起来
-
-\usepackage{subfig,graphicx}    % 插入照片
-\usepackage{enumitem}
-\usepackage{lipsum,zhlipsum} %生成一些测试文本
-
-\usepackage[left=2.0cm, right=2.0cm, top=2.5cm, bottom=2.5cm]{geometry} % 调整页边距
-
-\newtheorem{example}{Example}
-\newtheorem{remark}{Remark}
-\newtheorem{theorem}{Theorem}
-\newtheorem{definition}{Definition}
-\newtheorem{tip}{Tip}
-
-\numberwithin{equation}{section}    % 公式标号与section的编号挂钩
-
-\usepackage{soul} % 高亮文本
-%使用方法 ： \hl{xxx}
+\input{setting}
 \title{RKDG Primer}
 \author{张阳}
 \date{\today}
@@ -100,6 +77,11 @@ $\begin{array}{l}
 \end{remark}
 \begin{equation}
     \left\|v_{l}^{(j)}(x)\right\|^{2} \dfrac{\dd}{\dd t} u(t)+\left[\Delta_{-}\left(v_{l}^{(j)}\left(x_{j+1 / 2}\right) f_{j+1 / 2}\right)\right]-\int_{I_{j}} f\left(u^{h}(x, t)\right) \dfrac{\dd}{\dd x} v(x) \dd x=0
+\end{equation}
+
+这里推导的时候要用到xx，算一下看看
+\begin{equation}
+    \frac{\dd}{\dd t}u+\frac{\dd}{\dd x}f=0
 \end{equation}
 
 \subsection{实例}
@@ -645,7 +627,7 @@ $\tau$ 的顺序随 $R$ 的变化而变化； 对于五阶 WENO-Z，它的阶数
                         \int_{I_j} q_{\ell}(x) v_{l}^{j}(x) \dd x=\int_{I_j} u_{h}(x) v_{l}^{j}(x, y) \dd x,\, l=0,1, \ldots, \ell.
                     \end{equation}
                     \begin{remark}
-                        如果我们采用规范正交基 $v_{l}^{(0)}(x)$,那么不同的多项式 $q_{\ell}(x), \ell=0,1,, \ldots, k$ 的构造非常简单.在这种情况下,我们可以直接得到多项式
+                        如果我们采用规范正交基 $v_{l}^{(0)}(x)$,那么不同的多项式 $q_{\ell}(x), \ell=0,1, \ldots, k$ 的构造非常简单.在这种情况下,我们可以直接得到多项式
                         \begin{equation}
                             q_{\ell}(x)=\sum_{l=0}^{\ell} u_{j}^{(l)}(t) v_{l}^{(j)}(x),\,\ell=0,1,\ldots, k.
                         \end{equation}
@@ -785,105 +767,79 @@ $\beta_{22}$ 太复杂了，单独写一下
 \begin{equation}
     u_{t}+\nabla \cdot \mathbf{F}(u)=0 \quad \text { and } \quad u(\mathbf{x}, 0)=u_{0}(\mathbf{x})
 \end{equation}
-一个很重要的性质就是它满足最大值原则.具体来说,如果 $M=\max_x u_0(x)$,$m=\min_x u_0(x)$, 那么 $u(x,t)\in[m,M]$. 对任意的 $x,t$ 都满足.所以,我们也希望数值解也满足这个性质.因为在一些情况下,超出了这个范围,就会得到无物理意义的解.比如负密度,或者负百分比,或者某个多组分混合物中某个组分的百分比大于一.
+一个很重要的性质就是它满足最大值原则.具体来说,如果 $M=\max_x u_0(x)$,$m=\min_x u_0(x)$, 那么 $u(x,t)\in[m,M]$. 对任意的 $x,t$ 都满足.所以,我们也希望数值解也满足这个性质.因为在一些情况下,超出了这个范围,就会得到无物理意义的解.比如负密度,或者负百分比,或者某个多组分混合物中某个组分的百分比大于一.这样的限制器在多项流问题中尤为重要.\cite{PP-review}
 
-这样的限制器在多项流问题中尤为重要.
-
-对于 DG 中的数值解 $u_h$,它可以写成
-\begin{equation}
-    u_{h}=\overline{u_h}+(u_h-\overline{u_h})
-\end{equation}
-
-首先,可以证明,当 $\Delta t$ 充分小时,$\overline{u_h}\in[m,M]$,
+证明的思路为：首先证明当时间步长充分小的时候一阶格式下是保界的，然后证明在步长充分小的时候高阶格式的单元平均值是保界的，然后对高阶格式的 $u_h-\bar{u}_h$ 做一个简单的线性限制，使得高阶格式也能保界。
 
 \begin{theorem}
-    对于格式
+    对于一阶(单调monotone)格式
     \begin{equation}
-        u_j^{n+1} = u_j^n - \lambda\left[\hat{f}(u_j^n,u_{j+1}^n)-\hat{f}(u_{j-1}^n,u_j^n)\right]
+        u_{j}^{n+1}=u_{j}^{n}-\lambda\left[\hat{f}\left(u_{j}^{n}, u_{j+1}^{n}\right)-\hat{f}\left(u_{j-1}^{n}, u_{j}^{n}\right)\right] \equiv H_{\lambda}\left(u_{j-1}^{n}, u_{j}^{n}, u_{j+1}^{n}\right),
     \end{equation}
-    其中  $\lambda=\frac{\Delta t}{\Delta x}$ , $h$  是全局L-F通量(Lax-Friedrichs, Godunov 好像也可以)：
+    满足严格的极值原则，其中 $\lambda=\Delta t / \Delta x$，$\Delta t$  和  $\Delta x$ 分别为时间步长和空间步长，并且$\hat{f}(a, b)$ 是 monotone 通量，满足三条件。即：当
     \begin{equation}
-        h(u, v)=\frac{1}{2}[f(u)+f(v)-a(u-v)], \quad a=\max _{u}\left|f^{\prime}(u)\right|
+        \label{eqa:pp_1D_1Order_CFL}
+        \alpha \lambda \leq 1, \quad \alpha=\max \left|f^{\prime}(u)\right|,
     \end{equation}
-    如果满足CFL条件  $\lambda a \leq 1$  , 且  $u_{j}^{n} \in[m, M], \forall j$ ,则  $u_{j+1}^{n} \in[m, M], \forall j$  .
-\end{theorem}
-
-\begin{proof}
-    记  $H\left(u_{j-1}^{n}, u_{j}^{n}, u_{j+1}^{n}\right)=u_{j}^{n}-\lambda\left[h\left(u_{j}^{n}, u_{j+1}^{n}\right)-h\left(u_{j-1}^{n}, u_{j}^{n}\right)\right]$ ,则  $H(u, u, u)=u$  .把  $H$  完全展开得:
-    \begin{equation}
-        \begin{aligned}
-            H\left(u_{j-1}^{n}, u_{j}^{n}, u_{j+1}^{n}\right) & =u_{J}^{n}-\lambda\left[h\left(u_{j}^{n}, u_{j+1}^{n}\right)-h\left(u_{j-1}^{n}, u_{j}^{n}\right)\right]                                                                                             \\
-                                                              & =u_{j}^{n}-\frac{\lambda}{2}\left[f\left(u_{j}^{n}\right)+f\left(u_{j+1}^{n}\right)-a\left(u_{j+1}^{n}-u_{j}^{n}\right)-f\left(u_{j-1}\right)-f\left(u_{j}\right)+a\left(u_{j}-u_{j-1}\right)\right] \\
-                                                              & =(1-\lambda a) u_{j}^{n}+\frac{\lambda}{2}\left[a u_{j+1}^{n}-f\left(u_{j+1}^{n}\right)\right]+\frac{\lambda}{2}\left[a u_{j-1}^{n}-f\left(u_{j-1}^{n}\right)\right]
-        \end{aligned}
-    \end{equation}
-
-    注意到
-    \begin{equation}
-        \begin{cases}
-            H_{b}(b, c, d)=\frac{\lambda}{2}\left(a-f^{\prime}(b)\right) \geqslant 0 \\
-            H_{d}(b, c, d)=\frac{\lambda}{2}\left(a-f^{\prime}(d)\right) \geqslant 0 \\
-            H_{c}(b, c, d)=1 -\lambda a \geqslant 0
-        \end{cases}
-    \end{equation}
-    因此  $H$ 对三个变量都是单调增加的,即  $H(\uparrow, \uparrow, \uparrow)$  ,从而
-    \begin{equation}
-        m=H(m, m, m) \leq H\left(u_{j-1}^{n}, u_{j}^{n}, u_{j+1}^{n}\right) \leq H(M, M, M)=M
-    \end{equation}
-
-\end{proof}
-\begin{theorem}
-    设  $x_{j-1 / 2}=\hat{x}_{j}^{1}<\hat{x}_{j}^{2}<\cdots<\hat{x}_{j}^{N}=x_{j+1 / 2}$  ,其中  $\hat{x}_{j}$  是Gauss-Lobatto积分点,满足  $2 N-3 \geq k$ , $k$  是近似多项式的次数.记  $\hat{v}_{\alpha}:=p_{j}\left(\hat{x}_{j}^{\alpha}\right)$ ,特别的,记  $\hat{v}_{0}=u_{j-1 / 2}^{-}, \hat{v}_{N+1}=u_{j+1 / 2}^{+} , \hat{\omega}_{\alpha}$  是对应的权重,满足  $\hat{\omega}_{1}+\cdots+\hat{\omega}_{N}=1$  .如果 格式满足CFL条件
-
-    \begin{equation}
-        \lambda a \leq \min _{\alpha} \hat{\omega}_{\alpha}
-    \end{equation}
-
-    那么,只要所有的  $\hat{v}_{\alpha} \in[m, M]$  且  $\bar{u}_{j}^{n} \in[m, M]$  ,就有 $ \bar{u}_{j+1}^{n} \in[m, M]$.
+    时，如果有：$m \leq u_{j-1}^{n}, u_{j}^{n}, u_{j+1}^{n} \leq M .$，那么有 $u_{j}^{n+1}\in[m,M]$。
 \end{theorem}
 \begin{proof}
+    对于 Lax-Friedrichs 结构 和 Godunov 结构
+    可以证明 $H_{\lambda}(a, b, c)$  对于三个变量都是单调递增的，且一致的，即： $H_{\lambda}(a, a, a)=a$. 在这种情况下：
     \begin{equation}
-        \bar{u}_{j}^{\text {new }}=\bar{u}_{j}-\lambda\left[h\left(u_{j+1 / 2}^{-}, u_{j+1 / 2}^{+}\right)-h\left(u_{j-1 / 2}^{-}, u_{j-1 / 2}^{+}\right)\right]
+        m=H_{\lambda}(m, m, m) \leq u_{j}^{n+1}=H_{\lambda}\left(u_{j-1}^{n}, u_{j}^{n}, u_{j+1}^{n}\right) \leq H_{\lambda}(M, M, M)=M
     \end{equation}
-
-    我们有
+    对于其他结构，我没有在\cite{PP-review}中找到证明。
+\end{proof}
+下面考虑对于一般的高阶格式
+\begin{equation}
+    \label{eqa:pp_high_order_scheme}
+    \begin{aligned}
+        \bar{u}_{j}^{n+1} & =\bar{u}_{j}^{n}-\lambda\left[\hat{f}\left(u_{j+1 / 2}^{-}, u_{j+1 / 2}^{+}\right)-\hat{f}\left(u_{j-1 / 2}^{-}, u_{j-1 / 2}^{+}\right)\right] \\
+                          & \equiv G_{\lambda}\left(\bar{u}_{j}^{n}, u_{j+1 / 2}^{-}, u_{j+1 / 2}^{+}, u_{j-1 / 2}^{-}, u_{j-1 / 2}^{+}\right)
+    \end{aligned}
+\end{equation}
+中的单元平均值的保界性。考虑$I_{j}=\left[x_{j-1 / 2}, x_{j+1 / 2}\right]$ 上的 $n$ 点的 Gauss-Lobatto 高斯点，其对于阶数小于等于 $2N-3$ 的多项式的数值积分是准确的。我们将这些 $I_{j}$ 上的积分点记作：
+\begin{equation}
+    S_{j}=\left\{x_{j-1 / 2}=\hat{x}_{j}^{1}, \hat{x}_{j}^{2}, \ldots, \hat{x}_{j}^{N-1}, \hat{x}_{j}^{N}=x_{j+1 / 2}\right\} .
+\end{equation}
+记 $\hat{w}_{\alpha}$ 为 $\left[-\frac{1}{2}, \frac{1}{2}\right]$ 上的Gauss-Lobatto的权重，从而：$\sum_{\alpha=1}^{N} \hat{w}_{\alpha}=1$，$N$ 为满足 $2 N-3 \geqslant k$ 的最小整数.那么：
+\begin{equation}
+    \label{eqa:pp_ave_u}
+    \bar{u}_{j}^{n}=\frac{1}{\Delta x} \int_{I_{j}} p_{j}(x) \mathrm{d} x=\sum_{\alpha=1}^{N} \hat{w}_{\alpha} p_{j}\left(\hat{x}_{j}^{\alpha}\right)=\sum_{\alpha=2}^{N-1} \hat{w}_{\alpha} p_{j}\left(\hat{x}_{j}^{\alpha}\right)+\hat{w}_{1} u_{j-1 / 2}^{+}+\hat{w}_{N} u_{j+1 / 2}^{-} .
+\end{equation}
+$p_j$ 表示第 $j$ 个小单元上的多项式，$u_{j-1/2}^+=p_j(x_{j-1/2})$, $u_{j+1/2}^-=p_j(x_{j+1/2})$
+\begin{theorem}{}{}
+    如果 $u_{j-1/2}^-$, $u_{j+1/2}^+$, $p_j(\hat{x}_j^\alpha)(\alpha=1,2,\cdots,N)\in[m,M]$,且在CFL条件
+    \begin{equation}
+        \lambda a \leq \hat{w}_{1}
+    \end{equation}
+    满足的条件下，$\bar{u}_j^{n+1}\in[m,M]$.
+\end{theorem}
+\begin{proof}
+    将等式 \eqref{eqa:pp_ave_u} 带入 \eqref{eqa:pp_high_order_scheme} 中, 再增减  $\hat{f}\left(u_{j-1 / 2}^{+}, u_{j+1 / 2}^{-}\right)$ , \eqref{eqa:pp_high_order_scheme} 可变为：
     \begin{equation}
         \begin{aligned}
-            h\left(u_{j+1 / 2}^{-}, u_{j+1 / 2}^{+}\right)-h\left(u_{j-1 / 2}^{-}, u_{j-1 / 2}^{+}\right) & =h\left(\hat{v}_{N}, \hat{v}_{N+1}\right)-h\left(\hat{v}_{0}, \hat{v}_{1}\right)                                           \\
-                                                                                                          & =\sum_{\alpha=1}^{N} h\left(\hat{v}_{\alpha}, \hat{v}_{\alpha+1}\right)-h\left(\hat{v}_{\alpha-1}, \hat{v}_{\alpha}\right)
+            \bar{u}_{j}^{n+1}= & \sum_{\alpha=2}^{N-1} \hat{w}_{\alpha} p_{j}\left(\hat{x}_{j}^{\alpha}\right)+\hat{w}_{N}\left(u_{j+1 / 2}^{-}-\frac{\lambda}{\hat{w}_{N}}\left[\hat{f}\left(u_{j+1 / 2}^{-}, u_{j+1 / 2}^{+}\right)-\hat{f}\left(u_{j-1 / 2}^{+}, u_{j+1 / 2}^{-}\right)\right]\right) \\
+                               & +\hat{w}_{1}\left(u_{j-1 / 2}^{+}-\frac{\lambda}{\hat{w}_{1}}\left[\hat{f}\left(u_{j-1 / 2}^{+}, u_{j+1 / 2}^{-}\right)-\hat{f}\left(u_{j-1 / 2}^{-}, u_{j-1 / 2}^{+}\right)\right]\right)                                                                              \\
+            =                  & \sum_{\alpha=2}^{N-1} \hat{w}_{\alpha} p_{j}\left(\hat{x}_{j}^{\alpha}\right)+\hat{w}_{N} H_{\lambda / \hat{\omega}_{N}}\left(u_{j-1 / 2}^{+}, u_{j+1 / 2}^{-}, u_{j+1 / 2}^{+}\right)                                                                                  \\
+                               & +\hat{w}_{1} H_{\lambda / \hat{\omega}_{1}}\left(u_{j-1 / 2}^{-}, u_{j-1 / 2}^{+}, u_{j+1 / 2}^{-}\right) .
         \end{aligned}
     \end{equation}
+    注意到  $\hat{w}_{1}=\hat{w}_{N}$，并且 $H_{\lambda / \hat{\omega}_{1}}$  在CFL条件\eqref{eqa:pp_1D_1Order_CFL}下是单调的，所以从上式中可以看出 $\bar{u}_{j}^{n+1}$  对于所有包含的变量$u_{j-1 / 2}^{-}, u_{j+1 / 2}^{+}$ and  $p_{j}\left(\hat{x}_{j}^{\alpha}\right)$  for  $1 \leq j \leq N$ 都是单调增加的.
 
+    下面这句话很奇怪没有看懂：
 
-
-    而单元平均值满足  $\bar{u}_{j}^{n}=\frac{1}{\Delta x} \int_{I_{j}} p_{j}(x) \mathrm{d} x=\sum_{\alpha=1}^{N} \hat{\omega}_{\alpha} \hat{v}_{\alpha}$  ,于是
-
-    \begin{equation}
-        \begin{aligned}
-            \bar{u}_{j+1}^{n} & =\bar{u}_{j}^{n}-\lambda\left[h\left(u_{j+1 / 2}^{-}, u_{j+1 / 2}^{+}\right)-h\left(u_{j-1 / 2}^{-}, u_{j-1 / 2}^{+}\right)\right]                                                                                                \\
-                              & =\sum_{\alpha=1}^{N} \hat{\omega}_{\alpha} \hat{v}_{\alpha}-\lambda \sum_{\alpha=1}^{N}\left[h\left(\hat{v}_{\alpha}, \hat{v}_{\alpha+1}\right)-h\left(\hat{v}_{\alpha-1}, \hat{v}_{\alpha}\right)\right]                         \\
-                              & =\sum_{\alpha=1}^{N}\left\{\hat{\omega}_{\alpha} \hat{v}_{\alpha}-\lambda\left[h\left(\hat{v}_{\alpha}, \hat{v}_{\alpha+1}\right)-h\left(\hat{v}_{\alpha-1}, \hat{v}_{\alpha}\right)\right]\right\}                               \\
-                              & =\sum_{\alpha=1}^{N} \hat{\omega}_{\alpha}\left\{\hat{v}_{\alpha}-\frac{\lambda}{\hat{\omega}_{\alpha}}\left[h\left(\hat{v}_{\alpha}, \hat{v}_{\alpha+1}\right)-h\left(\hat{v}_{\alpha-1}, \hat{v}_{\alpha}\right)\right]\right\} \\
-                              & =\sum_{\alpha=1}^{N} \hat{\omega}_{\alpha} H_{j}^{\alpha}
-        \end{aligned}
-    \end{equation}
-    其中  $H_{j}^{\alpha}=\hat{v}_{\alpha}-\frac{\lambda}{\hat{\omega}_{\alpha}}\left[h\left(\hat{v}_{\alpha}, \hat{v}_{\alpha+1}\right)-h\left(\hat{v}_{\alpha-1}, \hat{v}_{\alpha}\right)\right]$  .则根据已知条件,所有的 $\hat{v}_{\alpha} \in[m, M]  ,且  \lambda a \leq \hat{\omega}_{\alpha} $ ,即 $\frac{\lambda}{\hat{\omega}_{\alpha}} a \leq 1$  ,因此根据Lemma 1有 $H_{j}^{\alpha} \in[m, M]$ ,从而可 得  $\bar{u}_{j}^{n+1} \in[m, M]$  ,因为  $\bar{u}_{j}^{n+1}$  就是这些  $H_{j}^{\alpha}$ 的一个凸组合.
+    (The same proof for the first-order monotone scheme now applies to imply  $\bar{u}_{j}^{n+1} \in[m, M])$.
 \end{proof}
 
-此外,对于 $(u_h-\overline{u_h})$,可以乘一个权重 $\theta$,使得最终得到的数值解 $u_h^{\text{new}}$ 也满足极值原则.
-\begin{equation}
-    u_{h}^{\text {new }}=\overline{u_h}+\theta(u_h-\overline{u_h})
-\end{equation}
-\begin{equation}
-    \theta=\min \left\{\left|\frac{M-\bar{u}_{j}^{n}}{M_{j}-\bar{u}_{j}^{n}}\right|,\left|\frac{m-\bar{u}_{j}^{n}}{m_{j}-\bar{u}_{j}^{n}}\right|, 1\right\}
-\end{equation}
-\begin{equation}
-    M_{j}=\max _{x \in I_{j}} p_{j}(x) \quad \text { and } \quad m_{j}=\min _{x \in I_{j}} p_{j}(x)
-\end{equation}
+对高阶矩的限制比较简单，只是做了一个线性限制器，重要的是限制之后的多项式没有损失原有的精度。
 
-并且这种方法得到的 $u_{h}^{\text {new }}$ 是保精度的.
+\begin{remark}
+    这个留到下次再写
+\end{remark}
 \subsection{二维}
-
+先来说明小单元为矩阵的情况：
 
 对于二维的情况：
 \begin{equation}
@@ -1297,20 +1253,20 @@ Fig. 2.20c depicts a rarefaction wave. Characteristics on the left and right of 
     \centering
     \begin{tabular}{|c|c|cccc|cccc|}
         \hline
-                            &                 & \multicolumn{4}{c|}{DG   with MRWENO limiter} & \multicolumn{4}{c|}{DG   with WENO-JS limiter}                                                                                                                                                                 \\ \hline
-                            & $N\times N$     & \multicolumn{1}{c|}{$L_1$ error}              & \multicolumn{1}{c|}{Order}                     & \multicolumn{1}{c|}{$L_\infty$ error} & Order & \multicolumn{1}{c|}{$L_1$ error} & \multicolumn{1}{c|}{Order} & \multicolumn{1}{c|}{$L_\infty$ error} & Order \\ \hline
-        \multirow{6}{*}{P1} & $50\times 50$   & \multicolumn{1}{c|}{8.74E-05}                 & \multicolumn{1}{c|}{}                          & \multicolumn{1}{c|}{1.38E-04}         &       & \multicolumn{1}{c|}{1.97E-04}    & \multicolumn{1}{c|}{}      & \multicolumn{1}{c|}{8.99E-04}         &       \\ \cline{2-10}
-                            & $60\times 60$   & \multicolumn{1}{c|}{5.77E-05}                 & \multicolumn{1}{c|}{2.28}                      & \multicolumn{1}{c|}{9.07E-05}         & 2.30  & \multicolumn{1}{c|}{1.01E-04}    & \multicolumn{1}{c|}{3.68}  & \multicolumn{1}{c|}{5.51E-04}         & 2.68  \\ \cline{2-10}
-                            & $70\times 70$   & \multicolumn{1}{c|}{4.09E-05}                 & \multicolumn{1}{c|}{2.22}                      & \multicolumn{1}{c|}{6.41E-05}         & 2.25  & \multicolumn{1}{c|}{6.18E-05}    & \multicolumn{1}{c|}{3.16}  & \multicolumn{1}{c|}{2.89E-04}         & 4.18  \\ \cline{2-10}
-                            & $80\times 80$   & \multicolumn{1}{c|}{3.08E-05}                 & \multicolumn{1}{c|}{2.14}                      & \multicolumn{1}{c|}{4.83E-05}         & 2.11  & \multicolumn{1}{c|}{4.44E-05}    & \multicolumn{1}{c|}{2.48}  & \multicolumn{1}{c|}{1.85E-04}         & 3.34  \\ \cline{2-10}
-                            & $90\times 90$   & \multicolumn{1}{c|}{2.40E-05}                 & \multicolumn{1}{c|}{2.11}                      & \multicolumn{1}{c|}{3.77E-05}         & 2.10  & \multicolumn{1}{c|}{3.16E-05}    & \multicolumn{1}{c|}{2.89}  & \multicolumn{1}{c|}{1.27E-04}         & 3.22  \\ \cline{2-10}
-                            & $100\times 100$ & \multicolumn{1}{c|}{1.93E-05}                 & \multicolumn{1}{c|}{2.09}                      & \multicolumn{1}{c|}{3.02E-05}         & 2.09  & \multicolumn{1}{c|}{2.47E-05}    & \multicolumn{1}{c|}{2.33}  & \multicolumn{1}{c|}{8.66E-05}         & 3.62  \\ \hline
-        \multirow{6}{*}{P2} & $50\times 50$   & \multicolumn{1}{c|}{3.60E-06}                 & \multicolumn{1}{c|}{}                          & \multicolumn{1}{c|}{5.14E-06}         &       & \multicolumn{1}{c|}{3.59E-06}    & \multicolumn{1}{c|}{}      & \multicolumn{1}{c|}{5.14E-06}         &       \\ \cline{2-10}
-                            & $60\times 60$   & \multicolumn{1}{c|}{2.08E-06}                 & \multicolumn{1}{c|}{3.02}                      & \multicolumn{1}{c|}{3.01E-06}         & 2.93  & \multicolumn{1}{c|}{2.07E-06}    & \multicolumn{1}{c|}{3.01}  & \multicolumn{1}{c|}{3.01E-06}         & 2.93  \\ \cline{2-10}
-                            & $70\times 70$   & \multicolumn{1}{c|}{1.30E-06}                 & \multicolumn{1}{c|}{3.03}                      & \multicolumn{1}{c|}{1.91E-06}         & 2.95  & \multicolumn{1}{c|}{1.30E-06}    & \multicolumn{1}{c|}{3.02}  & \multicolumn{1}{c|}{1.91E-06}         & 2.95  \\ \cline{2-10}
-                            & $80\times 80$   & \multicolumn{1}{c|}{8.69E-07}                 & \multicolumn{1}{c|}{3.03}                      & \multicolumn{1}{c|}{1.29E-06}         & 2.96  & \multicolumn{1}{c|}{8.68E-07}    & \multicolumn{1}{c|}{3.03}  & \multicolumn{1}{c|}{1.29E-06}         & 2.96  \\ \cline{2-10}
-                            & $90\times 90$   & \multicolumn{1}{c|}{6.08E-07}                 & \multicolumn{1}{c|}{3.03}                      & \multicolumn{1}{c|}{9.08E-07}         & 2.97  & \multicolumn{1}{c|}{6.08E-07}    & \multicolumn{1}{c|}{3.02}  & \multicolumn{1}{c|}{9.08E-07}         & 2.97  \\ \cline{2-10}
-                            & $100\times 100$ & \multicolumn{1}{c|}{4.42E-07}                 & \multicolumn{1}{c|}{3.03}                      & \multicolumn{1}{c|}{6.64E-07}         & 2.97  & \multicolumn{1}{c|}{4.42E-07}    & \multicolumn{1}{c|}{3.03}  & \multicolumn{1}{c|}{6.64E-07}         & 2.97  \\ \hline
+                               &                 & \multicolumn{4}{c|}{DG   with MRWENO limiter} & \multicolumn{4}{c|}{DG   with WENO-JS limiter}                                                                                                                                                                 \\ \hline
+                               & $N\times N$     & \multicolumn{1}{c|}{$L_1$ error}              & \multicolumn{1}{c|}{Order}                     & \multicolumn{1}{c|}{$L_\infty$ error} & Order & \multicolumn{1}{c|}{$L_1$ error} & \multicolumn{1}{c|}{Order} & \multicolumn{1}{c|}{$L_\infty$ error} & Order \\ \hline
+        \multirow{6}{*}{$P^1$} & $50\times 50$   & \multicolumn{1}{c|}{8.74E-05}                 & \multicolumn{1}{c|}{}                          & \multicolumn{1}{c|}{1.38E-04}         &       & \multicolumn{1}{c|}{1.97E-04}    & \multicolumn{1}{c|}{}      & \multicolumn{1}{c|}{8.99E-04}         &       \\ \cline{2-10}
+                               & $60\times 60$   & \multicolumn{1}{c|}{5.77E-05}                 & \multicolumn{1}{c|}{2.28}                      & \multicolumn{1}{c|}{9.07E-05}         & 2.30  & \multicolumn{1}{c|}{1.01E-04}    & \multicolumn{1}{c|}{3.68}  & \multicolumn{1}{c|}{5.51E-04}         & 2.68  \\ \cline{2-10}
+                               & $70\times 70$   & \multicolumn{1}{c|}{4.09E-05}                 & \multicolumn{1}{c|}{2.22}                      & \multicolumn{1}{c|}{6.41E-05}         & 2.25  & \multicolumn{1}{c|}{6.18E-05}    & \multicolumn{1}{c|}{3.16}  & \multicolumn{1}{c|}{2.89E-04}         & 4.18  \\ \cline{2-10}
+                               & $80\times 80$   & \multicolumn{1}{c|}{3.08E-05}                 & \multicolumn{1}{c|}{2.14}                      & \multicolumn{1}{c|}{4.83E-05}         & 2.11  & \multicolumn{1}{c|}{4.44E-05}    & \multicolumn{1}{c|}{2.48}  & \multicolumn{1}{c|}{1.85E-04}         & 3.34  \\ \cline{2-10}
+                               & $90\times 90$   & \multicolumn{1}{c|}{2.40E-05}                 & \multicolumn{1}{c|}{2.11}                      & \multicolumn{1}{c|}{3.77E-05}         & 2.10  & \multicolumn{1}{c|}{3.16E-05}    & \multicolumn{1}{c|}{2.89}  & \multicolumn{1}{c|}{1.27E-04}         & 3.22  \\ \cline{2-10}
+                               & $100\times 100$ & \multicolumn{1}{c|}{1.93E-05}                 & \multicolumn{1}{c|}{2.09}                      & \multicolumn{1}{c|}{3.02E-05}         & 2.09  & \multicolumn{1}{c|}{2.47E-05}    & \multicolumn{1}{c|}{2.33}  & \multicolumn{1}{c|}{8.66E-05}         & 3.62  \\ \hline
+        \multirow{6}{*}{$P^2$} & $50\times 50$   & \multicolumn{1}{c|}{3.60E-06}                 & \multicolumn{1}{c|}{}                          & \multicolumn{1}{c|}{5.14E-06}         &       & \multicolumn{1}{c|}{3.59E-06}    & \multicolumn{1}{c|}{}      & \multicolumn{1}{c|}{5.14E-06}         &       \\ \cline{2-10}
+                               & $60\times 60$   & \multicolumn{1}{c|}{2.08E-06}                 & \multicolumn{1}{c|}{3.02}                      & \multicolumn{1}{c|}{3.01E-06}         & 2.93  & \multicolumn{1}{c|}{2.07E-06}    & \multicolumn{1}{c|}{3.01}  & \multicolumn{1}{c|}{3.01E-06}         & 2.93  \\ \cline{2-10}
+                               & $70\times 70$   & \multicolumn{1}{c|}{1.30E-06}                 & \multicolumn{1}{c|}{3.03}                      & \multicolumn{1}{c|}{1.91E-06}         & 2.95  & \multicolumn{1}{c|}{1.30E-06}    & \multicolumn{1}{c|}{3.02}  & \multicolumn{1}{c|}{1.91E-06}         & 2.95  \\ \cline{2-10}
+                               & $80\times 80$   & \multicolumn{1}{c|}{8.69E-07}                 & \multicolumn{1}{c|}{3.03}                      & \multicolumn{1}{c|}{1.29E-06}         & 2.96  & \multicolumn{1}{c|}{8.68E-07}    & \multicolumn{1}{c|}{3.03}  & \multicolumn{1}{c|}{1.29E-06}         & 2.96  \\ \cline{2-10}
+                               & $90\times 90$   & \multicolumn{1}{c|}{6.08E-07}                 & \multicolumn{1}{c|}{3.03}                      & \multicolumn{1}{c|}{9.08E-07}         & 2.97  & \multicolumn{1}{c|}{6.08E-07}    & \multicolumn{1}{c|}{3.02}  & \multicolumn{1}{c|}{9.08E-07}         & 2.97  \\ \cline{2-10}
+                               & $100\times 100$ & \multicolumn{1}{c|}{4.42E-07}                 & \multicolumn{1}{c|}{3.03}                      & \multicolumn{1}{c|}{6.64E-07}         & 2.97  & \multicolumn{1}{c|}{4.42E-07}    & \multicolumn{1}{c|}{3.03}  & \multicolumn{1}{c|}{6.64E-07}         & 2.97  \\ \hline
     \end{tabular}
 \end{table}
 
@@ -1371,12 +1327,15 @@ WENO5 重构多项式：
 
 \section{数学符号}
 \subsection{散度}
+\href{https://zh.wikipedia.org/zh-hans/%E6%95%A3%E5%BA%A6}{维基百科：散度} 
 在三维直角坐标系  $x y z$  中,设向量场  $\boldsymbol{A}$  的表示为
 $\boldsymbol{A}(x, y, z)=A_{x}(x, y, z) \boldsymbol{i}+A_{y}(x, y, z) \boldsymbol{j}+A_{z}(x, y, z) \boldsymbol{k}$ 其中的  $\boldsymbol{i}, \boldsymbol{j}, \boldsymbol{k} $ 分别是  $x$  轴、  $y$  轴、  $z$  轴方向上的单位向量,场的分量  $A_{x}, A_{y}, A_{z}$  具有一阶连续偏导数,那么向量场  $\boldsymbol{A}$  的散度就是:
 \begin{equation}
     \operatorname{div} \boldsymbol{A}=\div \boldsymbol{A}=\dfrac{\partial A_{x}}{\partial x}+\dfrac{\partial A_{y}}{\partial y}+\dfrac{\partial A_{z}}{\partial z}
 \end{equation}
-\subsection{梯度}
+\subsection{拉普拉斯算子}
+\href{https://zh.wikipedia.org/zh-hans/%E6%8B%89%E6%99%AE%E6%8B%89%E6%96%AF%E7%AE%97%E5%AD%90}{text}
+\subsection{维基百科：拉普拉斯算子}
 $\nabla f$在三维直角坐标系中表示为
 \begin{equation}
     {\displaystyle \nabla f={\begin{pmatrix}{\dfrac {\partial f}{\partial x}},{\dfrac {\partial f}{\partial y}},{\dfrac {\partial f}{\partial z}}\end{pmatrix}}={\dfrac {\partial f}{\partial x}}\mathbf {i} +{\dfrac {\partial f}{\partial y}}\mathbf {j} +{\dfrac {\partial f}{\partial z}}\mathbf {k} }
@@ -1418,7 +1377,7 @@ $L_\infty$范数：$L_\infty$ 范数也称为最大值范数,它是向量中所�
     请注意,根据这个定义,$g=\mathrm{O}(1)$ 并不意味着 $g$ 是一个常数； 相反,它意味着常数是 $g$ 的上限,即 $\Delta x \rightarrow 0$,或者换句话说,$g$ 不会随着 $\Delta x$ 渐近增长. 例如,此表示法中的 $\Delta x^{2 / 3}=\mathrm{O}(1)$.
 \end{definition}
 \begin{definition}
-    如果$f\left(x_{c}\right)=f^{\prime}\left(x_{c}\right)=\ldots=f^{\left(n_{\mathrm{cp}}\right) )}\left(x_{c}\right)=0$ 但 $f^{\left(n_{\mathrm{cp}}+1\right)}\left(x_{c}\right) \neq 0$,那么 $x_{c}$ 被认为是 $f(x)$ 的阶 $n_{\mathrm{cp}}$ 的临界点(critical point)。 如果 $f^{\prime}\left(x_{c}\right) \neq 0，则 x_{c}$ 被定义为 $f(x)$ 的 0 阶临界点。
+    如果$f\left(x_{c}\right)=f^{\prime}\left(x_{c}\right)=\ldots=f^{\left(n_{\mathrm{cp}}\right) }\left(x_{c}\right)=0$ 但 $f^{\left(n_{\mathrm{cp}}+1\right)}\left(x_{c}\right) \neq 0$,那么 $x_{c}$ 被认为是 $f(x)$ 的阶 $n_{\mathrm{cp}}$ 的临界点(critical point)。 如果 $f^{\prime}\left(x_{c}\right) \neq 0$，则 $x_{c}$ 被定义为 $f(x)$ 的 0 阶临界点。
 \end{definition}
 \begin{definition}
     \cite{WENO-Z-2016}
@@ -1552,10 +1511,34 @@ $\text { where } c=\sqrt{\gamma p / \rho}, B_{1}=(\gamma-1) / c^{2}, B_{2}=B_{1}
     H=(E+p) / \rho \equiv \dfrac{1}{2} u^{2}+h, \quad h=e+p / \rho
 \end{equation}
 \paragraph{算例}
+\begin{example}[Linear Equation]
+    We solve the linear equation\cite{RN56}:
+    \begin{equation}
+        \begin{aligned}
+            u_{t}+u_{x} & =0 \quad-1<x<1,                    \\
+            u(x, 0)     & =u_{0}(x) \quad \text { periodic }
+        \end{aligned}
+    \end{equation}
+    其中：
+    \begin{equation}
+        \begin{aligned}
+            u_{0}(x)        & =\begin{cases}
+                                   \frac{1}{6}(G(x, \beta, z-\delta)+G(x, \beta, z+\delta)+4 G(x, \beta, z))    & -0.8 \leq x \leq-0.6 \\
+                                   1                                                                            & -0.4 \leq x \leq-0.2 \\
+                                   1-|10(x-0.1)|                                                                & 0 \leq x \leq 0.2    \\
+                                   \frac{1}{6}(F(x, \alpha, a-\delta)+F(x, \alpha, a+\delta)+4 F(x, \alpha, a)) & 0.4 \leq x \leq 0.6  \\
+                                   0                                                                            & \text { otherwise }
+                               \end{cases} \\
+            G(x, \beta, z)  & =e^{-\beta(x-z)^{2}}                                                                                 \\
+            F(x, \alpha, a) & =\sqrt{\max \left(1-\alpha^{2}(x-a)^{2}, 0\right)}
+        \end{aligned}
+    \end{equation}
+    常数取为$a=0.5, z=-0.7, \delta=0.005, \alpha=10$ 和 $\beta=\frac{\log 2}{36 \delta^{2}}$。该解包含了一个平滑但狭窄的高斯函数组合、一个方波、一个尖锐的三角波和一个半椭圆。
 
+    结束时间为 $t=8$, 网格数量为200.
+\end{example}
 
-\begin{example}
-    Shu Osher 问题\cite{RN109},
+\begin{example}[Shu Osher 问题\cite{RN109}]
     \begin{equation}
         \begin{aligned}
             (\rho, v, p) & =(3.857143,2.629369,10.333333)   & \text { 当 } x \leq-4, \\
@@ -1688,8 +1671,7 @@ where  $c=\sqrt{\gamma p / \rho}, B_{1}=(\gamma-1) / c^{2}, B_{2}=B_{1}\left(\mu
 % 其中也有很多有趣的间断算例
 %------------------------------------
 
-\begin{example}
-    光滑算例
+\begin{example}[光滑算例]
     取计算域为  $[0,10]^{2}$  ，先给定一个平稳的流： $\rho=p=u=v=1$  ，然后在  $\left(x_{0}, y_{0}\right)=(5,5)$  施加一个冲击:
     \begin{equation}
         \begin{array}{l}
@@ -1729,9 +1711,6 @@ where  $c=\sqrt{\gamma p / \rho}, B_{1}=(\gamma-1) / c^{2}, B_{2}=B_{1}\left(\mu
 
 
 \end{example}
-
-
-
 
 
 \newpage
@@ -1902,8 +1881,37 @@ $[-1,1]\times[-1,1]$上的勒让德函数为：
         L_{\infty}-\text { norm } & =\max x_i,i=1,2,\cdots,n                                                         \\
     \end{aligned}
 \end{equation}
-
-
+\section{常用中英文对照表}
+\begin{itemize}
+    \item Analytical Solution : 解析解
+    \item monotone: 单调
+    \item consistency：一致性
+    \item Shock Wave：激波
+    \item Contact Wave：接触间断
+    \item Rarefaction Wave：稀疏波
+\end{itemize}
+\section{常用期刊名缩写}
+\begin{itemize}
+    \item J. Comput. Phys. : Journal of Computational Physics
+\end{itemize}
+\section{常用缩写对照表}
+\begin{itemize}
+    \item CFL：Courant–Friedrichs–Lewy
+    \item CFD：Computational Fluid Dynamics
+    \item DG：discontinuous Galerkin
+    \item DOF：Degree of Freedom
+    \item ENO：essentially non-oscillatory scheme
+    \item SSP：strong stability perserving
+    \item TVD：total variation diminishing
+    \item TVDM：total variation diminishing in the means
+    \item HLLC:Harten–Lax–van Leer contact
+    \item RK：Runge-Kutta
+    \item FV：finite volume
+    \item FD：finite difference
+    \item JCP：Journal of Computational Physics
+    \item PPM：piecewise parabolic method
+    \item WENO：weighted essentially non-oscillatory schemes
+\end{itemize}
 \bibliographystyle{plain}
 \bibliography{ref.bib}
 \end{document}

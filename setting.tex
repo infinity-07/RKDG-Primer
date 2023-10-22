@@ -1,0 +1,297 @@
+\usepackage{ctex} % 排版中文文章
+\usepackage{physics}
+\usepackage{booktabs,tabularx,multicol,multirow} % 制作表格
+\usepackage{appendix}
+\usepackage{amsmath,amsthm,amssymb,amsfonts}    % 数学符号与字体
+
+\usepackage{hyperref}   % 添加超链接
+\hypersetup{hidelinks}  % 把超链接周围的红框隐藏起来
+
+\usepackage{subfig,graphicx}    % 插入照片
+\usepackage{enumitem}
+\usepackage{lipsum,zhlipsum} %生成一些测试文本
+
+\usepackage[left=2.0cm, right=2.0cm, top=2.5cm, bottom=2.5cm]{geometry} % 调整页边距
+\usepackage{soul} % 高亮文本
+
+% 字符编码和数学宏包
+%\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amsthm, amsfonts, amssymb}
+\usepackage{tikz} %很强大的绘图宏包
+
+%自定义设置字体
+\usepackage{fontenc}
+\setmainfont{Times New Roman} % 设置英文衬线字体
+%\setsansfont{Arial} % 设置英文无衬线字体
+%\setmonofont{Courier New} % 设置英文等宽字体
+
+
+%设置正文文本分段空行不置顶
+\usepackage{indentfirst} % 导入indentfirst包
+\setlength{\parindent}{0pt} % 取消首行缩进
+\setlength{\parskip}{\baselineskip} % 段落之间空一行
+
+% 表格宏包
+\usepackage{multirow, booktabs} %两种不同处理表格,取决于不同情况的处理
+
+% 页面和排版宏包
+\usepackage{fullpage} %
+\usepackage{enumitem} %处理列表(包括有序、无序两类)
+\usepackage{fancyhdr} %
+\usepackage{fontawesome}
+\usepackage{geometry} %设置页面边距
+
+% ============== 设置一个好看的页眉页脚款式 ===============
+\geometry{ % 设置页面布局
+  includeheadfoot, % 将页眉和页脚计算在页面范围内
+  left=1in, % 设置左边距
+  right=1in, % 设置右边距
+  top=1in, % 设置上边距
+  bottom=1in, % 设置下边距
+}
+
+\pagestyle{fancy}
+\fancyhead{} % 清空页眉
+\fancyfoot{} % 清空页脚
+\setlength{\headheight}{12.20pt}
+\definecolor{structurecolor}{RGB}{68,79,173}
+\fancyhead[L]{\color{structurecolor}\kaishu {\faPaperPlaneO\ Academic year 2023 : Algebra}}
+\fancyhead[R]{\color{structurecolor}\kaishu すうがく數學！}
+\fancyfoot[L]{\color[RGB]{204,52,51}{\faLink}}
+\fancyfoot[R]{\color[RGB]{0,64,116}{\faUnlink}}
+\fancyfoot[C]{\color{structurecolor}{\faGg 第~\thepage ~页\faGg}}
+\newcommand\ee{\mathrm{e}}
+
+% 其他页面设置
+\geometry{margin=1in, headsep=0.75in}
+% ====================================================
+
+% 数学字体宏包
+\usepackage{mathrsfs} %比如\mathcal,\mathscr等
+
+
+% 图片和文本宏包
+\usepackage{wrapfig} %处理浮动图片
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{setspace,calc} %前者设置距离,后者设置文本长度
+\usepackage{multicol} %分列处理文本
+
+% 公式宏包
+\usepackage{cancel} %引入划去线
+\usepackage[retainorgcmds]{IEEEtrantools} %表达式排版,比如align等 
+\usepackage{empheq} %创建带有框和标签的数学公式
+
+% 框架和颜色宏包
+\usepackage{framed} %边框
+\usepackage{xcolor} %颜色
+\usepackage[most]{tcolorbox}
+\colorlet{shadecolor}{orange!15} %颜色自定义
+
+% ======= 定理环境边框 ======
+
+
+\definecolor{browna}{rgb}{0.76,0.72,0.65}
+\definecolor{brownb}{rgb}{0.71,0.69,0.65}
+\definecolor{blacka}{RGB}{245,245,245}
+
+%eg环境的配置
+% 注意行末需要把空格注释掉，不然画出来的方框会有空白竖线
+\usepackage[strict]{changepage} % 提供一个 adjustwidth 环境
+
+\newenvironment{eg}{%
+  \def\FrameCommand{%
+    \hspace{1pt}%
+    {\color{brownb}\vrule width 2pt}%
+    {\color{blacka}\vrule width 4pt}%
+    \colorbox{blacka}%
+  }%
+  \MakeFramed{\advance\hsize-\width\FrameRestore}%
+  \begin{adjustwidth}{}{7pt}%
+    \vspace{-14pt}\textbf{Example}\newline\kaishu\itshape
+    }{%
+  \end{adjustwidth}\endMakeFramed%
+}
+
+%re环境配置
+\newenvironment{re}{
+  \par\medskip
+  \textbf{Remark.}
+  \begin{itshape}\kaishu
+    }{
+  \end{itshape}
+  \par\medskip
+}
+
+%pf环境设置
+\definecolor{Bloodred}{RGB}{136,0,21}
+
+\newenvironment{pf}{
+  \noindent\textcolor{Bloodred}{\emph{\ensuremath{\mathfrak{Proof.}}}}\vspace{-1em}
+  \par
+  %\color{gray}
+  \kaishu
+}{
+  \hfill\textcolor{Bloodred}{$\blacksquare$}
+}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%
+\newtheorem{remark}{Remark}
+\newtheorem{example}{Example}
+
+
+
+
+
+\newtcbtheorem[number within=subsection]{theorem}{Theorem}{
+  enhanced,
+  sharp corners,
+  attach boxed title to top left={
+      yshifttext=-1mm
+    },
+  colback=white,
+  colframe=brownb,
+  fonttitle={\bfseries},
+  fontupper={\kaishu\itshape},
+  boxed title style={
+      sharp corners,
+      size=small,
+      colback=brownb,
+      colframe=brownb,
+    },
+  breakable  % 添加这一行以启用自动断页
+}{thm}
+
+
+\newtcbtheorem[number within=subsection]{lem}{Lemma}{
+  enhanced,
+  sharp corners,
+  attach boxed title to top left={
+      yshifttext=-1mm
+    },
+  colback=white,
+  colframe=brownb,
+  fonttitle=\bfseries,
+  boxed title style={
+      sharp corners,
+      size=small,
+      colback=brownb,
+      colframe=brownb,
+    },
+  breakable  % 添加这一行以启用自动断页 
+}{lem}
+
+\newtcbtheorem[number within=subsection]{cor}{Corollary}{
+  enhanced,
+  sharp corners,
+  attach boxed title to top left={
+      yshifttext=-1mm
+    },
+  colback=white,
+  colframe=brownb,
+  fonttitle=\bfseries,
+  boxed title style={
+      sharp corners,
+      size=small,
+      colback=brownb,
+      colframe=brownb,
+    },
+  breakable  % 添加这一行以启用自动断页 
+}{cor}
+
+\newtcbtheorem[number within=subsection]{definition}{Definition}{
+  enhanced,
+  sharp corners,
+  attach boxed title to top left={
+      yshifttext=-1mm
+    },
+  colback=white,
+  colframe=browna,
+  fonttitle=\bfseries,
+  boxed title style={
+      sharp corners,
+      size=small,
+      colback=browna,
+      colframe=browna,
+    },
+  breakable  % 添加这一行以启用自动断页 
+}{defn}
+
+% \let\oldthm\thm
+% \renewcommand{\theorem}[2][]{\oldthm[{#1}]{#2}{#1}}
+
+% \let\oldlem\lem
+% \renewcommand{\lem}[2][]{\oldlem[{#1}]{#2}{#1}}
+
+% \let\oldcor\cor
+% \renewcommand{\cor}[2][]{\oldcor[{#1}]{#2}{#1}}
+
+% \let\olddefn\defn
+% \renewcommand{definition}[2][]{\olddefn[{#1}]{#2}{#1}}
+
+% ================
+
+
+%--------------------代码块设置---------------------------%
+%minted设置
+\usepackage{minted}
+
+\setminted[python]{
+  style=emacs,%切换不同的风格
+  %style=autumn, 
+  linenos, % 添加行号
+  breaklines=true,
+  breakafter=\,
+  breaksymbolleft=\raisebox{0.8ex}{\small\ensuremath{\hookleftarrow}}
+}
+
+\newenvironment{code}{%
+  \begin{tcolorbox}[breakable=true,colback=white, colframe=black, title=Code, left=7mm]%
+    }{%
+  \end{tcolorbox}%
+}
+
+
+%行内代码样式设置
+\newcommand{\textcode}[1]{\tikz[baseline=(char.base)]{
+    \node[fill=gray!20,shape=rectangle,rounded corners,inner sep=2pt] (char) {\texttt{#1}};
+  }}
+
+%-------------------------------------------------------%
+
+
+
+
+
+
+
+
+% ========= 标题、作者配置 =====
+
+
+\usepackage{titling} % 自定义标题
+
+% 自定义标题样式，使其水平垂直居中
+%\renewcommand{\maketitle}{
+%  \begin{center}
+%    \vspace*{\fill}
+%    \Huge\textbf{\thetitle} \\[1em]
+%    \Large\theauthor \\[1em]
+%    %\large\thedate
+%    \vspace*{\fill}
+%  \end{center}
+%}
+
+
+% ============================
+
+\usepackage{hyperref}
+%超链接样式设置
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue,  % 设置内部链接的颜色为蓝色
+  urlcolor=[RGB]{181,39,28},    % 设置外部链接的颜色为棕红色
+}
