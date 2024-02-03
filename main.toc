@@ -72,12 +72,12 @@
 \contentsline {subsubsection}{欧拉方程}{58}{section*.22}%
 \contentsline {paragraph}{方程形式}{58}{section*.23}%
 \contentsline {paragraph}{特征分析}{59}{section*.24}%
-\contentsline {paragraph}{算例}{60}{section*.25}%
+\contentsline {paragraph}{算例}{61}{section*.25}%
 \contentsline {section}{\numberline {3.8}基函数函数}{62}{section.3.8}%
 \contentsline {subsection}{\numberline {3.8.1}一维}{62}{subsection.3.8.1}%
-\contentsline {subsection}{\numberline {3.8.2}二维}{62}{subsection.3.8.2}%
+\contentsline {subsection}{\numberline {3.8.2}二维}{63}{subsection.3.8.2}%
 \contentsline {section}{\numberline {3.9}数值积分}{63}{section.3.9}%
 \contentsline {section}{\numberline {3.10}计算精度}{65}{section.3.10}%
 \contentsline {section}{\numberline {3.11}常用中英文对照表}{66}{section.3.11}%
-\contentsline {section}{\numberline {3.12}常用期刊名缩写}{66}{section.3.12}%
-\contentsline {section}{\numberline {3.13}常用缩写对照表}{66}{section.3.13}%
+\contentsline {section}{\numberline {3.12}常用期刊名缩写}{67}{section.3.12}%
+\contentsline {section}{\numberline {3.13}常用缩写对照表}{67}{section.3.13}%

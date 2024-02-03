@@ -148,6 +148,7 @@ $\begin{array}{l}
 
 
 \end{example}
+
 \begin{example}
     Lax 激波管问题(shock–tube problem)\cite{RN109}：
     \begin{equation}
@@ -1537,7 +1538,34 @@ $\text { where } c=\sqrt{\gamma p / \rho}, B_{1}=(\gamma-1) / c^{2}, B_{2}=B_{1}
 
     结束时间为 $t=8$, 网格数量为200.
 \end{example}
+\begin{example}
+    \cite{RN204}
+    \begin{equation}
+        u_0(x) = e^{-300*(x-x_c)^2},x_c=0.5
+    \end{equation}
+    $x\in[0,1]$ 周期边界条件，$t_end=1$
 
+\end{example}
+\begin{example}[Sod's shock-tube problem\cite{RN204}]
+    \begin{equation}
+        \begin{aligned}
+            (\rho, u, p) & =(1,0,1)       & \text { 当 }0\leqslant x \leq 0.5,      \\
+            (\rho, u, p) & =(0.125,0,0.1) & \text { 当 }0.5\leqslant x\leqslant 1 .
+        \end{aligned}
+    \end{equation}
+    $t=0.2$
+\end{example}
+\begin{example}[interacting blast waves problem\cite{RN204}]
+    \begin{equation}
+        (\rho,u,p)=
+        \begin{cases}
+            (1,0,1000), if 0\leqslant x<0.1      \\
+            (1,0,0.01), if 0.1 \leqslant x < 0.9 \\
+            (1,0,100),if 0.9\leqslant x \leqslant 1
+        \end{cases}
+    \end{equation}
+
+\end{example}
 \begin{example}[Shu Osher 问题\cite{RN109}]
     \begin{equation}
         \begin{aligned}

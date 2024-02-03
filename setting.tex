@@ -235,38 +235,6 @@
 % ================
 
 
-%--------------------代码块设置---------------------------%
-%minted设置
-\usepackage{minted}
-
-\setminted[python]{
-  style=emacs,%切换不同的风格
-  %style=autumn, 
-  linenos, % 添加行号
-  breaklines=true,
-  breakafter=\,
-  breaksymbolleft=\raisebox{0.8ex}{\small\ensuremath{\hookleftarrow}}
-}
-
-\newenvironment{code}{%
-  \begin{tcolorbox}[breakable=true,colback=white, colframe=black, title=Code, left=7mm]%
-    }{%
-  \end{tcolorbox}%
-}
-
-
-%行内代码样式设置
-\newcommand{\textcode}[1]{\tikz[baseline=(char.base)]{
-    \node[fill=gray!20,shape=rectangle,rounded corners,inner sep=2pt] (char) {\texttt{#1}};
-  }}
-
-%-------------------------------------------------------%
-
-
-
-
-
-
 
 
 % ========= 标题、作者配置 =====
