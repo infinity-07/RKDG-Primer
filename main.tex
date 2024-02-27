@@ -150,20 +150,14 @@ $\begin{array}{l}
 \end{example}
 
 \begin{example}
-    Lax 激波管问题(shock–tube problem)\cite{RN109}：
+    Lax 激波管问题(shock–tube problem)\cite{RN204}：
     \begin{equation}
-        \begin{aligned}
-            (\rho, v, p) & =(0.445,0.698,3.528) & \text { 当 } x \leqslant 0 \text {, } \\
-            (\rho, v, p) & =(0.5,0,0.571) \quad & \text { 当 } \quad x>0 \text {. }     \\
-        \end{aligned}
+        \begin{cases}
+            (\rho, v, p)  =(0.445,0.698,3.528) & 0\leqslant x < 0.5         \\
+            (\rho, v, p) =(0.5,0,0.571)        & 0.5\leqslant x \leqslant 1 \\
+        \end{cases}
     \end{equation}
-    计算区域为 $[-5,5]$ 两瑞均是常数边界条件, 我们求解该问题至 $T=1.3$.
-    \begin{figure}[htp]
-        \centering
-        \label{fig:}
-        \includegraphics[width=0.7\linewidth]{fig/lax_problem.png}
-        \caption{$M=50$,$N=200$,$P_2$,WENO-JS}
-    \end{figure}
+    计算区域为 $[0,1]$ 两瑞均是常数边界条件, 我们求解该问题至 $T=0.14$.
 
 \end{example}
 \section{二维标量}
@@ -1548,10 +1542,10 @@ $\text { where } c=\sqrt{\gamma p / \rho}, B_{1}=(\gamma-1) / c^{2}, B_{2}=B_{1}
 \end{example}
 \begin{example}[Sod's shock-tube problem\cite{RN204}]
     \begin{equation}
-        \begin{aligned}
-            (\rho, u, p) & =(1,0,1)       & \text { 当 }0\leqslant x \leq 0.5,      \\
-            (\rho, u, p) & =(0.125,0,0.1) & \text { 当 }0.5\leqslant x\leqslant 1 .
-        \end{aligned}
+        \begin{cases}
+            (\rho, u, p)  =(1,0,1)       & 0\leqslant x \leq 0.5,      \\
+            (\rho, u, p)  =(0.125,0,0.1) & 0.5\leqslant x\leqslant 1 .
+        \end{cases}
     \end{equation}
     $t=0.2$
 \end{example}
