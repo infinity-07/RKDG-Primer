@@ -158,6 +158,12 @@ $\begin{array}{l}
         \end{cases}
     \end{equation}
     计算区域为 $[0,1]$ 两瑞均是常数边界条件, 我们求解该问题至 $T=0.14$.
+    \begin{figure}[H]
+        \centering
+        \label{fig:}
+        \includegraphics[width=0.7\linewidth]{fig/lax.eps}
+        \caption{蓝色：reference，红色：DG($P^2$)-WENOJS-M=50-N=200}
+    \end{figure}
 
 \end{example}
 \section{二维标量}
@@ -236,16 +242,16 @@ $\begin{array}{l}
     \end{equation}
     $t_{end}=0.8$,网格为$400\times400$.
 
-    % \begin{figure}[ht]%
-    %     \centering
-    %     \subfloat{
-    %         \includegraphics[width=0.45\linewidth]{fig/黎曼问题图一.eps}
-    %     }\quad
-    %     \subfloat{
-    %         \includegraphics[width=0.45\linewidth]{fig/黎曼问题图二.eps}
-    %     }
-    %     \caption{WENO-JS,M=200,等高线：0.2:0.05:1.7}
-    % \end{figure}
+    \begin{figure}[H]%
+        \centering
+        \subfloat{
+            \includegraphics[width=0.45\linewidth]{fig/黎曼问题图一.eps}
+        }\quad
+        \subfloat{
+            \includegraphics[width=0.45\linewidth]{fig/黎曼问题图二.eps}
+        }
+        \caption{WENO-JS,M=200,等高线：0.2:0.05:1.7}
+    \end{figure}
 \end{example}
 
 
@@ -1541,9 +1547,7 @@ $\text { where } c=\sqrt{\gamma p / \rho}, B_{1}=(\gamma-1) / c^{2}, B_{2}=B_{1}
     $x\in[0,1]$ 周期边界条件，$t_end=1$
 
 \end{example}
-\begin{example}{}{}
-    
-    [Sod's shock-tube problem\cite{RN204}]
+\begin{example}{Sod's shock-tube problem\cite{RN204}}{}
     \begin{equation}
         \begin{aligned}
             (\rho, u, p) & =(1,0,1)       & \text { 当 }0\leqslant x \leq 0.5,      \\
@@ -1551,9 +1555,16 @@ $\text { where } c=\sqrt{\gamma p / \rho}, B_{1}=(\gamma-1) / c^{2}, B_{2}=B_{1}
         \end{aligned}
     \end{equation}
     $t=0.2$
+
+    \begin{figure}[H]
+        \centering
+        \label{fig:}
+        \includegraphics[width=0.7\linewidth]{fig/sod.eps}
+        \caption{蓝色：reference，红色：DG($P^2$)-WENOJS-M=50-N=200}
+    \end{figure}
 \end{example}
 \begin{example}{}{}
-    
+
     [interacting blast waves problem\cite{RN204}]
     \begin{equation}
         (\rho,u,p)=
@@ -1566,7 +1577,7 @@ $\text { where } c=\sqrt{\gamma p / \rho}, B_{1}=(\gamma-1) / c^{2}, B_{2}=B_{1}
     reflective boundary conditions,$x=0,x=1$,$t_end=0.038$,
 \end{example}
 \begin{example}{}{}
-    
+
     [Shu Osher 问题\cite{RN109}]
     \begin{equation}
         \begin{aligned}
@@ -1575,11 +1586,11 @@ $\text { where } c=\sqrt{\gamma p / \rho}, B_{1}=(\gamma-1) / c^{2}, B_{2}=B_{1}
         \end{aligned}
     \end{equation}
     选取 $\epsilon = 0.2$,计算区域为 $[-5,5]$,两端边界条件按初值条件给定后保持不变,求解至时间 $T=1.8$.
-    \begin{figure}[htp]
+    \begin{figure}[H]
         \centering
-        \label{fig:shu_Osher}
-        \includegraphics[width=0.7\linewidth]{fig/Shu_Osher.png}
-        \caption{$N=2000,P2,WENO-JS,M=50$}
+        \label{fig:}
+        \includegraphics[width=0.7\linewidth]{fig/shu_osher.eps}
+        \caption{蓝色：reference，红色：DG($P^2$)-WENOJS-M=50-N=200}
     \end{figure}
 
 \end{example}
@@ -1700,8 +1711,7 @@ where  $c=\sqrt{\gamma p / \rho}, B_{1}=(\gamma-1) / c^{2}, B_{2}=B_{1}\left(\mu
 % 其中也有很多有趣的间断算例
 %------------------------------------
 
-\begin{example}{}{}
-    [光滑算例]
+\begin{example}{光滑算例}{}
     取计算域为  $[0,10]^{2}$  ，先给定一个平稳的流： $\rho=p=u=v=1$  ，然后在  $\left(x_{0}, y_{0}\right)=(5,5)$  施加一个冲击:
     \begin{equation}
         \begin{array}{l}
@@ -1728,16 +1738,16 @@ where  $c=\sqrt{\gamma p / \rho}, B_{1}=(\gamma-1) / c^{2}, B_{2}=B_{1}\left(\mu
     \end{equation}
     $p_1<p_2=p_3=p_4$.滑移边界条件.建议计算至$t=0.52$,网格为260*260.
 
-    % \begin{figure}[ht]%
-    %     \centering
-    %     \subfloat{
-    %         \includegraphics[width=0.45\linewidth]{fig/黎曼算例2-1.png}
-    %     }\quad
-    %     \subfloat{
-    %         \includegraphics[width=0.45\linewidth]{fig/黎曼算例2-2.png}
-    %     }
-    %     \caption{WENO-JS,M=10,等高线：linspace(0.56,1.67,30)}
-    % \end{figure}
+    \begin{figure}[H]%
+        \centering
+        \subfloat{
+            \includegraphics[width=0.45\linewidth]{fig/黎曼算例2-1.png}
+        }\quad
+        \subfloat{
+            \includegraphics[width=0.45\linewidth]{fig/黎曼算例2-2.png}
+        }
+        \caption{WENO-JS,M=10,等高线：linspace(0.56,1.67,30)}
+    \end{figure}
 
 
 \end{example}
