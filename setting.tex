@@ -4,8 +4,11 @@
 \usepackage{appendix}
 \usepackage{amsmath,amsthm,amssymb,amsfonts}    % 数学符号与字体
 
+\usepackage{float}
+
 \usepackage{hyperref}   % 添加超链接
 \hypersetup{hidelinks}  % 把超链接周围的红框隐藏起来
+\usepackage[dvipsnames]{xcolor} % 在latex中使用颜色
 
 \usepackage{subfig,graphicx}    % 插入照片
 \usepackage{enumitem}
@@ -24,12 +27,6 @@
 \setmainfont{Times New Roman} % 设置英文衬线字体
 %\setsansfont{Arial} % 设置英文无衬线字体
 %\setmonofont{Courier New} % 设置英文等宽字体
-
-
-%设置正文文本分段空行不置顶
-\usepackage{indentfirst} % 导入indentfirst包
-\setlength{\parindent}{0pt} % 取消首行缩进
-\setlength{\parskip}{\baselineskip} % 段落之间空一行
 
 % 表格宏包
 \usepackage{multirow, booktabs} %两种不同处理表格,取决于不同情况的处理
@@ -50,17 +47,6 @@
   bottom=1in, % 设置下边距
 }
 
-\pagestyle{fancy}
-\fancyhead{} % 清空页眉
-\fancyfoot{} % 清空页脚
-\setlength{\headheight}{12.20pt}
-\definecolor{structurecolor}{RGB}{68,79,173}
-\fancyhead[L]{\color{structurecolor}\kaishu {\faPaperPlaneO\ Academic year 2023 : Algebra}}
-\fancyhead[R]{\color{structurecolor}\kaishu すうがく數學！}
-\fancyfoot[L]{\color[RGB]{204,52,51}{\faLink}}
-\fancyfoot[R]{\color[RGB]{0,64,116}{\faUnlink}}
-\fancyfoot[C]{\color{structurecolor}{\faGg 第~\thepage ~页\faGg}}
-\newcommand\ee{\mathrm{e}}
 
 % 其他页面设置
 \geometry{margin=1in, headsep=0.75in}
@@ -84,63 +70,25 @@
 
 % 框架和颜色宏包
 \usepackage{framed} %边框
-\usepackage{xcolor} %颜色
 \usepackage[most]{tcolorbox}
 \colorlet{shadecolor}{orange!15} %颜色自定义
 
 % ======= 定理环境边框 ======
-
-
 \definecolor{browna}{rgb}{0.76,0.72,0.65}
 \definecolor{brownb}{rgb}{0.71,0.69,0.65}
 \definecolor{blacka}{RGB}{245,245,245}
 
-%eg环境的配置
-% 注意行末需要把空格注释掉，不然画出来的方框会有空白竖线
-\usepackage[strict]{changepage} % 提供一个 adjustwidth 环境
-
-\newenvironment{eg}{%
-  \def\FrameCommand{%
-    \hspace{1pt}%
-    {\color{brownb}\vrule width 2pt}%
-    {\color{blacka}\vrule width 4pt}%
-    \colorbox{blacka}%
-  }%
-  \MakeFramed{\advance\hsize-\width\FrameRestore}%
-  \begin{adjustwidth}{}{7pt}%
-    \vspace{-14pt}\textbf{Example}\newline\kaishu\itshape
-    }{%
-  \end{adjustwidth}\endMakeFramed%
-}
-
-%re环境配置
-\newenvironment{re}{
-  \par\medskip
-  \textbf{Remark.}
-  \begin{itshape}\kaishu
-    }{
-  \end{itshape}
-  \par\medskip
-}
-
-%pf环境设置
-\definecolor{Bloodred}{RGB}{136,0,21}
-
-\newenvironment{pf}{
-  \noindent\textcolor{Bloodred}{\emph{\ensuremath{\mathfrak{Proof.}}}}\vspace{-1em}
-  \par
-  %\color{gray}
-  \kaishu
-}{
-  \hfill\textcolor{Bloodred}{$\blacksquare$}
-}
 
 
 
 
 %%%%%%%%%%%%%%%%%%%
 \newtheorem{remark}{Remark}
-\newtheorem{example}{Example}
+% \newtheorem{example}{Example}
+
+\newtcbtheorem[number within=section]{example}%
+{Example}{colback=OliveGreen!10,colframe=Green!70,fonttitle=\bfseries}{example}
+
 
 
 
@@ -220,19 +168,7 @@
   breakable  % 添加这一行以启用自动断页 
 }{defn}
 
-% \let\oldthm\thm
-% \renewcommand{\theorem}[2][]{\oldthm[{#1}]{#2}{#1}}
 
-% \let\oldlem\lem
-% \renewcommand{\lem}[2][]{\oldlem[{#1}]{#2}{#1}}
-
-% \let\oldcor\cor
-% \renewcommand{\cor}[2][]{\oldcor[{#1}]{#2}{#1}}
-
-% \let\olddefn\defn
-% \renewcommand{definition}[2][]{\olddefn[{#1}]{#2}{#1}}
-
-% ================
 
 
 
@@ -246,9 +182,3 @@
 % ============================
 
 \usepackage{hyperref}
-%超链接样式设置
-\hypersetup{
-  colorlinks=true,
-  linkcolor=blue,  % 设置内部链接的颜色为蓝色
-  urlcolor=[RGB]{181,39,28},    % 设置外部链接的颜色为棕红色
-}

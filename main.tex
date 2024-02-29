@@ -85,7 +85,7 @@ $\begin{array}{l}
 \end{equation}
 
 \subsection{实例}
-\begin{example}
+\begin{example}{}{}
     光滑问题：
     \begin{equation}
         u_t+u_x=0,u(x,0)=\sin x,0\leqslant x\leqslant 2\pi
@@ -99,7 +99,7 @@ $\begin{array}{l}
     \end{equation}
 \end{example}
 
-\begin{example}
+\begin{example}{}{}
     % https://zhuanlan.zhihu.com/p/502638295
     间断问题：
 
@@ -129,7 +129,7 @@ $\begin{array}{l}
 
 数值通量为：
 
-\begin{example}
+\begin{example}{}{}
     \begin{equation}
         \begin{aligned}
             \rho(x, 0) & =1+0.2 \sin \pi x \\
@@ -149,7 +149,7 @@ $\begin{array}{l}
 
 \end{example}
 
-\begin{example}
+\begin{example}{}{}
     Lax 激波管问题(shock–tube problem)\cite{RN204}：
     \begin{equation}
         \begin{cases}
@@ -203,7 +203,7 @@ $\begin{array}{l}
     h_{e, K}(a, b)=\frac{1}{2}\left[\mathbf{f}(a) \cdot n_{e, K}+\mathbf{f}(b) \cdot n_{e, K}-\alpha_{e, K}(b-a)\right] .
 \end{equation}
 
-\begin{example}
+\begin{example}{}{}
     光滑问题：初值为：
     \begin{equation}
         \begin{aligned}
@@ -223,7 +223,7 @@ $\begin{array}{l}
 
 
 
-\begin{example}黎曼问题：
+\begin{example}{}{}黎曼问题：
     % https://www.researchgate.net/publication/370612578_A_dissipation-dispersion_coupled_inequality_for_a_class_of_upwind_multi-resolution_WENO_schemes
     算例可参考：\cite{RN114}
     \begin{equation}
@@ -236,16 +236,16 @@ $\begin{array}{l}
     \end{equation}
     $t_{end}=0.8$,网格为$400\times400$.
 
-    \begin{figure}[ht]%
-        \centering
-        \subfloat{
-            \includegraphics[width=0.45\linewidth]{fig/黎曼问题图一.eps}
-        }\quad
-        \subfloat{
-            \includegraphics[width=0.45\linewidth]{fig/黎曼问题图二.eps}
-        }
-        \caption{WENO-JS,M=200,等高线：0.2:0.05:1.7}
-    \end{figure}
+    % \begin{figure}[ht]%
+    %     \centering
+    %     \subfloat{
+    %         \includegraphics[width=0.45\linewidth]{fig/黎曼问题图一.eps}
+    %     }\quad
+    %     \subfloat{
+    %         \includegraphics[width=0.45\linewidth]{fig/黎曼问题图二.eps}
+    %     }
+    %     \caption{WENO-JS,M=200,等高线：0.2:0.05:1.7}
+    % \end{figure}
 \end{example}
 
 
@@ -1506,7 +1506,8 @@ $\text { where } c=\sqrt{\gamma p / \rho}, B_{1}=(\gamma-1) / c^{2}, B_{2}=B_{1}
     H=(E+p) / \rho \equiv \dfrac{1}{2} u^{2}+h, \quad h=e+p / \rho
 \end{equation}
 \paragraph{算例}
-\begin{example}[Linear Equation]
+\begin{example}{}{}
+    [Linear Equation]
     We solve the linear equation\cite{RN56}:
     \begin{equation}
         \begin{aligned}
@@ -1532,7 +1533,7 @@ $\text { where } c=\sqrt{\gamma p / \rho}, B_{1}=(\gamma-1) / c^{2}, B_{2}=B_{1}
 
     结束时间为 $t=8$, 网格数量为200.
 \end{example}
-\begin{example}
+\begin{example}{}{}
     \cite{RN204}
     \begin{equation}
         u_0(x) = e^{-300*(x-x_c)^2},x_c=0.5
@@ -1540,7 +1541,9 @@ $\text { where } c=\sqrt{\gamma p / \rho}, B_{1}=(\gamma-1) / c^{2}, B_{2}=B_{1}
     $x\in[0,1]$ 周期边界条件，$t_end=1$
 
 \end{example}
-\begin{example}[Sod's shock-tube problem\cite{RN204}]
+\begin{example}{}{}
+    
+    [Sod's shock-tube problem\cite{RN204}]
     \begin{equation}
         \begin{aligned}
             (\rho, u, p) & =(1,0,1)       & \text { 当 }0\leqslant x \leq 0.5,      \\
@@ -1549,7 +1552,9 @@ $\text { where } c=\sqrt{\gamma p / \rho}, B_{1}=(\gamma-1) / c^{2}, B_{2}=B_{1}
     \end{equation}
     $t=0.2$
 \end{example}
-\begin{example}[interacting blast waves problem\cite{RN204}]
+\begin{example}{}{}
+    
+    [interacting blast waves problem\cite{RN204}]
     \begin{equation}
         (\rho,u,p)=
         \begin{cases}
@@ -1560,7 +1565,9 @@ $\text { where } c=\sqrt{\gamma p / \rho}, B_{1}=(\gamma-1) / c^{2}, B_{2}=B_{1}
     \end{equation}
     reflective boundary conditions,$x=0,x=1$,$t_end=0.038$,
 \end{example}
-\begin{example}[Shu Osher 问题\cite{RN109}]
+\begin{example}{}{}
+    
+    [Shu Osher 问题\cite{RN109}]
     \begin{equation}
         \begin{aligned}
             (\rho, v, p) & =(3.857143,2.629369,10.333333)   & \text { 当 } x \leq-4, \\
@@ -1693,7 +1700,8 @@ where  $c=\sqrt{\gamma p / \rho}, B_{1}=(\gamma-1) / c^{2}, B_{2}=B_{1}\left(\mu
 % 其中也有很多有趣的间断算例
 %------------------------------------
 
-\begin{example}[光滑算例]
+\begin{example}{}{}
+    [光滑算例]
     取计算域为  $[0,10]^{2}$  ，先给定一个平稳的流： $\rho=p=u=v=1$  ，然后在  $\left(x_{0}, y_{0}\right)=(5,5)$  施加一个冲击:
     \begin{equation}
         \begin{array}{l}
@@ -1708,7 +1716,7 @@ where  $c=\sqrt{\gamma p / \rho}, B_{1}=(\gamma-1) / c^{2}, B_{2}=B_{1}\left(\mu
     (注意 $\Delta S=0$ 不是一个没用的条件，它表明了 $ p=\rho^{\gamma}  )$
 \end{example}
 
-\begin{example}
+\begin{example}{}{}
     二维黎曼问题\cite{RN13},初值为
     \begin{equation}
         (\rho, u, v, p)=\begin{cases}
@@ -1720,16 +1728,16 @@ where  $c=\sqrt{\gamma p / \rho}, B_{1}=(\gamma-1) / c^{2}, B_{2}=B_{1}\left(\mu
     \end{equation}
     $p_1<p_2=p_3=p_4$.滑移边界条件.建议计算至$t=0.52$,网格为260*260.
 
-    \begin{figure}[ht]%
-        \centering
-        \subfloat{
-            \includegraphics[width=0.45\linewidth]{fig/黎曼算例2-1.png}
-        }\quad
-        \subfloat{
-            \includegraphics[width=0.45\linewidth]{fig/黎曼算例2-2.png}
-        }
-        \caption{WENO-JS,M=10,等高线：linspace(0.56,1.67,30)}
-    \end{figure}
+    % \begin{figure}[ht]%
+    %     \centering
+    %     \subfloat{
+    %         \includegraphics[width=0.45\linewidth]{fig/黎曼算例2-1.png}
+    %     }\quad
+    %     \subfloat{
+    %         \includegraphics[width=0.45\linewidth]{fig/黎曼算例2-2.png}
+    %     }
+    %     \caption{WENO-JS,M=10,等高线：linspace(0.56,1.67,30)}
+    % \end{figure}
 
 
 \end{example}
