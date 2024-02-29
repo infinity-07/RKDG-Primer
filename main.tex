@@ -85,12 +85,21 @@ $\begin{array}{l}
 \end{equation}
 
 \subsection{实例}
+<<<<<<< HEAD
 \begin{example}
   光滑问题：
   \begin{equation}
     u_t+u_x=0,u(x,0)=\sin x,0\leqslant x\leqslant 2\pi
   \end{equation}
   周期边界条件
+=======
+\begin{example}{}{}
+    光滑问题：
+    \begin{equation}
+        u_t+u_x=0,u(x,0)=\sin x,0\leqslant x\leqslant 2\pi
+    \end{equation}
+    周期边界条件
+>>>>>>> ec68ca29c0b0e096b02331435d3967d9cb52cf9f
 
   解析解为：
 
@@ -99,6 +108,7 @@ $\begin{array}{l}
   \end{equation}
 \end{example}
 
+<<<<<<< HEAD
 \begin{example}
   u_t+u_x=0
 \end{example}
@@ -108,6 +118,11 @@ $\begin{array}{l}
 计算区域 $[0,1]$，周期边界条件，outputtime = 1s
 参考文献：A new type of non-polynomial based TENO scheme for hyperbolic conservation
 laws
+=======
+\begin{example}{}{}
+    % https://zhuanlan.zhihu.com/p/502638295
+    间断问题：
+>>>>>>> ec68ca29c0b0e096b02331435d3967d9cb52cf9f
 
 \begin{example}
   % https://zhuanlan.zhihu.com/p/502638295
@@ -139,6 +154,7 @@ laws
 
 数值通量为：
 
+<<<<<<< HEAD
 \begin{example}
   \begin{equation}
     \begin{aligned}
@@ -173,6 +189,37 @@ laws
     \includegraphics[width=0.7\linewidth]{fig/lax_problem.png}
     \caption{$M=50$,$N=200$,$P_2$,WENO-JS}
   \end{figure}
+=======
+\begin{example}{}{}
+    \begin{equation}
+        \begin{aligned}
+            \rho(x, 0) & =1+0.2 \sin \pi x \\
+            u(x, 0)    & =0.7              \\
+            p(x, 0)    & =1
+        \end{aligned}
+    \end{equation}
+    计算区域为 $[0,2]$, 周期边界条件,解析解为：
+    \begin{equation}
+        \begin{aligned}
+            \rho(x, t) & =1+0.2 \sin \pi(x-0.7 t) \\
+            u(x, t)    & =0.7                     \\
+            p(x, t)    & =1
+        \end{aligned}
+    \end{equation}
+
+
+\end{example}
+
+\begin{example}{}{}
+    Lax 激波管问题(shock–tube problem)\cite{RN204}：
+    \begin{equation}
+        \begin{cases}
+            (\rho, v, p)  =(0.445,0.698,3.528) & 0\leqslant x < 0.5         \\
+            (\rho, v, p) =(0.5,0,0.571)        & 0.5\leqslant x \leqslant 1 \\
+        \end{cases}
+    \end{equation}
+    计算区域为 $[0,1]$ 两瑞均是常数边界条件, 我们求解该问题至 $T=0.14$.
+>>>>>>> ec68ca29c0b0e096b02331435d3967d9cb52cf9f
 
 \end{example}
 \section{二维标量}
@@ -218,6 +265,7 @@ laws
   h_{e, K}(a, b)=\frac{1}{2}\left[\mathbf{f}(a) \cdot n_{e, K}+\mathbf{f}(b) \cdot n_{e, K}-\alpha_{e, K}(b-a)\right] .
 \end{equation}
 
+<<<<<<< HEAD
 \begin{example}
   光滑问题：初值为：
   \begin{equation}
@@ -229,6 +277,19 @@ laws
     \end{aligned}
   \end{equation}
   周期边界条件
+=======
+\begin{example}{}{}
+    光滑问题：初值为：
+    \begin{equation}
+        \begin{aligned}
+            \rho(x,y,0) & = 1+0.2\sin(\pi(x+y)) \\
+            u(x,y,0)    & = 0.7                 \\
+            v(x,y,0)    & = 0.3                 \\
+            p(x,y,0)    & = 1                   \\
+        \end{aligned}
+    \end{equation}
+    周期边界条件
+>>>>>>> ec68ca29c0b0e096b02331435d3967d9cb52cf9f
 
   准确解为：
   \begin{equation}
@@ -238,6 +299,7 @@ laws
 
 
 
+<<<<<<< HEAD
 \begin{example}黎曼问题：
   % https://www.researchgate.net/publication/370612578_A_dissipation-dispersion_coupled_inequality_for_a_class_of_upwind_multi-resolution_WENO_schemes
   算例可参考：\cite{RN114}
@@ -261,6 +323,31 @@ laws
     }
     \caption{WENO-JS,M=200,等高线：0.2:0.05:1.7}
   \end{figure}
+=======
+\begin{example}{}{}黎曼问题：
+    % https://www.researchgate.net/publication/370612578_A_dissipation-dispersion_coupled_inequality_for_a_class_of_upwind_multi-resolution_WENO_schemes
+    算例可参考：\cite{RN114}
+    \begin{equation}
+        (\rho, u, v, p)=\begin{cases}
+            (0.138,1.206,1.206,0.029), & (x, y) \in[0,0.8) \times[0,0.8) \\
+            (0.5323,1.206,0,0.3),      & (x, y) \in[0,0.8) \times[0.8,1] \\
+            (0.5323,0,1.206,0.3),      & (x, y) \in[0.8,1] \times[0,0.8) \\
+            (1.5,0,0,1.5),             & (x, y) \in[0.8,1] \times[0.8,1]
+        \end{cases}
+    \end{equation}
+    $t_{end}=0.8$,网格为$400\times400$.
+
+    % \begin{figure}[ht]%
+    %     \centering
+    %     \subfloat{
+    %         \includegraphics[width=0.45\linewidth]{fig/黎曼问题图一.eps}
+    %     }\quad
+    %     \subfloat{
+    %         \includegraphics[width=0.45\linewidth]{fig/黎曼问题图二.eps}
+    %     }
+    %     \caption{WENO-JS,M=200,等高线：0.2:0.05:1.7}
+    % \end{figure}
+>>>>>>> ec68ca29c0b0e096b02331435d3967d9cb52cf9f
 \end{example}
 
 
@@ -1541,6 +1628,7 @@ $\text { where } c=\sqrt{\gamma p / \rho}, B_{1}=(\gamma-1) / c^{2}, B_{2}=B_{1}
   H=(E+p) / \rho \equiv \dfrac{1}{2} u^{2}+h, \quad h=e+p / \rho
 \end{equation}
 \paragraph{算例}
+<<<<<<< HEAD
 \begin{example}[Linear Equation]
   We solve the linear equation\cite{RN56}:
   \begin{equation}
@@ -1564,10 +1652,43 @@ $\text { where } c=\sqrt{\gamma p / \rho}, B_{1}=(\gamma-1) / c^{2}, B_{2}=B_{1}
     \end{aligned}
   \end{equation}
   常数取为$a=0.5, z=-0.7, \delta=0.005, \alpha=10$ 和 $\beta=\frac{\log 2}{36 \delta^{2}}$。该解包含了一个平滑但狭窄的高斯函数组合、一个方波、一个尖锐的三角波和一个半椭圆。
+=======
+\begin{example}{}{}
+    [Linear Equation]
+    We solve the linear equation\cite{RN56}:
+    \begin{equation}
+        \begin{aligned}
+            u_{t}+u_{x} & =0 \quad-1<x<1,                    \\
+            u(x, 0)     & =u_{0}(x) \quad \text { periodic }
+        \end{aligned}
+    \end{equation}
+    其中：
+    \begin{equation}
+        \begin{aligned}
+            u_{0}(x)        & =\begin{cases}
+                                   \frac{1}{6}(G(x, \beta, z-\delta)+G(x, \beta, z+\delta)+4 G(x, \beta, z))    & -0.8 \leq x \leq-0.6 \\
+                                   1                                                                            & -0.4 \leq x \leq-0.2 \\
+                                   1-|10(x-0.1)|                                                                & 0 \leq x \leq 0.2    \\
+                                   \frac{1}{6}(F(x, \alpha, a-\delta)+F(x, \alpha, a+\delta)+4 F(x, \alpha, a)) & 0.4 \leq x \leq 0.6  \\
+                                   0                                                                            & \text { otherwise }
+                               \end{cases} \\
+            G(x, \beta, z)  & =e^{-\beta(x-z)^{2}}                                                                                 \\
+            F(x, \alpha, a) & =\sqrt{\max \left(1-\alpha^{2}(x-a)^{2}, 0\right)}
+        \end{aligned}
+    \end{equation}
+    常数取为$a=0.5, z=-0.7, \delta=0.005, \alpha=10$ 和 $\beta=\frac{\log 2}{36 \delta^{2}}$。该解包含了一个平滑但狭窄的高斯函数组合、一个方波、一个尖锐的三角波和一个半椭圆。
+>>>>>>> ec68ca29c0b0e096b02331435d3967d9cb52cf9f
 
   结束时间为 $t=8$, 网格数量为200.
 \end{example}
+\begin{example}{}{}
+    \cite{RN204}
+    \begin{equation}
+        u_0(x) = e^{-300*(x-x_c)^2},x_c=0.5
+    \end{equation}
+    $x\in[0,1]$ 周期边界条件，$t_end=1$
 
+<<<<<<< HEAD
 \begin{example}[Shu Osher 问题\cite{RN109}]
   \begin{equation}
     \begin{aligned}
@@ -1582,6 +1703,49 @@ $\text { where } c=\sqrt{\gamma p / \rho}, B_{1}=(\gamma-1) / c^{2}, B_{2}=B_{1}
     \includegraphics[width=0.7\linewidth]{fig/Shu_Osher.png}
     \caption{$N=2000,P2,WENO-JS,M=50$}
   \end{figure}
+=======
+\end{example}
+\begin{example}{}{}
+    
+    [Sod's shock-tube problem\cite{RN204}]
+    \begin{equation}
+        \begin{aligned}
+            (\rho, u, p) & =(1,0,1)       & \text { 当 }0\leqslant x \leq 0.5,      \\
+            (\rho, u, p) & =(0.125,0,0.1) & \text { 当 }0.5\leqslant x\leqslant 1 .
+        \end{aligned}
+    \end{equation}
+    $t=0.2$
+\end{example}
+\begin{example}{}{}
+    
+    [interacting blast waves problem\cite{RN204}]
+    \begin{equation}
+        (\rho,u,p)=
+        \begin{cases}
+            (1,0,1000), if 0\leqslant x<0.1      \\
+            (1,0,0.01), if 0.1 \leqslant x < 0.9 \\
+            (1,0,100),if 0.9\leqslant x \leqslant 1
+        \end{cases}
+    \end{equation}
+    reflective boundary conditions,$x=0,x=1$,$t_end=0.038$,
+\end{example}
+\begin{example}{}{}
+    
+    [Shu Osher 问题\cite{RN109}]
+    \begin{equation}
+        \begin{aligned}
+            (\rho, v, p) & =(3.857143,2.629369,10.333333)   & \text { 当 } x \leq-4, \\
+            (\rho, v, p) & =(1+\varepsilon \sin (5 x), 0,1) & \text { 当 } x>-4 .
+        \end{aligned}
+    \end{equation}
+    选取 $\epsilon = 0.2$,计算区域为 $[-5,5]$,两端边界条件按初值条件给定后保持不变,求解至时间 $T=1.8$.
+    \begin{figure}[htp]
+        \centering
+        \label{fig:shu_Osher}
+        \includegraphics[width=0.7\linewidth]{fig/Shu_Osher.png}
+        \caption{$N=2000,P2,WENO-JS,M=50$}
+    \end{figure}
+>>>>>>> ec68ca29c0b0e096b02331435d3967d9cb52cf9f
 
 \end{example}
 
@@ -1701,6 +1865,7 @@ where  $c=\sqrt{\gamma p / \rho}, B_{1}=(\gamma-1) / c^{2}, B_{2}=B_{1}\left(\mu
 % 其中也有很多有趣的间断算例
 %------------------------------------
 
+<<<<<<< HEAD
 \begin{example}[光滑算例]
   取计算域为  $[0,10]^{2}$  ，先给定一个平稳的流： $\rho=p=u=v=1$  ，然后在  $\left(x_{0}, y_{0}\right)=(5,5)$  施加一个冲击:
   \begin{equation}
@@ -1738,6 +1903,46 @@ where  $c=\sqrt{\gamma p / \rho}, B_{1}=(\gamma-1) / c^{2}, B_{2}=B_{1}\left(\mu
     }
     \caption{WENO-JS,M=10,等高线：linspace(0.56,1.67,30)}
   \end{figure}
+=======
+\begin{example}{}{}
+    [光滑算例]
+    取计算域为  $[0,10]^{2}$  ，先给定一个平稳的流： $\rho=p=u=v=1$  ，然后在  $\left(x_{0}, y_{0}\right)=(5,5)$  施加一个冲击:
+    \begin{equation}
+        \begin{array}{l}
+            \Delta T=-\frac{(\gamma-1) \varepsilon^{2}}{8 \gamma \pi^{2}} e^{1-r^{2}} \\
+            \Delta S=0
+        \end{array}
+    \end{equation}
+    \begin{equation}
+        (\Delta u, \Delta v)=\frac{\varepsilon}{2 \pi} e^{0.5\left(1-r^{2}\right)}(-\bar{y}, \bar{x})
+    \end{equation}
+    其中  $T=\frac{p}{\rho}$  是温度，  $S=\frac{p}{\rho^{\gamma}}$  是熵，  $(\bar{x}, \bar{y})=(x-5, y-5) , r^{2}=\bar{x}^{2}+\bar{y}^{2}, \varepsilon=5 $
+    (注意 $\Delta S=0$ 不是一个没用的条件，它表明了 $ p=\rho^{\gamma}  )$
+\end{example}
+
+\begin{example}{}{}
+    二维黎曼问题\cite{RN13},初值为
+    \begin{equation}
+        (\rho, u, v, p)=\begin{cases}
+            (0.8,0,0,1),      & (x, y) \in[0,1) \times[0,1) \\
+            (1,0.7276,0,1),   & (x, y) \in[0,1) \times[1,2] \\
+            (1,0,0.7276,1),   & (x, y) \in[1,2] \times[0,1) \\
+            (0.5313,0,0,0.4), & (x, y) \in[1,2] \times[1,2]
+        \end{cases}
+    \end{equation}
+    $p_1<p_2=p_3=p_4$.滑移边界条件.建议计算至$t=0.52$,网格为260*260.
+
+    % \begin{figure}[ht]%
+    %     \centering
+    %     \subfloat{
+    %         \includegraphics[width=0.45\linewidth]{fig/黎曼算例2-1.png}
+    %     }\quad
+    %     \subfloat{
+    %         \includegraphics[width=0.45\linewidth]{fig/黎曼算例2-2.png}
+    %     }
+    %     \caption{WENO-JS,M=10,等高线：linspace(0.56,1.67,30)}
+    % \end{figure}
+>>>>>>> ec68ca29c0b0e096b02331435d3967d9cb52cf9f
 
 
 \end{example}
