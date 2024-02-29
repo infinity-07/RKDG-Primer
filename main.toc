@@ -14,35 +14,35 @@
 \contentsline {subsection}{\numberline {1.7.1}ssp 二阶龙格库塔法}{17}{subsection.1.7.1}%
 \contentsline {subsection}{\numberline {1.7.2}ssp 三阶龙格库塔法}{17}{subsection.1.7.2}%
 \contentsline {section}{\numberline {1.8}方程解耦}{17}{section.1.8}%
-\contentsline {section}{\numberline {1.9}指示子}{17}{section.1.9}%
+\contentsline {section}{\numberline {1.9}指示子}{18}{section.1.9}%
 \contentsline {subsection}{\numberline {1.9.1}TVB指示子}{18}{subsection.1.9.1}%
-\contentsline {section}{\numberline {1.10}限制器}{18}{section.1.10}%
-\contentsline {subsection}{\numberline {1.10.1}TVB限制器}{18}{subsection.1.10.1}%
-\contentsline {subsection}{\numberline {1.10.2}WENO-JS限制器}{18}{subsection.1.10.2}%
+\contentsline {section}{\numberline {1.10}限制器}{19}{section.1.10}%
+\contentsline {subsection}{\numberline {1.10.1}TVB限制器}{19}{subsection.1.10.1}%
+\contentsline {subsection}{\numberline {1.10.2}WENO-JS限制器}{19}{subsection.1.10.2}%
 \contentsline {chapter}{\numberline {2}更多知识}{23}{chapter.2}%
 \contentsline {section}{\numberline {2.1}指示子}{23}{section.2.1}%
 \contentsline {subsection}{\numberline {2.1.1}KXRCF指示子}{23}{subsection.2.1.1}%
 \contentsline {section}{\numberline {2.2}WENO限制器}{24}{section.2.2}%
 \contentsline {subsection}{\numberline {2.2.1}再看WENOJS限制器}{24}{subsection.2.2.1}%
-\contentsline {subsubsection}{WENOJS限制器的构造}{24}{section*.6}%
-\contentsline {subsubsection}{WENO-JS的局限性}{28}{section*.7}%
+\contentsline {subsubsection}{WENOJS限制器的构造}{24}{section*.7}%
+\contentsline {subsubsection}{WENO-JS的局限性}{28}{section*.8}%
 \contentsline {subsection}{\numberline {2.2.2}修改光滑指示器(Smoothness indicators)}{28}{subsection.2.2.2}%
-\contentsline {subsubsection}{WENO-Z}{28}{section*.8}%
+\contentsline {subsubsection}{WENO-Z}{28}{section*.9}%
 \contentsline {subsection}{\numberline {2.2.3}自由设置线性权}{29}{subsection.2.2.3}%
-\contentsline {subsubsection}{MRWENO}{29}{section*.10}%
+\contentsline {subsubsection}{MRWENO}{29}{section*.11}%
 \contentsline {subsection}{\numberline {2.2.4}HWENO}{33}{subsection.2.2.4}%
 \contentsline {section}{\numberline {2.3}保极值限制器}{33}{section.2.3}%
 \contentsline {subsection}{\numberline {2.3.1}一维}{33}{subsection.2.3.1}%
-\contentsline {subsection}{\numberline {2.3.2}二维}{35}{subsection.2.3.2}%
+\contentsline {subsection}{\numberline {2.3.2}二维}{36}{subsection.2.3.2}%
 \contentsline {section}{\numberline {2.4}数值通量}{37}{section.2.4}%
 \contentsline {subsection}{\numberline {2.4.1}HLL(Harten-Lax-van Leer)}{39}{subsection.2.4.1}%
 \contentsline {subsection}{\numberline {2.4.2}HLLC Flux}{41}{subsection.2.4.2}%
-\contentsline {subsection}{\numberline {2.4.3}波速估计}{44}{subsection.2.4.3}%
-\contentsline {subsubsection}{估计方法1}{44}{section*.13}%
-\contentsline {subsubsection}{估计方法2}{45}{section*.14}%
-\contentsline {section}{\numberline {2.5}双曲型方程(hyperbolic equation)}{45}{section.2.5}%
-\contentsline {subsection}{\numberline {2.5.1}激波(Shock Wave)}{45}{subsection.2.5.1}%
-\contentsline {subsection}{\numberline {2.5.2}接触间断(Rarefaction Wave)}{46}{subsection.2.5.2}%
+\contentsline {subsection}{\numberline {2.4.3}波速估计}{45}{subsection.2.4.3}%
+\contentsline {subsubsection}{估计方法1}{45}{section*.14}%
+\contentsline {subsubsection}{估计方法2}{45}{section*.15}%
+\contentsline {section}{\numberline {2.5}双曲型方程(hyperbolic equation)}{46}{section.2.5}%
+\contentsline {subsection}{\numberline {2.5.1}激波(Shock Wave)}{46}{subsection.2.5.1}%
+\contentsline {subsection}{\numberline {2.5.2}接触间断(Rarefaction Wave)}{47}{subsection.2.5.2}%
 \contentsline {subsection}{\numberline {2.5.3}稀疏波(Rarefaction Wave)}{47}{subsection.2.5.3}%
 \contentsline {chapter}{\numberline {3}附录}{49}{chapter.3}%
 \contentsline {section}{\numberline {3.1}模板}{49}{section.3.1}%
@@ -64,20 +64,20 @@
 \contentsline {section}{\numberline {3.6}定义}{54}{section.3.6}%
 \contentsline {section}{\numberline {3.7}控制方程}{55}{section.3.7}%
 \contentsline {subsection}{\numberline {3.7.1}一维方程}{55}{subsection.3.7.1}%
-\contentsline {subsubsection}{欧拉方程}{55}{section*.17}%
-\contentsline {paragraph}{方程形式}{55}{section*.18}%
-\contentsline {paragraph}{特征分析}{56}{section*.19}%
-\contentsline {paragraph}{算例}{57}{section*.20}%
+\contentsline {subsubsection}{欧拉方程}{55}{section*.18}%
+\contentsline {paragraph}{方程形式}{55}{section*.19}%
+\contentsline {paragraph}{特征分析}{56}{section*.20}%
+\contentsline {paragraph}{算例}{57}{section*.21}%
 \contentsline {subsection}{\numberline {3.7.2}二维方程}{58}{subsection.3.7.2}%
-\contentsline {subsubsection}{欧拉方程}{58}{section*.22}%
-\contentsline {paragraph}{方程形式}{58}{section*.23}%
-\contentsline {paragraph}{特征分析}{59}{section*.24}%
-\contentsline {paragraph}{算例}{60}{section*.25}%
+\contentsline {subsubsection}{欧拉方程}{58}{section*.23}%
+\contentsline {paragraph}{方程形式}{58}{section*.24}%
+\contentsline {paragraph}{特征分析}{59}{section*.25}%
+\contentsline {paragraph}{算例}{60}{section*.26}%
 \contentsline {section}{\numberline {3.8}基函数函数}{62}{section.3.8}%
 \contentsline {subsection}{\numberline {3.8.1}一维}{62}{subsection.3.8.1}%
 \contentsline {subsection}{\numberline {3.8.2}二维}{62}{subsection.3.8.2}%
 \contentsline {section}{\numberline {3.9}数值积分}{63}{section.3.9}%
 \contentsline {section}{\numberline {3.10}计算精度}{65}{section.3.10}%
 \contentsline {section}{\numberline {3.11}常用中英文对照表}{66}{section.3.11}%
-\contentsline {section}{\numberline {3.12}常用期刊名缩写}{66}{section.3.12}%
-\contentsline {section}{\numberline {3.13}常用缩写对照表}{66}{section.3.13}%
+\contentsline {section}{\numberline {3.12}常用期刊名缩写}{67}{section.3.12}%
+\contentsline {section}{\numberline {3.13}常用缩写对照表}{67}{section.3.13}%

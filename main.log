@@ -1,10 +1,10 @@
-This is XeTeX, Version 3.141592653-2.6-0.999994 (TeX Live 2022) (preloaded format=xelatex 2022.11.7)  22 OCT 2023 20:21
+This is XeTeX, Version 3.141592653-2.6-0.999994 (TeX Live 2022) (preloaded format=xelatex 2022.11.7)  26 FEB 2024 22:46
 entering extended mode
  \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**"e:/My Github/RKDG-Primer/main"
-(e:/My Github/RKDG-Primer/main.tex
+**main
+(./main.tex
 LaTeX2e <2021-11-15> patch level 1
 L3 programming layer <2022-02-24> (d:/texlive/2022/texmf-dist/tex/latex/base/book.cls
 Document Class: book 2021/10/04 v1.4n Standard LaTeX document class
@@ -1576,13 +1576,19 @@ LaTeX Warning: Citation `RN148' on page 16 undefined on input line 266.
 
 LaTeX Warning: Citation `RN96' on page 16 undefined on input line 269.
 
-[16] [17]
+[16]
+Underfull \vbox (badness 5817) has occurred while \output is active []
 
-LaTeX Warning: Citation `WENO-js1' on page 18 undefined on input line 329.
+ [17]
 
-[18]
+LaTeX Warning: Citation `WENO-js1' on page 18 undefined on input line 337.
 
-LaTeX Warning: Citation `WENO5' on page 19 undefined on input line 341.
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [18]
+
+LaTeX Warning: Citation `WENO5' on page 19 undefined on input line 349.
 
 [19]
 Underfull \vbox (badness 10000) has occurred while \output is active []
@@ -1592,23 +1598,27 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 ]
 Chapter 2.
 
-LaTeX Warning: Citation `RN92' on page 23 undefined on input line 420.
-
-
-LaTeX Warning: Citation `RKDG+WENOJS-1' on page 23 undefined on input line 430.
-
-
-LaTeX Warning: Citation `RKDG+WENOJS-2' on page 23 undefined on input line 430.
+LaTeX Warning: Citation `RN92' on page 23 undefined on input line 428.
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [23] [24]
+ [23]
+
+LaTeX Warning: Citation `RKDG+WENOJS-1' on page 24 undefined on input line 450.
+
+
+LaTeX Warning: Citation `RKDG+WENOJS-2' on page 24 undefined on input line 450.
+
+
+Underfull \vbox (badness 2189) has occurred while \output is active []
+
+ [24]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [25]
 
-LaTeX Warning: Citation `WENO-M' on page 26 undefined on input line 513.
+LaTeX Warning: Citation `WENO-M' on page 26 undefined on input line 533.
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
@@ -1616,54 +1626,55 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
  [26]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [27]
+ [27] [28]
 
-LaTeX Warning: Citation `WENO-Z-2013' on page 28 undefined on input line 589.
-
-[28]
-
-LaTeX Warning: Citation `MRWENO-1' on page 29 undefined on input line 621.
+LaTeX Warning: Citation `WENO-Z-2013' on page 29 undefined on input line 609.
 
 
-LaTeX Warning: Citation `MRWENO-2' on page 29 undefined on input line 621.
+LaTeX Warning: Citation `MRWENO-1' on page 29 undefined on input line 641.
 
 
-LaTeX Warning: Citation `MRWENO-3' on page 29 undefined on input line 621.
+LaTeX Warning: Citation `MRWENO-2' on page 29 undefined on input line 641.
+
+
+LaTeX Warning: Citation `MRWENO-3' on page 29 undefined on input line 641.
 
 [29]
-Underfull \vbox (badness 10000) has occurred while \output is active []
+Underfull \vbox (badness 1365) has occurred while \output is active []
 
  [30]
 
-LaTeX Warning: Citation `WENO-Z' on page 31 undefined on input line 676.
+LaTeX Warning: Citation `WENO-Z' on page 31 undefined on input line 696.
 
 [31]
-
-LaTeX Warning: Citation `RN133' on page 32 undefined on input line 754.
-
-
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [32]
 
-LaTeX Warning: Citation `RN6' on page 33 undefined on input line 765.
+LaTeX Warning: Citation `RN133' on page 33 undefined on input line 774.
 
 
-LaTeX Warning: Citation `PP-review' on page 33 undefined on input line 770.
+LaTeX Warning: Citation `RN6' on page 33 undefined on input line 785.
+
+
+LaTeX Warning: Citation `PP-review' on page 33 undefined on input line 790.
 
 
 LaTeX Font Warning: Font shape `TU/KaiTi(0)/m/it' undefined
-(Font)              using `TU/KaiTi(0)/m/n' instead on input line 775.
+(Font)              using `TU/KaiTi(0)/m/n' instead on input line 795.
 
 
-Underfull \vbox (badness 1142) has occurred while \output is active []
+Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [33]
 
-LaTeX Warning: Citation `PP-review' on page 34 undefined on input line 792.
+LaTeX Warning: Citation `PP-review' on page 34 undefined on input line 812.
 
-[34] [35]
-Overfull \hbox (21.98131pt too wide) in paragraph at lines 859--860
+[34]
+Underfull \vbox (badness 2653) has occurred while \output is active []
+
+ [35]
+Overfull \hbox (21.98131pt too wide) in paragraph at lines 879--880
 []\TU/TimesNewRoman(0)/m/n/10.53937 See figure 1 a for an illustration for k=2 . For simplicity, let $\OML/cmm/m/it/10.53937 ^^V[] \OT1/cmr/m/n/10.53937 = \OML/cmm/m/it/10.53937 ^^U[]a[]\OT1/cmr/m/n/10.53937 / [] []$ \TU/TimesNewRoman(0)/m/n/10.53937 and $\OML/cmm/m/it/10.53937 ^^V[] \OT1/cmr/m/n/10.53937 = \OML/cmm/m/it/10.53937 ^^U[]a[]\OT1/cmr/m/n/10.53937 / []$
  []
 
@@ -1672,26 +1683,26 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [36]
 
-LaTeX Warning: Citation `numFlux1' on page 37 undefined on input line 890.
+LaTeX Warning: Citation `numFlux1' on page 37 undefined on input line 910.
 
 
-LaTeX Warning: Citation `numFlux2' on page 37 undefined on input line 890.
-
-
-LaTeX Warning: Citation `RN16' on page 37 undefined on input line 898.
+LaTeX Warning: Citation `numFlux2' on page 37 undefined on input line 910.
 
 [37]
 
-LaTeX Warning: Citation `Toro' on page 38 undefined on input line 958.
+LaTeX Warning: Citation `RN16' on page 38 undefined on input line 918.
 
 
-Underfull \vbox (badness 1515) has occurred while \output is active []
+Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [38]
+
+LaTeX Warning: Citation `Toro' on page 39 undefined on input line 978.
+
 File: fig/HLL.png Graphic file (type bmp)
 <fig/HLL.png>
 
-Underfull \vbox (badness 3780) has occurred while \output is active []
+Underfull \vbox (badness 5652) has occurred while \output is active []
 
  [39]
 Underfull \vbox (badness 10000) has occurred while \output is active []
@@ -1699,6 +1710,9 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
  [40]
 File: fig/HLLC.png Graphic file (type bmp)
 <fig/HLLC.png>
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
  [41]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
@@ -1710,15 +1724,13 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [44]
 
-LaTeX Warning: Citation `numFlux2' on page 45 undefined on input line 1182.
+LaTeX Warning: Citation `numFlux2' on page 45 undefined on input line 1202.
 
+[45]
 File: fig/间断波.png Graphic file (type bmp)
 <fig/间断波.png>
 
-Underfull \vbox (badness 2772) has occurred while \output is active []
-
- [45]
-Underfull \vbox (badness 10000) has occurred while \output is active []
+Underfull \vbox (badness 1817) has occurred while \output is active []
 
  [46] [47] [48
 
@@ -1741,17 +1753,17 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [55]
 
-LaTeX Warning: Citation `RN95' on page 56 undefined on input line 1477.
+LaTeX Warning: Citation `RN95' on page 56 undefined on input line 1497.
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [56]
 
-LaTeX Warning: Citation `RN56' on page 57 undefined on input line 1515.
+LaTeX Warning: Citation `RN56' on page 57 undefined on input line 1535.
 
 
-LaTeX Warning: Citation `RN109' on page 57 undefined on input line 1541.
+LaTeX Warning: Citation `RN109' on page 57 undefined on input line 1561.
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
@@ -1764,11 +1776,11 @@ Underfull \vbox (badness 3240) has occurred while \output is active []
 
  [58] [59]
 
-LaTeX Warning: Citation `RN95' on page 60 undefined on input line 1636.
+LaTeX Warning: Citation `RN95' on page 60 undefined on input line 1656.
 
 [60]
 
-LaTeX Warning: Citation `RN13' on page 61 undefined on input line 1690.
+LaTeX Warning: Citation `RN13' on page 61 undefined on input line 1710.
 
 File: fig/黎曼算例2-1.png Graphic file (type bmp)
 <fig/黎曼算例2-1.png>
@@ -1776,14 +1788,14 @@ File: fig/黎曼算例2-2.png Graphic file (type bmp)
 <fig/黎曼算例2-2.png>
 [61]
 
-LaTeX Warning: Citation `RN48' on page 62 undefined on input line 1719.
+LaTeX Warning: Citation `RN48' on page 62 undefined on input line 1739.
 
 [62] [63]
 
-LaTeX Warning: Citation `RKDG2' on page 64 undefined on input line 1794.
+LaTeX Warning: Citation `RKDG2' on page 64 undefined on input line 1814.
 
 
-LaTeX Warning: Citation `RN106' on page 64 undefined on input line 1826.
+LaTeX Warning: Citation `RN106' on page 64 undefined on input line 1846.
 
 [64]
 Underfull \vbox (badness 10000) has occurred while \output is active []
@@ -1808,12 +1820,12 @@ Package rerunfilecheck Info: File `main.out' has not changed.
 (rerunfilecheck)             Checksum: 4E3BB757C7CB4FECB07BD0CAC362433A;7267.
  ) 
 Here is how much of TeX's memory you used:
- 42631 strings out of 476179
- 917902 string characters out of 5813072
- 1484248 words of memory out of 5000000
- 62572 multiletter control sequences out of 15000+600000
+ 42657 strings out of 476179
+ 918378 string characters out of 5813072
+ 1483248 words of memory out of 5000000
+ 62599 multiletter control sequences out of 15000+600000
  486616 words of font info for 158 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 94i,18n,100p,853b,1263s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 94i,18n,100p,826b,1261s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
 Output written on main.pdf (67 pages).
