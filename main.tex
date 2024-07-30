@@ -50,16 +50,16 @@ $\hat{h}$ 数值通量
     u_t+f(u)_x = 0
 \end{equation}
 \subsection{空间离散格式}
+做网格划分如下：
+\begin{equation}
+    x_{l}=x_{\frac{1}{2}}<x_{\frac{3}{2}}<\cdots<x_{N-\frac{1}{2}}<x_{N+\frac{1}{2}}=x_{r} .
+\end{equation}
 
-$x_{l}=x_{\frac{1}{2}}<x_{\frac{3}{2}}<\cdots<x_{N-\frac{1}{2}}<x_{N+\frac{1}{2}}=x_{r} .$
-
-We define cells, cell centers, and cell sizes by
-
-$\begin{array}{l}
-        I_{i} \equiv\left[x_{i-\frac{1}{2}}, x_{i+\frac{1}{2}}\right], \quad x_{i} \equiv \frac{1}{2}\left(x_{i-\frac{1}{2}}+x_{i+\frac{1}{2}}\right) \\
-        \Delta x_{i}=x_{i+\frac{1}{2}}-x_{i-\frac{1}{2}}, \quad i=1,2, \cdots, N .
-    \end{array}$
-
+做如下符号定义：
+\begin{equation}
+    I_{i} \equiv\left[x_{i-\frac{1}{2}}, x_{i+\frac{1}{2}}\right], \quad x_{i} \equiv \frac{1}{2}\left(x_{i-\frac{1}{2}}+x_{i+\frac{1}{2}}\right),        \Delta x_{i}=x_{i+\frac{1}{2}}-x_{i-\frac{1}{2}}, \quad i=1,2, \cdots, N .
+\end{equation}
+数值解 $u_h(x,t)$ 表示为：
 \begin{equation}
     u_{h}(x, t)=\sum_{l=0}^{k} u_{i}^{(l)}(t) v_{l}^{(i)}(x), \quad x \in I_{i}
 \end{equation}
@@ -67,21 +67,62 @@ $\begin{array}{l}
 \begin{equation}
     u_{i}^{(l)}(t)=\frac{1}{a_{l}} \int_{I_{i}} u_{h}(x, t) v_{l}^{(i)}(x) d x \quad l=0,1, \ldots, k
 \end{equation}
-其中 $a_{l}=\int_{I_{i}}\left(v_{l}^{(i)}(x)\right)^{2} d x$
+其中
+\begin{equation}
+    a_{l}=\int_{I_{i}}\left(v_{l}^{(i)}(x)\right)^{2} \dd x
+\end{equation}
+
 \begin{remark}
     如果基函数不是正交函数,需要先求出质量矩阵的值,再求其逆矩阵.
+
+    质量矩阵
+    % \begin{equation}
+    %     M_{l,m} = \int_{I_i}\varphi_l\varphi_m
+    % \end{equation}
+    \begin{equation}
+        \begin{bmatrix}
+            (\varphi_0,\varphi_0) & (\varphi_0,\varphi_1) & \cdots & (\varphi_0,\varphi_k) \\
+            (\varphi_1,\varphi_0) & (\varphi_1,\varphi_1) & \cdots & (\varphi_1,\varphi_k) \\
+            \vdots                & \vdots                &        & \vdots                \\
+            (\varphi_k,\varphi_0) & (\varphi_k,\varphi_1) & \cdots & (\varphi_k,\varphi_k) \\
+        \end{bmatrix}
+        \begin{bmatrix}
+            u_0(t) \\
+            u_1(t) \\
+            \vdots \\
+            u_k(t)
+        \end{bmatrix}
+        =
+        \begin{bmatrix}
+            (\varphi_0,u) \\
+            (\varphi_1,u) \\
+            \vdots        \\
+            (\varphi_k,u) \\
+        \end{bmatrix}
+    \end{equation}
+
 \end{remark}
 \begin{remark}
     当基函数为正交函数时,第一个自由度的值,即为函数在小区间上的积分平均值.
 \end{remark}
 \begin{equation}
+    \label{eqa:迭代式}
     \left\|v_{l}^{(j)}(x)\right\|^{2} \dfrac{\dd}{\dd t} u(t)+\left[\Delta_{-}\left(v_{l}^{(j)}\left(x_{j+1 / 2}\right) f_{j+1 / 2}\right)\right]-\int_{I_{j}} f\left(u^{h}(x, t)\right) \dfrac{\dd}{\dd x} v(x) \dd x=0
 \end{equation}
-
-这里推导的时候要用到xx，算一下看看
-\begin{equation}
-    \frac{\dd}{\dd t}u+\frac{\dd}{\dd x}f=0
-\end{equation}
+\begin{remark}
+    如果是 有限体积法 FV，那么就可以把 $v(x)$ 看作是 1,这样 \eqref{eqa:迭代式} 就变成了：
+    \begin{equation}
+        \Delta x \dfrac{\dd}{\dd t} u(t)+\left[\Delta_{-}\left(f_{j+1 / 2}\right)\right]=0
+    \end{equation}
+    也即：
+    \begin{equation}
+        \Delta x \dfrac{\dd}{\dd t} u(t)+\left[f_{j+1 / 2}-f_{j-1 / 2}\right]=0
+    \end{equation}
+\end{remark}
+% 这里推导的时候要用到xx，算一下看看
+% \begin{equation}
+%     \frac{\dd}{\dd t}u+\frac{\dd}{\dd x}f=0
+% \end{equation}
 
 \subsection{实例}
 
@@ -1327,6 +1368,13 @@ Fig. 2.20c depicts a rarefaction wave. Characteristics on the left and right of 
                                & $100\times 100$ & \multicolumn{1}{c|}{4.42E-07}                 & \multicolumn{1}{c|}{3.03}                      & \multicolumn{1}{c|}{6.64E-07}         & 2.97  & \multicolumn{1}{c|}{4.42E-07}    & \multicolumn{1}{c|}{3.03}  & \multicolumn{1}{c|}{6.64E-07}         & 2.97  \\ \hline
     \end{tabular}
 \end{table}
+\lstinputlisting[caption={\bf main.m},]{模板/精度/main.m}
+\begin{figure}[htp]
+    \centering
+    \label{fig:}
+    \includegraphics[width=0.7\linewidth]{模板/精度/untitled.eps}
+    \caption{}
+\end{figure}
 
 \section{WENO3与WENO5参数求解过程}
 WENO5 重构多项式：
@@ -1382,8 +1430,52 @@ WENO5 重构多项式：
 \subsection{反射边界条件}
 \subsection{滑移边界条件}
 
+\section{多元微积分}
+\subsection{方向导数}
+定义 $D \subset \mathbf{R}^{2}$  为开集,
+\begin{equation}
+    z=f(x, y), \quad(x, y) \in D
+\end{equation}
 
-\section{数学符号}
+是定义在  D  上的二元函数,  $\left(x_{0}, y_{0}\right) \in D$  为一定点,  $\boldsymbol{v}=(\cos \alpha, \sin \alpha)$  为一个方向。如果极限
+\begin{equation}
+    \lim _{t \rightarrow 0+} \frac{f\left(x_{0}+t \cos \alpha, y_{0}+t \sin \alpha\right)-f\left(x_{0}, y_{0}\right)}{t}
+\end{equation}
+
+存在, 则称此极限为函数  $f$  在点  $\left(x_{0}, y_{0}\right)$  的沿方向  $v$  的方向导数, 记为  $\frac{\partial f}{\partial v}\left(x_{0}, y_{0}\right)$  。
+
+定理: 设  $D \subset \mathbf{R}^{2}$  为开集,  $\left(x_{0}, y_{0}\right) \in D$  为一定点。如果函数
+\begin{equation}
+    z=f(x, y), \quad(x, y) \in D
+\end{equation}
+
+在  $\left(x_{0}, y_{0}\right)$  可微, 那么对于任一方向  $v=(\cos \alpha, \sin \alpha)$, $f$  在  $\left(x_{0}, y_{0}\right)$  点沿方向  $v$ 的方向导数存在, 且
+
+\begin{equation}
+    \frac{\partial f}{\partial v}\left(x_{0}, y_{0}\right)=\frac{\partial f}{\partial x}\left(x_{0}, y_{0}\right) \cos \alpha+\frac{\partial f}{\partial y}\left(x_{0}, y_{0}\right) \sin \alpha_{\circ}
+\end{equation}
+
+\subsection{梯度} 设  $D \subset \mathbf{R}^{2}$  为开集,  $\left(x_{0}, y_{0}\right) \in D$  为一定点。如果函数  $z=   f(x, y)$  在  $\left(x_{0}, y_{0}\right)$  点可偏导, 则称向量  $\left(f_{x}\left(x_{0}, y_{0}\right), f_{y}\left(x_{0}, y_{0}\right)\right)$  为  $f$  在点  $\left(x_{0}\right. ,  \left.y_{0}\right)$  的梯度, 记为  $\operatorname{grad} f\left(x_{0}, y_{0}\right)$ , 即
+
+\begin{equation}
+    \boldsymbol{\operatorname { g r a d }} f\left(x_{0}, y_{0}\right)=f_{x}\left(x_{0}, y_{0}\right) \boldsymbol{i}+f_{y}\left(x_{0}, y_{0}\right) \boldsymbol{j}
+\end{equation}
+
+如果  $f$  在  $\left(x_{0}, y_{0}\right)$ 点可微, 注意到方向导数公式中的  $\|\boldsymbol{v}\|=1$ , 则得到它的另一种表达:
+\begin{equation}
+    \frac{\partial f}{\partial v}\left(x_{0}, y_{0}\right)=\operatorname{grad} f\left(x_{0}, y_{0}\right) \cdot \boldsymbol{v}=\left\|\operatorname{grad} f\left(x_{0}, y_{0}\right)\right\| \cos (\boldsymbol{\operatorname { g r a d }} f, \boldsymbol{v})
+\end{equation}
+
+其中  $(\operatorname{grad} f, \boldsymbol{v})$  表示  $\operatorname{grad} f\left(x_{0}, y_{0}\right)$  与  $\boldsymbol{v}$  的夹角。
+
+\subsection{Green 公式}
+设  $D$  为平面上由光滑或分段光滑的简单闭曲线所国的单连通闭区域。如果函数  $P(x, y), Q(x, y)$  在  $D$  上具有连续偏导数,那么
+\begin{equation}
+    \int_{D} P \mathrm{~d} x+Q \mathrm{~d} y=\iint_{D}\left(\frac{\partial Q}{\partial x}-\frac{\partial P}{\partial y}\right) \mathrm{d} x \mathrm{~d} y,
+\end{equation}
+
+其中 $\partial D$  取正向, 即诱导定向。
+
 \subsection{散度}
 \href{https://zh.wikipedia.org/zh-hans/%E6%95%A3%E5%BA%A6}{维基百科：散度} 
 在三维直角坐标系  $x y z$  中,设向量场  $\boldsymbol{A}$  的表示为
@@ -1570,32 +1662,21 @@ $\text { where } c=\sqrt{\gamma p / \rho}, B_{1}=(\gamma-1) / c^{2}, B_{2}=B_{1}
 \end{equation}
 \paragraph{算例}
 
-\begin{example}{Linear Equation}{}
-    We solve the linear equation\cite{RN56}:
+\begin{example}[Linear Equation]
+    \cite{2021Youngsoo}
     \begin{equation}
-        \begin{aligned}
-            u_{t}+u_{x} & =0 \quad-1<x<1,                    \\
-            u(x, 0)     & =u_{0}(x) \quad \text { periodic }
-        \end{aligned}
+        u_t + u_x = 0
     \end{equation}
-    其中：
     \begin{equation}
-        \begin{aligned}
-            u_{0}(x)        & =\begin{cases}
-                                   \frac{1}{6}(G(x, \beta, z-\delta)+G(x, \beta, z+\delta)+4 G(x, \beta, z))    & -0.8 \leq x \leq-0.6 \\
-                                   1                                                                            & -0.4 \leq x \leq-0.2 \\
-                                   1-|10(x-0.1)|                                                                & 0 \leq x \leq 0.2    \\
-                                   \frac{1}{6}(F(x, \alpha, a-\delta)+F(x, \alpha, a+\delta)+4 F(x, \alpha, a)) & 0.4 \leq x \leq 0.6  \\
-                                   0                                                                            & \text { otherwise }
-                               \end{cases} \\
-            G(x, \beta, z)  & =e^{-\beta(x-z)^{2}}                                                                                 \\
-            F(x, \alpha, a) & =\sqrt{\max \left(1-\alpha^{2}(x-a)^{2}, 0\right)}
-        \end{aligned}
+        u(x, 0)=\begin{cases}
+            -x \sin \left(\frac{3 \pi}{2} x^{2}\right) & -1\leqslant x \leqslant -\frac{1}{3}  \\
+            |\sin (2 \pi x)|                           & -\frac{1}{3}< x \leqslant \frac{1}{3} \\
+            2 x-1-\frac{1}{6} \sin (3 \pi x)           & \frac{1}{3} < x \leqslant 1
+        \end{cases}
     \end{equation}
-    常数取为$a=0.5, z=-0.7, \delta=0.005, \alpha=10$ 和 $\beta=\frac{\log 2}{36 \delta^{2}}$。该解包含了一个平滑但狭窄的高斯函数组合、一个方波、一个尖锐的三角波和一个半椭圆。
+    T = 11，N=200,CFL = 0.4
 \end{example}
-\begin{example}{}{}
-    [Linear Equation]
+\begin{example}[Linear Equation]
     We solve the linear equation\cite{RN56}:
     \begin{equation}
         \begin{aligned}
@@ -1643,24 +1724,9 @@ $\text { where } c=\sqrt{\gamma p / \rho}, B_{1}=(\gamma-1) / c^{2}, B_{2}=B_{1}
         \includegraphics[width=0.7\linewidth]{fig/Shu_Osher.png}
         \caption{$N=2000,P2,WENO-JS,M=50$}
     \end{figure}
+    还可以让震荡更强，参考 \cite{2021Youngsoo}
 \end{example}
 
-\begin{example}{Sod's shock-tube problem\cite{RN204}}{}
-    \begin{equation}
-        \begin{aligned}
-            (\rho, u, p) & =(1,0,1)       & \text { 当 }0\leqslant x \leq 0.5,      \\
-            (\rho, u, p) & =(0.125,0,0.1) & \text { 当 }0.5\leqslant x\leqslant 1 .
-        \end{aligned}
-    \end{equation}
-    $t=0.2$
-
-    \begin{figure}[H]
-        \centering
-        \label{fig:}
-        \includegraphics[width=0.7\linewidth]{fig/sod.eps}
-        \caption{蓝色：reference，红色：DG($P^2$)-WENOJS-M=50-N=200}
-    \end{figure}
-\end{example}
 \begin{example}{}{}
 
     [interacting blast waves problem\cite{RN204}]
@@ -1848,46 +1914,6 @@ where  $c=\sqrt{\gamma p / \rho}, B_{1}=(\gamma-1) / c^{2}, B_{2}=B_{1}\left(\mu
         \caption{WENO-JS,M=10,等高线：linspace(0.56,1.67,30)}
     \end{figure}
 \end{example}
-\begin{example}{光滑算例}{}
-    取计算域为  $[0,10]^{2}$  ，先给定一个平稳的流： $\rho=p=u=v=1$  ，然后在  $\left(x_{0}, y_{0}\right)=(5,5)$  施加一个冲击:
-    \begin{equation}
-        \begin{array}{l}
-            \Delta T=-\frac{(\gamma-1) \varepsilon^{2}}{8 \gamma \pi^{2}} e^{1-r^{2}} \\
-            \Delta S=0
-        \end{array}
-    \end{equation}
-    \begin{equation}
-        (\Delta u, \Delta v)=\frac{\varepsilon}{2 \pi} e^{0.5\left(1-r^{2}\right)}(-\bar{y}, \bar{x})
-    \end{equation}
-    其中  $T=\frac{p}{\rho}$  是温度，  $S=\frac{p}{\rho^{\gamma}}$  是熵，  $(\bar{x}, \bar{y})=(x-5, y-5) , r^{2}=\bar{x}^{2}+\bar{y}^{2}, \varepsilon=5 $
-    (注意 $\Delta S=0$ 不是一个没用的条件，它表明了 $ p=\rho^{\gamma}  )$
-\end{example}
-
-\begin{example}{}{}
-    二维黎曼问题\cite{RN13},初值为
-    \begin{equation}
-        (\rho, u, v, p)=\begin{cases}
-            (0.8,0,0,1),      & (x, y) \in[0,1) \times[0,1) \\
-            (1,0.7276,0,1),   & (x, y) \in[0,1) \times[1,2] \\
-            (1,0,0.7276,1),   & (x, y) \in[1,2] \times[0,1) \\
-            (0.5313,0,0,0.4), & (x, y) \in[1,2] \times[1,2]
-        \end{cases}
-    \end{equation}
-    $p_1<p_2=p_3=p_4$.滑移边界条件.建议计算至$t=0.52$,网格为260*260.
-
-    \begin{figure}[H]%
-        \centering
-        \subfloat{
-            \includegraphics[width=0.45\linewidth]{fig/黎曼算例2-1.png}
-        }\quad
-        \subfloat{
-            \includegraphics[width=0.45\linewidth]{fig/黎曼算例2-2.png}
-        }
-        \caption{WENO-JS,M=10,等高线：linspace(0.56,1.67,30)}
-    \end{figure}
-
-
-\end{example}
 
 
 \newpage
@@ -2058,6 +2084,8 @@ $[-1,1]\times[-1,1]$上的勒让德函数为：
         L_{\infty}-\text { norm } & =\max x_i,i=1,2,\cdots,n                                                         \\
     \end{aligned}
 \end{equation}
+
+
 \section{常用中英文对照表}
 \begin{itemize}
     \item Analytical Solution : 解析解

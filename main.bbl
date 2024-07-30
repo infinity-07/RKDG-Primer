@@ -87,6 +87,12 @@ Sigal Gottlieb, Chi-Wang Shu, and Eitan Tadmor.
 \newblock {\em SIAM Review}, 43(1):89--112, 2001.
 \newblock ssp 龙格库塔法.
 
+\bibitem{2021Youngsoo}
+Youngsoo Ha, Chang~Ho Kim, Hyoseon Yang, and Jungho Yoon.
+\newblock Improving accuracy of the fifth-order weno scheme by using the
+  exponential approximation space.
+\newblock {\em SIAM Journal on Numerical Analysis}, 59(1):143--172, 2021.
+
 \bibitem{WENO-M}
 Andrew~K. Henrick, Tariq~D. Aslam, and Joseph~M. Powers.
 \newblock Mapped weighted essentially non-oscillatory schemes: Achieving

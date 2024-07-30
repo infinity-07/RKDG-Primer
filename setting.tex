@@ -149,6 +149,15 @@
   breakable  % 添加这一行以启用自动断页 
 }{cor}
 
+%---------------优雅的插入MATLAB代码---------%
+\usepackage{lipsum,zhlipsum} %生成一些测试文本
+\usepackage{listings,matlab-prettifier} % MATLAB 美化包
+\lstset{
+  style=Matlab-editor,
+  numbers      = left,
+  frame        = single,
+}
+
 \newtcbtheorem[number within=subsection]{definition}{Definition}{
   enhanced,
   sharp corners,

@@ -8,45 +8,45 @@ Warning--to sort, need author or key in RN106
 Warning--empty publisher in Toro
 Warning--empty journal in RN48
 Warning--empty school in RN109
-You've used 45 entries,
+You've used 46 entries,
             2118 wiz_defined-function locations,
-            776 strings with 10791 characters,
-and the built_in function-call counts, 14362 in all, are:
-= -- 1386
-> -- 697
+            784 strings with 11021 characters,
+and the built_in function-call counts, 14747 in all, are:
+= -- 1422
+> -- 720
 < -- 0
-+ -- 284
-- -- 228
-* -- 1094
-:= -- 2477
-add.period$ -- 142
-call.type$ -- 45
-change.case$ -- 247
++ -- 293
+- -- 236
+* -- 1128
+:= -- 2543
+add.period$ -- 145
+call.type$ -- 46
+change.case$ -- 254
 chr.to.int$ -- 0
-cite$ -- 49
-duplicate$ -- 480
-empty$ -- 1104
-format.name$ -- 228
-if$ -- 2948
+cite$ -- 50
+duplicate$ -- 491
+empty$ -- 1131
+format.name$ -- 236
+if$ -- 3026
 int.to.chr$ -- 0
-int.to.str$ -- 45
-missing$ -- 44
-newline$ -- 235
-num.names$ -- 88
-pop$ -- 182
+int.to.str$ -- 46
+missing$ -- 45
+newline$ -- 240
+num.names$ -- 90
+pop$ -- 187
 preamble$ -- 1
-purify$ -- 204
+purify$ -- 210
 quote$ -- 0
-skip$ -- 332
+skip$ -- 339
 stack$ -- 0
-substring$ -- 929
-swap$ -- 43
+substring$ -- 955
+swap$ -- 44
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 176
+type$ -- 180
 warning$ -- 4
-while$ -- 120
-width$ -- 47
-write$ -- 503
+while$ -- 123
+width$ -- 48
+write$ -- 514
 (There were 5 warnings)

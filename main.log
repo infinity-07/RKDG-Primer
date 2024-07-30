@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999994 (TeX Live 2022) (preloaded format=xelatex 2022.11.7)  29 FEB 2024 22:46
+This is XeTeX, Version 3.141592653-2.6-0.999994 (TeX Live 2022) (preloaded format=xelatex 2022.11.7)  27 JUN 2024 20:15
 entering extended mode
  \write18 enabled.
  file:line:error style messages enabled.
@@ -1125,12 +1125,25 @@ Library (tcolorbox): 'tcbposter.code.tex' version '5.0.2'
 \c@tcb@cnt@theorem=\count420
 \c@tcb@cnt@lem=\count421
 \c@tcb@cnt@cor=\count422
-\c@tcb@cnt@definition=\count423
+ (d:/texlive/2022/texmf-dist/tex/latex/matlab-prettifier/matlab-prettifier.sty
+Package: matlab-prettifier 2014/06/19 v0.3 A package for prettyprinting Matlab source code
+ (d:/texlive/2022/texmf-dist/tex/latex/base/textcomp.sty
+Package: textcomp 2020/02/02 v2.0n Standard LaTeX package
+)
+\netBracketCount@mlpr=\count423
+\blkLvl@mlpr=\count424
+\blkLvlAtClassdef@mlpr=\count425
+\emHeight@mlpr=\skip93
+\jayDepth@mlpr=\skip94
+\sectionRuleOffset@mlpr=\skip95
+\toks@mlpr=\toks56
+)
+\c@tcb@cnt@definition=\count426
  (d:/texlive/2022/texmf-dist/tex/latex/titling/titling.sty
 Package: titling 2009/09/04 v2.1d maketitle typesetting
-\thanksmarkwidth=\skip93
-\thanksmargin=\skip94
-\droptitle=\skip95
+\thanksmarkwidth=\skip96
+\thanksmargin=\skip97
+\droptitle=\skip98
 )) (./main.aux
 
 LaTeX Warning: Label `fig:' multiply defined.
@@ -1143,9 +1156,6 @@ LaTeX Warning: Label `defn:WENO-Z-2016' multiply defined.
 
 
 LaTeX Warning: Label `defn:WENO-Z-2016' multiply defined.
-
-
-LaTeX Warning: Label `fig:' multiply defined.
 
 
 LaTeX Warning: Label `fig:' multiply defined.
@@ -1237,7 +1247,7 @@ Package: refcount 2019/12/15 v3.6 Data extraction from label references (HO)
 ) (d:/texlive/2022/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty
 Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 )
-\c@section@level=\count424
+\c@section@level=\count427
 )
 LaTeX Info: Redefining \ref on input line 6.
 LaTeX Info: Redefining \pageref on input line 6.
@@ -1286,7 +1296,7 @@ Package caption Info: End \AtBeginDocument code.
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-\c@lstlisting=\count425
+\c@lstlisting=\count428
 LaTeX Font Info:    Trying to load font information for U+msa on input line 7.
 (d:/texlive/2022/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
@@ -1339,10 +1349,7 @@ Overfull \hbox (7.88039pt too wide) in paragraph at lines 31--32
 [7]
 Underfull \vbox (badness 1552) has occurred while \output is active []
 
- [8] [9]
-Underfull \vbox (badness 1137) has occurred while \output is active []
-
- [10]
+ [8] [9] [10]
 File: fig/lax.eps Graphic file (type eps)
 <fig/lax.eps>
 
@@ -1354,15 +1361,12 @@ File: fig/黎曼问题图一.eps Graphic file (type eps)
 File: fig/黎曼问题图二.eps Graphic file (type eps)
 <fig/黎曼问题图二.eps>
 
-Underfull \vbox (badness 1845) has occurred while \output is active []
-
- [13] [14] [15]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [16]
+ [13]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [17] [18]
+ [14] [15] [16] [17] [18]
 Chapter 2.
 [19
 
@@ -1377,7 +1381,7 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [26]
 
-LaTeX Warning: Citation `RN6' on page 27 undefined on input line 823.
+LaTeX Warning: Citation `RN6' on page 27 undefined on input line 864.
 
 [27]
 
@@ -1406,7 +1410,7 @@ Package fontspec Info: Font family 'KaiTi(0)' created for font 'KaiTi' with
 
 
 LaTeX Font Warning: Font shape `TU/KaiTi(0)/m/it' undefined
-(Font)              using `TU/KaiTi(0)/m/n' instead on input line 833.
+(Font)              using `TU/KaiTi(0)/m/n' instead on input line 874.
 
 
 Underfull \vbox (badness 1087) has occurred while \output is active []
@@ -1437,56 +1441,78 @@ File: fig/间断波.png Graphic file (type bmp)
 <fig/间断波.png>
  [39] [40]
 Chapter 3.
-[41
+Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on input line 1371.
 
-] [42] [43]
+Package fontspec Info: Could not resolve font "FangSong/BI" (it probably
+(fontspec)             doesn't exist).
+
+
+Package fontspec Info: Could not resolve font "FangSong/B" (it probably
+(fontspec)             doesn't exist).
+
+
+Package fontspec Info: Could not resolve font "FangSong/I" (it probably
+(fontspec)             doesn't exist).
+
+
+Package fontspec Info: Font family 'FangSong(0)' created for font 'FangSong'
+(fontspec)             with options [Script={CJK}].
+(fontspec)              
+(fontspec)              This font family consists of the following NFSS
+(fontspec)             series/shapes:
+(fontspec)              
+(fontspec)             - 'normal' (m/n) with NFSS spec.:
+(fontspec)             <->"FangSong/OT:script=hani;language=dflt;"
+(fontspec)             - 'small caps'  (m/sc) with NFSS spec.: 
+
+(./模板/精度/main.m [41
+
+]
+LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size <10.53937> not available
+(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 25.
+
+
+LaTeX Font Warning: Font shape `TU/FangSong(0)/b/n' undefined
+(Font)              using `TU/FangSong(0)/m/n' instead on input line 25.
+
+
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [44] [45]
+ [42])
+File: 模板/精度/untitled.eps Graphic file (type eps)
+<模板/精度/untitled.eps>
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [43] [44] [45] [46] [47] [48]
 Underfull \vbox (badness 6078) has occurred while \output is active []
 
- [46]
-Underfull \vbox (badness 4391) has occurred while \output is active []
-
- [47]
+ [49] [50]
 File: fig/Shu_Osher.png Graphic file (type bmp)
 <fig/Shu_Osher.png>
-File: fig/sod.eps Graphic file (type eps)
-<fig/sod.eps>
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [48]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [49]
+ [51]
 File: fig/shu_osher.eps Graphic file (type eps)
 <fig/shu_osher.eps>
 
 Underfull \vbox (badness 2088) has occurred while \output is active []
 
- [50]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [51]
-Underfull \vbox (badness 5970) has occurred while \output is active []
-
  [52]
-File: fig/黎曼算例2-1.png Graphic file (type bmp)
-<fig/黎曼算例2-1.png>
-File: fig/黎曼算例2-2.png Graphic file (type bmp)
-<fig/黎曼算例2-2.png>
-
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [53]
+Underfull \vbox (badness 5970) has occurred while \output is active []
+
+ [54]
 File: fig/黎曼算例2-1.png Graphic file (type bmp)
 <fig/黎曼算例2-1.png>
 File: fig/黎曼算例2-2.png Graphic file (type bmp)
 <fig/黎曼算例2-2.png>
- [54] [55] [56] [57] [58] (./main.bbl [59] [60
+ [55] [56] [57] [58] [59] (./main.bbl [60] [61
 
-] [61] [62] [63]) [64] (./main.aux)
+] [62] [63]) [64] (./main.aux)
 
 LaTeX Font Warning: Size substitutions with differences
 (Font)              up to 0.47188pt have occurred.
@@ -1501,15 +1527,15 @@ LaTeX Warning: There were undefined references.
 LaTeX Warning: There were multiply-defined labels.
 
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 4E3BB757C7CB4FECB07BD0CAC362433A;7267.
+(rerunfilecheck)             Checksum: 453A95ED874EC909B323692B318380A1;7558.
  ) 
 Here is how much of TeX's memory you used:
- 40070 strings out of 476179
- 858128 string characters out of 5813072
- 1389036 words of memory out of 5000000
- 60061 multiletter control sequences out of 15000+600000
- 486568 words of font info for 152 fonts, out of 8000000 for 9000
+ 40424 strings out of 476179
+ 865779 string characters out of 5813072
+ 1629639 words of memory out of 5000000
+ 60391 multiletter control sequences out of 15000+600000
+ 486624 words of font info for 159 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 94i,18n,100p,826b,1261s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 94i,18n,100p,826b,1867s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
 Output written on main.pdf (64 pages).
