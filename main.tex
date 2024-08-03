@@ -208,23 +208,6 @@ laws
 \end{example}
 
 
-\begin{example}{}{}
-    \begin{equation}
-        \begin{aligned}
-            \rho(x, 0) & =1+0.2 \sin \pi x \\
-            u(x, 0)    & =0.7              \\
-            p(x, 0)    & =1
-        \end{aligned}
-    \end{equation}
-    计算区域为 $[0,2]$, 周期边界条件,解析解为：
-    \begin{equation}
-        \begin{aligned}
-            \rho(x, t) & =1+0.2 \sin \pi(x-0.7 t) \\
-            u(x, t)    & =0.7                     \\
-            p(x, t)    & =1
-        \end{aligned}
-    \end{equation}
-\end{example}
 
 \begin{example}
     Lax 激波管问题(shock–tube problem)\cite{RN204}：
@@ -248,8 +231,8 @@ laws
     Sod 激波管问题(shock–tube problem)
     \begin{equation}
         \begin{cases}
-            (\rho, v, p)  =(1,0,1) & 0\leqslant x < 0.5         \\
-            (\rho, v, p) =(0.125,0,0.1)        & 0.5\leqslant x \leqslant 1 \\
+            (\rho, v, p)  =(1,0,1)      & 0\leqslant x < 0.5         \\
+            (\rho, v, p) =(0.125,0,0.1) & 0.5\leqslant x \leqslant 1 \\
         \end{cases}
     \end{equation}
     计算区域为 $[0,1]$ 两瑞均是常数边界条件, 我们求解该问题至 $T=0.2$.
@@ -344,8 +327,17 @@ laws
         \caption{WENO-JS,M=200,等高线：0.2:0.05:1.7}
     \end{figure}
 \end{example}
-
-
+\begin{example}[Rayleigh-Taylor instability]
+    https://www.sciencedirect.com/science/article/pii/S0021999104004760
+\end{example}
+The initial condition is [70]
+\begin{equation}
+    (\rho, u, v, p)=\left\{\begin{array}{ll}
+        (2,0,-0.025 c \cos (8 \pi x), 1+2 y),   & \text { if } 0 \leq y<1 / 2,      \\
+        (1,0,-0.025 c \cos (8 \pi x), y+3 / 2), & \text { if } 1 / 2 \leq y \leq 1,
+    \end{array}\right.
+\end{equation}
+where  $c$  is the sound speed,  $c=\sqrt{\gamma \frac{p}{\rho}}$  with  $\gamma=\frac{5}{3}$ . The computational domain is  $[0,0.25] \times[0,1]$ . Reflecting boundary conditions are imposed on the left and right boundaries of the domain. Constant primitive variables  $(\rho, u, v, p)=(2,0,0,1)$  and  $(\rho, u, v, p)=(1,0,0,2.5)$  are set at the bottom and top boundaries, respectively.
 \section{时间离散格式}
 时间步长 $\Delta t$  应当满足 CFL 条件来保证稳定。对于一维标量的情况：
 \begin{equation}
@@ -382,6 +374,9 @@ ssp(strong stability-preserving)方法见：\cite{RN96}
         u^{n+1} & = \frac{1}{3}temp+\frac{1}{4}u^n+\frac{2}{3}\Delta t L(u^n)
     \end{aligned}
 \end{equation}
+
+\lstinputlisting[language=C++, caption=My C++ Code]{模板/三阶TVD格式/main.cpp}
+
 \section{方程解耦}
 对于双曲型方程
 \begin{equation}
