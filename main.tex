@@ -28,7 +28,7 @@
 \end{figure}
 
 
-本文使用的数值方法为间断有限元discontinuous Galerkin (DG)法.让我们先简要回顾一下DG方法的历史.1973年,Reed和Hill\cite{Reed_Hill}在中子传输框架下提出了第一个不连续Galerkin（DG）方法.然后,Cockburn等人在一系列论文中 \cite{RKDG2,RKDG3,RKDG4,RKDG5} 对DG方法进行了重大发展,其中他们建立了一个框架,使用显式、非线性稳定的高阶Runge-Kutta时间离散化和DG空间离散化,使用精确或近似的Riemann解算器作为界面通量和总变差有界（TVB）限制器\cite{TVB},以实现对强不连续性的本质非振荡性.从那时起,这些方案被称为RKDG方法.但是,即使初始条件足够平滑,解决\eqref{equ:双曲守恒}也不容易,因为解可能包含强不连续性.不连续Galerkin（DG）方法可以捕捉弱不连续性而无需进一步修改.然而,对于存在强不连续性的问题,数值解可能在强震荡或接触不连续性附近具有显著的虚假震荡,特别是对于高阶数值方法而言.控制这些虚假震荡的常见策略是应用非线性限制器.
+本文使用的数值方法为间断有限元discontinuous Galerkin (DG)法.让我们先简要回顾一下DG方法的历史.1973年,Reed和Hill\cite{Reed_Hill}在中子传输框架下提出了第一个DG方法.然后,Cockburn等人在一系列论文中 \cite{RKDG2,RKDG3,RKDG4,RKDG5} 对DG方法进行了重大发展,其中他们建立了一个框架,使用显式、非线性稳定的高阶Runge-Kutta时间离散化和DG空间离散化,使用精确或近似的Riemann解算器作为界面通量和总变差有界（TVB）限制器\cite{TVB},以实现对强不连续性的本质非振荡性.从那时起,这些方案被称为RKDG方法.但是,即使初始条件足够平滑,解决\eqref{equ:双曲守恒}也不容易,因为解可能包含强不连续性.不连续Galerkin（DG）方法可以捕捉弱不连续性而无需进一步修改.然而,对于存在强不连续性的问题,数值解可能在强震荡或接触不连续性附近具有显著的虚假震荡,特别是对于高阶数值方法而言.控制这些虚假震荡的常见策略是应用非线性限制器.
 
 通常,使用限制器的过程可以分为两个步骤.首先,需要确定“坏单元”（也称为“有问题的单元”）,即包含间断的单元,这些单元需要进行限制.其次,需要在这些“坏单元”中修正DG多项式解.由于守恒的要求,需要保证单元平均值不变,并且减小振荡.
 
@@ -226,7 +226,7 @@ laws
     \end{equation}
 \end{example}
 
-\begin{example}{}{}
+\begin{example}
     Lax 激波管问题(shock–tube problem)\cite{RN204}：
     \begin{equation}
         \begin{cases}
@@ -243,6 +243,19 @@ laws
     \end{figure}
 
 \end{example}
+
+\begin{example}
+    Sod 激波管问题(shock–tube problem)
+    \begin{equation}
+        \begin{cases}
+            (\rho, v, p)  =(1,0,1) & 0\leqslant x < 0.5         \\
+            (\rho, v, p) =(0.125,0,0.1)        & 0.5\leqslant x \leqslant 1 \\
+        \end{cases}
+    \end{equation}
+    计算区域为 $[0,1]$ 两瑞均是常数边界条件, 我们求解该问题至 $T=0.2$.
+
+\end{example}
+
 \section{二维标量}
 % https://zhuanlan.zhihu.com/p/441631704
 
@@ -1708,23 +1721,6 @@ $\text { where } c=\sqrt{\gamma p / \rho}, B_{1}=(\gamma-1) / c^{2}, B_{2}=B_{1}
         u_0(x) = e^{-300*(x-x_c)^2},x_c=0.5
     \end{equation}
     $x\in[0,1]$ 周期边界条件，$t_end=1$
-\end{example}
-
-\begin{example}[Shu Osher 问题\cite{RN109}]
-    \begin{equation}
-        \begin{aligned}
-            (\rho, v, p) & =(3.857143,2.629369,10.333333)   & \text { 当 } x \leq-4, \\
-            (\rho, v, p) & =(1+\varepsilon \sin (5 x), 0,1) & \text { 当 } x>-4 .
-        \end{aligned}
-    \end{equation}
-    选取 $\epsilon = 0.2$,计算区域为 $[-5,5]$,两端边界条件按初值条件给定后保持不变,求解至时间 $T=1.8$.
-    \begin{figure}[htp]
-        \centering
-        \label{fig:shu_Osher}
-        \includegraphics[width=0.7\linewidth]{fig/Shu_Osher.png}
-        \caption{$N=2000,P2,WENO-JS,M=50$}
-    \end{figure}
-    还可以让震荡更强，参考 \cite{2021Youngsoo}
 \end{example}
 
 \begin{example}{}{}
