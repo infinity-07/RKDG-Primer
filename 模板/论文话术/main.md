@@ -1,7 +1,33 @@
 # 用词用语库
+
+utilize classical
+
+To avoid the denominator being zero, the small constant ε can be taken as 10−6.
+
+In this paper, we denote by MDFLU the scheme (17)–(19). 
+
+Combining (20) and (29) gives the high-order WENO scheme, which is termed as MDFLU-WENO5.
+Together with (21) and (29), we obtain another high-order accurate WENO scheme, which is called DFLU-WENO5.
+So, we obtain the fifth high-order accurate scheme with the well-balanced method and call the scheme DFLU-WENO5B.
+
 We solve this scalar advection equation up to time t = 20. 
 
+The computations are conducted on four different mesh resolutions with the number of cells taken as N = 502, 1002, 2002 and 4002.
+
 The numerical results are displayed in Figure 4. 
+
+The simulation was performed up to time  $t=2$.
+
+We can clearly find that the AWENO-E scheme achieves the designed order of accuracy.
+
+Oscillation evolution for the 1D sharp interface advection problem
+
+Density and bound error for the 1D sharp interface advection problem 
+
+Velocity and pressure for the 1D sharp interface advection problem
+
+Density for the 1D sharp interface advection problem
+
 
 with no spurious velocity and pressure oscillations across a material interface
 
@@ -18,6 +44,24 @@ with $\lambda > 0$. The numerical results of WENO-NE6 are compared with those fr
 
 # 算例
 
+## 精度
+- In Fig. 7, we plot the computational accuracy which indicates that the present $\mathrm{DG}\left(P^{K}\right)$ method is able to achieve the optimal $(K+1)$-th convergence order for the two-phase vortex advection problem. 
+
+- The initial and final mixture density fields obtained by the  $\operatorname{DG}\left(P^{2}\right)$  method on the finest mesh is shown in Fig. 8. It can be seen that the final result exhibits a good agreement with the initial solution.
+
+- The convergence statistics from the fifth-order upwind linear scheme and the present hybrid TENO5-THINC are given in Table 2. It is clear that the desired fifth-order convergence is achieved without order degeneration with the present nonlinear shock-capturing scheme. Moreover, the absolute errors from TENO5-THINC are identical to those from the upwind linear scheme, indicating that neither the nonlinear adaptation of TENO nor the THINC reconstruction is activated in smooth
+regions.
+- A sequence of globally refined uniform grids is employed to investigate the convergence in terms of the L∞ norm. As shown in Fig. 4, the resolved profile from the present scheme agrees well with the analytical solution, and the desired fifth-order convergence is achieved without order degeneration.
+
+- Example 4.2. In this example, we test the accuracy of the AWENO-E scheme for the two-dimensional system of Euler equations in (47) with the initial condition $\mathbf{q}(x, y, 0)=(\rho, u, v, p)=(1+0.5 \sin (4 \pi(x+y)), 1,-0.5,1), \quad(x, y) \in[-1,1] \times[-1,1],$ where periodic boundary conditions are used. The simulation was performed up to time  $t=2$. 
+
+The approximation errors computed by the AWENO-E scheme (with LF and HLLC solvers) are smaller than those by the AWENO-JS and AWENO-Z schemes. In particular, the  $L_{1}$  errors obtained by the AWENO-E with HLLC solver are slightly smaller than those computed by AWENO-E with LF solver, especially on low-resolution grids. Further, the computational efficiencies of the tested AWENO methods are compared in terms of the CPU time versus  $L_{1}$  or $L_{\infty}$  errors using different grids. The graphs of CPU times against errors are displayed in Fig. 2. Each marker in these graphs depicts the pairs of CPU time and  L_{\infty} -approximation errors at  10 \times 2^{k}  grid points with  k=0, \ldots, 6 .
+
+- Periodic boundary conditions are imposed at  x=0  and  x= 
+The solution is advanced to  t=1  corresponding to one period in time, and a sequence of globally refined uniform grids is employed to investigate the  L_{\infty} -error convergence. The timestep
+is decreased so that the time-integration error can be neglected. As shown in Fig. 10, the  L_{\infty} -error convergence histories of all proposed TENO schemes coincide with their corresponding background linear schemes and therefore the desirable order of accuracy is achieved. 
+
+## 间断
 Next, we consider a sharp initial volume fraction given as follows
 
 xxxxx
