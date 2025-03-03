@@ -75,6 +75,12 @@ Wai-Sun Don and Rafael Borges.
   finite difference schemes.
 \newblock {\em Journal of Computational Physics}, 250:347--372, 2013.
 
+\bibitem{fleischmann2019numerical}
+Nico Fleischmann, Stefan Adami, and Nikolaus~A Adams.
+\newblock Numerical symmetry-preserving techniques for low-dissipation
+  shock-capturing schemes.
+\newblock {\em Computers \& Fluids}, 189:94--107, 2019.
+
 \bibitem{WENO1}
 Oliver Friedrich.
 \newblock Weighted essentially non-oscillatory schemes for the interpolation of
@@ -87,11 +93,29 @@ Sigal Gottlieb, Chi-Wang Shu, and Eitan Tadmor.
 \newblock {\em SIAM Review}, 43(1):89--112, 2001.
 \newblock ssp 龙格库塔法.
 
+\bibitem{ha2016sixth}
+Youngsoo Ha, Chang~Ho Kim, Hyoseon Yang, and Jungho Yoon.
+\newblock Sixth-order weighted essentially nonoscillatory schemes based on
+  exponential polynomials.
+\newblock {\em SIAM Journal on Scientific Computing}, 38(4):A1987--A2017, 2016.
+
 \bibitem{2021Youngsoo}
 Youngsoo Ha, Chang~Ho Kim, Hyoseon Yang, and Jungho Yoon.
 \newblock Improving accuracy of the fifth-order weno scheme by using the
   exponential approximation space.
 \newblock {\em SIAM Journal on Numerical Analysis}, 59(1):143--172, 2021.
+
+\bibitem{ha2024new}
+Youngsoo Ha, Chang~Ho Kim, Hyoseon Yang, and Jungho Yoon.
+\newblock A new alternative weno scheme based on exponential polynomial
+  interpolation with an improved order of accuracy.
+\newblock {\em Journal of Scientific Computing}, 101(1):5, 2024.
+
+\bibitem{ha2013modified}
+Youngsoo Ha, Yeon~Ju Lee, and Jungho Yoon.
+\newblock Modified essentially nonoscillatory schemes based on exponential
+  polynomial interpolation for hyperbolic conservation laws.
+\newblock {\em SIAM Journal on Numerical Analysis}, 51(2):864--893, 2013.
 
 \bibitem{WENO-M}
 Andrew~K. Henrick, Tariq~D. Aslam, and Joseph~M. Powers.
@@ -103,6 +127,12 @@ Andrew~K. Henrick, Tariq~D. Aslam, and Joseph~M. Powers.
 Changqing Hu and Chi-Wang Shu.
 \newblock Weighted essentially non-oscillatory schemes on triangular meshes.
 \newblock {\em Journal of Computational Physics}, 150(1):97--127, 1999.
+
+\bibitem{jeong2022development}
+Byeongseon Jeong, Hyoseon Yang, and Jungho Yoon.
+\newblock Development of a weno scheme based on radial basis function with an
+  improved convergence order.
+\newblock {\em Journal of Computational Physics}, 468:111502, 2022.
 
 \bibitem{WENO3}
 Guang-Shan Jiang and Chi-Wang Shu.
@@ -139,6 +169,12 @@ Tian Liang and Lin Fu.
   conservation laws.
 \newblock {\em Journal of Computational Physics}, 497, 2024.
 
+\bibitem{liang2024new}
+Tian Liang and Lin Fu.
+\newblock A new type of non-polynomial based teno scheme for hyperbolic
+  conservation laws.
+\newblock {\em Journal of Computational Physics}, 497:112618, 2024.
+
 \bibitem{WENO4}
 Xu-Dong Liu, Stanley Osher, and Tony Chan.
 \newblock Weighted essentially non-oscillatory schemes.
@@ -173,15 +209,6 @@ Jianxian Qiu and Chi-Wang Shu.
 \newblock Runge--kutta discontinuous galerkin method using weno limiters.
 \newblock {\em SIAM Journal on Scientific Computing}, 26(3):907--929, 2005.
 
-\bibitem{RKDG+WENOJS-1}
-Jianxian Qiu and Chi-Wang Shu.
-\newblock Runge--kutta discontinuous galerkin method using weno limiters.
-\newblock {\em SIAM Journal on Scientific Computing}, 26(3):907--929, 2005.
-\newblock WENO 格式在 DG
-  方法上的首次应用；后续将其应用于非结构化网络
-  Runge–Kutta discontinuous Galerkin method using WENO limiters II:
-  Unstructured meshes.
-
 \bibitem{Reed_Hill}
 William~H Reed and Thomas~R Hill.
 \newblock Triangular mesh methods for the neutron transport equation.
@@ -195,15 +222,16 @@ Yiqing Shen, Shiyao Li, Shengping Liu, Kai Cui, and Guannan Zheng.
   119, 2023.
 \newblock 欧拉方程算例 黎曼问题.
 
+\bibitem{shi2003resolution}
+Jing Shi, Yong-Tao Zhang, and Chi-Wang Shu.
+\newblock Resolution of high order weno schemes for complicated flow
+  structures.
+\newblock {\em Journal of Computational Physics}, 186(2):690--696, 2003.
+
 \bibitem{TVB}
 Chi-Wang Shu.
 \newblock Tvb uniformly high-order schemes for conservation laws.
 \newblock {\em Mathematics of Computation}, 49(179), 1987.
-
-\bibitem{Toro}
-Toro.
-\newblock {\em Riemann solvers and numerical methods for fluid dynamics.pdf}.
-\newblock 2009.
 
 \bibitem{PP-review}
 Xiangxiong Zhang and Chi-Wang Shu.
@@ -234,12 +262,6 @@ Jun Zhu, Jianxian Qiu, and Chi-Wang Shu.
 \newblock 2023-2-2 导师让看的一篇论文.
 
 \bibitem{WENO-js2}
-Jun Zhu, Jianxian Qiu, Chi-Wang Shu, and Michael Dumbser.
-\newblock Runge–kutta discontinuous galerkin method using weno limiters ii:
-  Unstructured meshes.
-\newblock {\em Journal of Computational Physics}, 227(9):4330--4353, 2008.
-
-\bibitem{RKDG+WENOJS-2}
 Jun Zhu, Jianxian Qiu, Chi-Wang Shu, and Michael Dumbser.
 \newblock Runge–kutta discontinuous galerkin method using weno limiters ii:
   Unstructured meshes.
