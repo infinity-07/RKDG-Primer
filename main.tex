@@ -1421,6 +1421,33 @@ An, R., Gu, Z., Zhou, T., \& Yu, C. (2023). Numerical simulation of incompressib
 \subsection{无滑移边界条件}
 An, R., Gu, Z., Zhou, T., \& Yu, C. (2023). Numerical simulation of incompressible interfacial flows by a level set re-distancing method with improved mass conservation. Ocean Engineering, 290. https://doi.org/10.1016/j.oceaneng.2023.116428 
 
+
+% **Free-slip 边界条件**和**No-slip 边界条件**不是同一个概念，它们描述了流体在边界处的不同运动约束条件。
+
+% 1. **No-slip 边界条件（无滑移边界条件）**  
+%    - 指的是流体在固体边界上的速度与边界本身的速度完全相同。  
+%    - 如果边界是静止的，则流体在该边界上的速度为零，即：
+%      \[
+%      u = 0, \quad v = 0
+%      \]
+%    - 这种边界条件适用于粘性流体，如在管道流动或壁面流动中，流体会受到粘性作用而贴附在壁面上。
+
+% 2. **Free-slip 边界条件（自由滑移边界条件）**  
+%    - 指的是流体在边界法向方向上的速度为零，但切向方向可以自由滑动，即不受粘性约束：
+%      \[
+%      u_n = 0, \quad \frac{\partial u_t}{\partial n} = 0
+%      \]
+%    - 其中 \( u_n \) 是法向速度， \( u_t \) 是切向速度， \( n \) 是法向坐标。
+%    - 这种条件适用于粘性很小或可忽略的情况，如理想流体、气体动力学中的滑移流动，或者自由表面边界。
+
+% ### 总结
+% - **No-slip**：边界处流体速度等于边界速度（通常为零），适用于粘性流体。
+% - **Free-slip**：流体法向速度为零，切向速度没有剪切约束，适用于无粘性或弱粘性情况。
+
+% 如果你是在数值计算中使用这两种边界条件，需要根据具体物理问题选择合适的条件。例如，在求解**Navier-Stokes 方程**时，壁面通常使用 no-slip，而自由表面或对称面可能用 free-slip。
+
+
+
 \section{多元微积分}
 \subsection{方向导数}
 定义 $D \subset \mathbf{R}^{2}$  为开集,
