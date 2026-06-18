@@ -1,0 +1,10 @@
+# LaTeX 编译产物
+*.aux
+*.log
+*.out
+*.toc
+*.bbl
+*.blg
+*.synctex.gz
+*.synctex.gz.sum.synctex
+*-eps-converted-to.pdf

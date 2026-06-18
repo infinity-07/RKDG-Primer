@@ -65,7 +65,6 @@
 \end{equation}
 \subsection{空间离散格式}
 
-
 \begin{figure}
     \centering
     \begin{tikzpicture}
@@ -762,6 +761,11 @@ and
     \end{figure}
 
     算出不对称的结果也不用着急，参考文献里也有不对称的结果~\cite{shi2003resolution}
+
+
+    这里有很多对RTI的分析
+    Rahman, S. M., \& San, O. (2019). A Relaxation Filtering Approach for Two-Dimensional Rayleigh–Taylor Instability-Induced Flows. Fluids, 4(2). https://doi.org/10.3390/fluids4020078 
+
 \end{example}
 
 
@@ -1420,7 +1424,10 @@ WENO5 重构多项式：
 An, R., Gu, Z., Zhou, T., \& Yu, C. (2023). Numerical simulation of incompressible interfacial flows by a level set re-distancing method with improved mass conservation. Ocean Engineering, 290. https://doi.org/10.1016/j.oceaneng.2023.116428 
 \subsection{无滑移边界条件}
 An, R., Gu, Z., Zhou, T., \& Yu, C. (2023). Numerical simulation of incompressible interfacial flows by a level set re-distancing method with improved mass conservation. Ocean Engineering, 290. https://doi.org/10.1016/j.oceaneng.2023.116428 
+\subsection{对称边界条件}
+边界条件设置：左右边界采用周期性条件，上下边界采用反射条件。针对七点模板格式，在计算域四边设置三层虚拟网格点（图2）。周期性边界通过镜像映射实现（式38），反射边界则满足法向速度反向、其余变量对称的条件（式39）。虽然当前采用简化反射条件，但未来计划引入基于特征理论的精确边界条件以抑制数值反射[98]。
 
+Rahman, S. M., \& San, O. (2019). A Relaxation Filtering Approach for Two-Dimensional Rayleigh–Taylor Instability-Induced Flows. Fluids, 4(2). https://doi.org/10.3390/fluids4020078 
 
 % **Free-slip 边界条件**和**No-slip 边界条件**不是同一个概念，它们描述了流体在边界处的不同运动约束条件。
 
@@ -2002,6 +2009,132 @@ $[-1,1]\times[-1,1]$上的勒让德函数为：
     \item PPM：piecewise parabolic method
     \item WENO：weighted essentially non-oscillatory schemes
 \end{itemize}
+\section{精度}
+\begin{equation}
+    \begin{array}{l}
+        \mathrm{L}_{1} \text {-Error }=\frac{1}{N} \sum_{i} \frac{\left|\bar{\rho}_{i}^{\text {num }}-\bar{\rho}_{i}^{\mathrm{ref}}\right|}{\rho_{1,0}} \\
+        \mathrm{~L}_{2} \text {-Error }=\sqrt{\frac{1}{N} \sum_{i} \frac{\left|\bar{\rho}_{i}^{\mathrm{num}}-\bar{\rho}_{i}^{\mathrm{ref}}\right|^{2}}{\rho_{1,0}^{2}}}, \\
+        \mathrm{~L}_{\infty} \text {-Error }=\max _{i}\left(\frac{\left|\bar{\rho}_{i}^{\mathrm{num}}-\bar{\rho}_{i}^{\mathrm{ref}}\right|}{\rho_{1,0}}\right)
+        \end{array}
+\end{equation}
+
+
+
+% The L1, L2 and L∞ errors of the mixture’s density at t = 1 s are computed aswhere ρnum
+% i
+% and ρref
+% i
+% denote respectively the numerical and reference cell-average values of the mixture’s density of the
+% ith-cell. Table 1 shows the errors and the convergence orders evaluated by computing
+
+% where Errorq denotes the error corresponding to the qth-mesh resolution. As shown in Table 1 and Fig. 5-(b), the present
+% numerical scheme possesses the expected 5th-order convergence in this 1D advection test-case.\text { Order }=\ln \left(\frac{\text { Error }^{q}}{\text { Error }^{q+1}}\right) / \ln (2),
+
+
+% Li, Z., Oger, G., & Le Touzé, D. (2020). 
+% A finite volume WENO scheme for immiscible inviscid two-phase flows. 
+% Journal of Computational Physics, 418. https://doi.org/10.1016/j.jcp.2020.109601 
+
+
+Wang, Z. J., Fidkowski, K., Abgrall, R., Bassi, F., Caraeni, D., Cary, A., ... \& Visbal, M. (2013). High‐order CFD methods: current status and perspective. International Journal for Numerical Methods in Fluids, 72(8), 811-845.
+
+High-Order CFD Methods: Current Status and Perspective
+The workshop provided a platform to compare numerical methods on the basis of error versus cost. We believe that this is a more objective way to measure different methods than to compare the error on a given mesh or even with the same DOFs. To accommodate different types of methods, error is defined as independently of the methods as possible. Likewise, cost or work units is computed on the basis of the TauBench to minimize the effects of different computers. We want to caution that the definition of cost is not fool-proof. We found that the costs for the same case run on different computers can differ by as much as 30\%. Therefore, one should not draw a conclusion on efficiency when the cost for one method differs by less than 30\% from another. For steady problems, the iterative solution approaches are as critical as the spatial discretization schemes in determining the overall efficiency and accuracy of the numerical methods. Equally important is the definition of convergence.
+
+
+
+本次研讨会建立了基于"误差-成本"关系的数值方法比较框架。相较于在给定网格或相同自由度下比较误差，这种评估方式更具客观性。为兼容不同方法类型，误差定义尽可能与具体方法无关；成本计量则基于TauBench基准测试，以最小化计算机性能差异的影响。需要强调的是：成本定义并非绝对可靠——同一案例在不同计算机上运行成本差异可达30\%，因此当两种方法成本差异小于30\%时不应轻率得出效率优劣结论。对于定常问题，迭代求解方法与空间离散格式同样重要，共同决定方法的整体效率与精度。收敛准则的设定也至关重要，多数案例采用密度残差下降8-10个数量级作为收敛标准。
+\section{计算流体力学期刊}
+
+Annual Review of Fluid Mechanics: 10. 毫无疑问，年鉴是领域内的扛把子，能发表一篇都足以吹一辈子。以前觉得国内几乎没有课题组能以第一作者发表年鉴，现在感觉慢慢地也有了，也有的是从国外回来带的。
+
+Physical Review Letter: 8. 物理顶刊，基本等于2.5篇JFM。
+
+Progress in Aerospace Sciences: 4. 航空航天综述类的顶刊。最近几年，西北工大，北航和力学所都开始能在该期刊上输出。
+
+Journal of Fluid Mechanics: 3.5. 流体力学常规类期刊TOP1，这个应该毫无争议。
+
+Computer Methods in Applied Mechanics and Engineering: 3. 计算力学TOP1期刊。主要是固体力学，计算流体力学的文章较少，一般只有SPH方法，无网格方法和有限元方法有机会登上，有限体积和有限差分几乎都会被直接desk reject。最近大量刊登AI for Science的文章，影响因子一路飙升。
+
+Journal of Computational Physics: 2.8. 计算流体力学算法类顶刊，几乎所有的有名的可压缩流体的格式都刊登在JCP上。JCP属于在航空航天和应用数学系求职都比较好用的期刊。
+
+AIAA Journal: 2.8(航空航天系)/2(其他院系)。个人认为AIAA J在航空航天院系认可度极高，并不会因为是zky三区而被低看。但其他院系可能并不知道它有多厉害。
+
+International Journal for Numerical Methods in Engineering: 2.8(好学校)/2(一般学校)。计算固体力学顶刊，与CMAME齐名。国内好一点的学校都知道，并不会因为是zky三区而被低看。但去一般的学校，可能就因为它分区不高而被认为是普通期刊。
+
+INTERNATIONAL COMMUNICATIONS IN HEAT AND MASS TRANSFER: 3.5. 传热学领域公认的顶刊。在能源与动力相关的学院认可度极高。
+
+International Journal of Heat and Mass Transfer:  3.5. 几乎同上。
+
+Aerospace Science and Technology: 1.5(好学校)/3(一般学校). 虽然AST是zky一区TOP，但很多顶尖985大学，即使是航空航天系也并不太买账。但是学校层次越往下走，这个越好用。
+
+Computer Physics Communications: 2. 主要刊登一些计算流体力学代码，算代码类的顶刊了，认可度不错，但不如CMAME和JCP。
+
+Journal of Scientific Computing: 2. 科学计算领域很好的期刊。但可能最近几年国内在该期刊上发文量增大，认可度略低于JCP和CMAME，但在数学系，可能还不错。
+
+Communications in Computational Physics: 1.6. CiCP算是国内计算物理领域期刊的扛把子了，但认可度比JSC还略低一点。
+
+Computers and Fluids: 1.6. 流体领域不错的老牌期刊。但认可度比JSC还略低一点。
+
+Combustion and Flame: 3.5. 燃烧领域顶级期刊。
+
+PROCEEDINGS OF THE COMBUSTION INSTITUTE: 2.5. 燃烧领域著名期刊。
+
+Physics of Fluids: 1. 曾经的流体力学顶刊。但现在已经在发文量暴增的路上回不来了。审稿人的质量也参差不齐。好文章还是有，但认可度已经逐渐走低了。
+\section{实验室与工作地点}
+北京应用物理与计算数学研究所
+https://zsxx.gscaep.ac.cn/
+
+
+\begin{itemize}
+    \item 中国工程物理研究院（中物院）​
+    \begin{itemize}
+        \item ​机构性质：国家计划单列的副部级综合性研究院，隶属于工业和信息化部，是我国唯一的战略威慑武器研制生产单位。
+        \item ​研究领域：以国防尖端科技为核心，涵盖核武器研制、高能量密度物理、激光聚变、材料科学、计算机与计算数学等。下设12个研究所（如九所、流体物理研究所等），覆盖理论、实验、设计、生产全链条。
+        \item ​历史背景：创建于1958年，前身为二机部第九研究院，主体位于四川绵阳科学城，北京、上海等地设有分支机构。曾主导我国原子弹、氢弹研制，培养了两弹元勋彭桓武、邓稼先、于敏等科学家。
+        \item ​成就与特点：获国家最高科技奖等多项荣誉，拥有15名两院院士，科研体系高度集成且保密性强，以服务国家战略安全为首要目标。
+    \end{itemize}
+    \item 中国科学院（中科院）​
+    \begin{itemize}
+        \item ​机构性质：国务院直属的全国最高学术机构，覆盖自然科学与前沿技术研究的综合性科研机构，无直接隶属国防部门。
+        \item ​研究领域：基础科学为主，包括物理学、化学、生物学、地球科学、信息科学等，下设100多个研究所（如物理所、化学所等），侧重基础研究与前沿探索。
+        \item ​与九所的区别：中科院与九所无隶属关系。九所属于中物院体系，专注于国防应用研究；中科院的研究更偏基础科学和民用技术，例如磁性材料、半导体等。
+    \end{itemize}
+    \item 北京应用物理与计算数学研究所（九所）​
+    \begin{itemize}
+        \item ​机构性质：中物院下属的核心研究所，创建于1958年，位于北京海淀区，是我国战略武器理论设计的“龙头”单位。
+        \item ​研究领域：多学科交叉，聚焦理论物理、计算数学、等离子体物理、激光物理等，承担核武器物理设计、高性能计算软件开发等任务。设有物理学与数学博士后流动站，主导《计算物理》等学术期刊。
+        \item ​职能定位：以国家重大需求为牵引，在禁核试条件下保障核威慑有效性，同时拓展聚变能源、先进常规武器等方向。
+    \end{itemize}
+    \item “九所”在中物院体系内的特殊性
+    \begin{itemize}
+        \item 九所是中物院最早成立的研究所之一，具有独特的理论先导作用：
+        \item ​历史贡献：完成我国所有核装置的物理设计，研发核爆模拟软件，推动高性能计算技术发展。
+        \item ​学科体系：以物理与数学学科为核心，拥有9个二级学科博士点，培养了大批国防科技人才。
+        \item ​军民融合：在保密科研任务之外，参与聚变能源、高性能计算等民用领域研究。
+    \end{itemize}
+\end{itemize}
+\section{杰出人才}
+\subsection{吴开亮}
+\subsection{邱建贤}
+\subsection{傅林}
+\subsection{刘铁钢}
+\subsection{徐昆}
+\subsection{成娟}
+\subsection{朱君}
+
+Nonomura, T., Morizawa, S., Terashima, H., Obayashi, S., \& Fujii, K. (2012). Numerical (error) issues on compressible multicomponent flows using a high-order differencing scheme: Weighted compact nonlinear scheme. Journal of Computational Physics, 231(8), 3181-3210. https://doi.org/10.1016/j.jcp.2011.12.035 
+
+界面厚度
+
+We conduct the comparison of resolution between WCNS, the finite volume WENO by Johnsen and Colonius \cite{22}, and conventional upwind scheme by Abgrall \cite{20} using one-dimensional material convection problem with a sharp interface. The quasi-conservative formulation with primitive variable interpolation is used for all the schemes. Five schemes are examined: third order monotonically-upwind-scheme-for-conservation-law (MUSCL) scheme, fifth-order finite volume WENO, seventh-order finite volume WENO, fifth order WCNS and seventh-order WCNS. The initial condition and other computational settings are same as those used in Section 3.2. The density and pressure profiles and the thicknesses of the interfaces are shown in Figs.~26 and 27, respectively. Here, the thickness of the interface \( n_{\text{thickness}} \) is defined as follows:
+
+\[
+n_{\text{thickness}} = \frac{|\delta \rho_{\text{jump}}|}{\max_j (|\rho_j - \rho_{j+1}|)},
+\]
+
+where \(\delta \rho_{\text{jump}}\) denotes the density jump across the interface.
+
 \bibliographystyle{plain}
 \bibliography{ref.bib}
 \end{document}
